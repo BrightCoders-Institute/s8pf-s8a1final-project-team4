@@ -5,13 +5,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 export default function InputTransferir({text,icon} : {text: string,icon: string}) {
   return (
 
-
+    
     <View style={styles.Container}>
         <Text style={styles.Text}>{text}</Text>
         <TextInput style={styles.InputN} keyboardType='number-pad'/>
         <Icon style={styles.icons} name={icon} size={30} color={'black'}/>
 
-
+        
 
     </View>
   )
@@ -45,3 +45,4 @@ const styles = StyleSheet.create({
         right: 15,
       },
 });
+    
