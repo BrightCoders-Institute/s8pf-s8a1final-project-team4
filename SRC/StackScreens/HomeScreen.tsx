@@ -9,7 +9,7 @@ export default function HomeScreen() {
     
     <View style={styles.Container}>
         <View style={styles.Header}>
-            <Image style={styles.IconP} source={require('../img/Iconperfil.png')}/>
+            <Image style={styles.IconP} source={require('../../img/Iconperfil.png')}/>
             <View>
                 <Text style={styles.TextBnv}>Hola</Text>
                 <Text style={styles.TextName}>Ricardo</Text>

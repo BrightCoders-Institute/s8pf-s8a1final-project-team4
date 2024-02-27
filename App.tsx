@@ -1,10 +1,10 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import { CardScreen } from './SRC/StackScreens/CardScreen';
+import HomeScreen from './SRC/StackScreens/HomeScreen';
 
 function App (){
   return (
-    <CardScreen/>
+    <HomeScreen />
   );
 }
 
