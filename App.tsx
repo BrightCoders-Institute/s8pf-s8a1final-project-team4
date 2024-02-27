@@ -1,9 +1,11 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import HomeScreen from './SRC/HomeScreen'
+/* eslint-disable prettier/prettier */
+import React from 'react';
+import { CardScreen } from './SRC/StackScreens/CardScreen';
 
-export default function App() {
+function App (){
   return (
-    <HomeScreen />  // This is the only change from the original file
-  )
+    <CardScreen/>
+  );
 }
+
+export default App;

@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Image, Touchable, TouchableOpacity, Button } from 'react-native'
 import React from 'react'
 import Icon from 'react-native-vector-icons/Ionicons';
-import InputTransferir from './components/InputTransferir';
+import InputTransferir from '../Components/TextInputC';
 
 
 export default function HomeScreen() {
