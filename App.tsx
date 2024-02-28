@@ -1,10 +1,13 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import HomeScreen from './SRC/StackScreens/HomeScreen';
+import {NavigationContainer} from '@react-navigation/native';
+import MyStack from './SRC/StackNavigation/stackNavigation';
 
-function App (){
+function App() {
   return (
-    <HomeScreen />
+    <NavigationContainer>
+      <MyStack />
+    </NavigationContainer>
   );
 }
 
