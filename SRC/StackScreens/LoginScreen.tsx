@@ -1,6 +1,13 @@
 import React from 'react'
 import { View, TextInput, StyleSheet, TouchableOpacity, Text, Alert, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
+type Props = {
+    imagenUser: string;
+    email: string;
+    password: string;
+};
+
 export default function Login() {
 
     const [email,setEmail] = React.useState<String>('')

@@ -15,6 +15,14 @@ import { StylesText } from '../Styles/TextStyles';
 import { StylesImage } from '../Styles/ImageStyles';
 import { Stylesbuttons } from '../Styles/ButtonStyles';
 
+type Props = {
+    name: string;
+    imagenUser: string;
+    saldoInicial: number;
+    nip: number;
+    tipoTarjeta: string;
+};
+
 export const CardScreen = () => {
     const handleClick = () => {
         console.log('Se hizo clic en la flecha');
