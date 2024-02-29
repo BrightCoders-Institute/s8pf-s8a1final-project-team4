@@ -1,10 +1,11 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import HomeScreen from './SRC/StackScreens/HomeScreen';
+import ProfileImage from './SRC/StackScreens/ProfileImage';
+
 
 function App (){
   return (
-    <HomeScreen />
+    <ProfileImage/>
   );
 }
 
