@@ -7,4 +7,12 @@ export const StylesText = StyleSheet.create({
         fontSize:35,
         color:'white',
     },
+    links:{
+        color: "blue", 
+        textDecorationLine:"underline" 
+    },
+    accountText:{
+        color:"black",
+        fontSize:18
+    }
 });
