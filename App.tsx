@@ -1,11 +1,15 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import ProfileImage from './SRC/StackScreens/ProfileImage';
+import {NavigationContainer} from '@react-navigation/native';
+import MyStack from './SRC/StackNavigation/stackNavigation';
 
 
-function App (){
+function App() {
   return (
-    <ProfileImage/>
+    <NavigationContainer>
+      <MyStack />
+    </NavigationContainer>
+
   );
 }
 
