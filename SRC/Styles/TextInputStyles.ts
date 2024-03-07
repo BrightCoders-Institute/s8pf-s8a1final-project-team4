@@ -1,17 +1,25 @@
 /* eslint-disable prettier/prettier */
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export const StylesInput = StyleSheet.create({
-    InputView:{
-        flexDirection:'row',
-        justifyContent:'space-between',
-        paddingLeft:15,
-        backgroundColor:'white',
-        fontSize:15,
-        width:'auto',
-        borderRadius:25,
-        borderWidth:1,
-        borderColor:'black',
-        margin:10,
-    },
+  Container: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 30,
+    paddingHorizontal: 15,
+    borderColor: 'black',
+    borderWidth: 2,
+    backgroundColor: 'white',
+    width: 280,
+  },
+  Icon: {
+    fontSize: 28,
+    color: 'black',
+  },
+  Input: {
+    color: 'black',
+    fontWeight: '600',
+    flex: 1,
+  },
 });
