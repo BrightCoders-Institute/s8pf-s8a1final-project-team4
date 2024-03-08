@@ -7,6 +7,7 @@ export const StylesInput = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 30,
+    alignSelf: 'center',
     paddingHorizontal: 15,
     borderColor: 'black',
     borderWidth: 2,

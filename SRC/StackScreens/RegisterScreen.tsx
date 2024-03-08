@@ -8,6 +8,11 @@ import {
   Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import ScreenButton from '../Components/ScreenButton';
+import PasswordInput from '../Components/PasswordInput';
+import { useNavigation } from '@react-navigation/native';
+
+
 
 type Props = {
   imagenUser: string;
@@ -17,6 +22,7 @@ type Props = {
 };
 
 export default function RegisterScreen() {
+  const navigation = useNavigation();
   const [visualizePass, setVisualizePass] = useState(false);
   return (
     <View style={styles.container}>
@@ -45,23 +51,13 @@ export default function RegisterScreen() {
           />
           <Icon name="mail-outline" style={styles.icon} />
         </View>
-        <View style={styles.inputView}>
-          <TextInput
-            placeholder="Contraseña"
-            placeholderTextColor="#999"
-            secureTextEntry={visualizePass}
-            style={styles.input}
-          />
-          <TouchableOpacity onPress={() => setVisualizePass(!visualizePass)}>
-            <Icon name="eye-outline" style={styles.icon} />
-          </TouchableOpacity>
+         <PasswordInput onChangeText={() => {}} />
         </View>
-      </View>
-      <View style={styles.button}>
-        <TouchableOpacity>
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </TouchableOpacity>
-      </View>
+
+        <View>
+        <ScreenButton  fn={() => navigation.navigate('Home')} text='Register' />
+        </View>
+
       <View style={styles.loginView}>
         <Text>Alreay have an account?</Text>
         <TouchableOpacity>
@@ -120,20 +116,8 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 28,
     color: 'blue',
-  },
-  button: {
-    backgroundColor: '#280ec9',
-    borderRadius: 100,
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    width: 250,
-    alignSelf: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: '900',
-    textAlign: 'center',
-    fontSize: 20,
+
+
   },
   loginView: {
     display: 'flex',
