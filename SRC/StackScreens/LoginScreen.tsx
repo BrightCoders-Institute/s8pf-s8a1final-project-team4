@@ -6,6 +6,7 @@ import ImageComp from '../Components/ImageComponent';
 import ScreenButton from '../Components/ScreenButton';
 import PasswordInput from '../Components/PasswordInput';
 
+
 export default function Login({route}) {
     const navigation = useNavigation()
 
@@ -16,9 +17,11 @@ export default function Login({route}) {
         console.log(email, password)
     }
     const googleLogIn = () => {
-
+        console.log("google signin")
+        const res = useDb()
+        console.log(res)
     }
-
+    
     const profileImage = route.params?.profileImage;
 
     return (

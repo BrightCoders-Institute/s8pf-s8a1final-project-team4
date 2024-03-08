@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "665755295591",
+    "project_id": "fbank-2e320",
+    "storage_bucket": "fbank-2e320.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665755295591:android:22c1268a53cae90e8d59c2",
+        "android_client_info": {
+          "package_name": "com.furrybank"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkSIFnwND4lKan6G-jq7fTnO8jCa4c3J0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
