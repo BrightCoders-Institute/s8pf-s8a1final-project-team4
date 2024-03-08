@@ -18,7 +18,7 @@ export default function Login({route}) {
         const res = useDb()
         console.log(res)
     }
-
+    
     const profileImage = route.params?.profileImage;
 
     return (
