@@ -7,7 +7,7 @@ interface ScreenButtonProps {
   fn: () => void;
 }
 
-export default function ScreenButton({text, fn}: ScreenButtonProps) {
+export default function ScreenButton({text, fn,}: ScreenButtonProps) {
   return (
     <TouchableOpacity onPress={fn} style={Stylesbuttons.Button}>
       <Text style={Stylesbuttons.TextButton}>{text}</Text>

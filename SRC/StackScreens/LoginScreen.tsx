@@ -3,6 +3,8 @@ import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-nativ
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import ImageComp from '../Components/ImageComponent';
+import ScreenButton from '../Components/ScreenButton';
+import PasswordInput from '../Components/PasswordInput';
 
 export default function Login({route}) {
     const navigation = useNavigation()
@@ -34,20 +36,20 @@ export default function Login({route}) {
                     <TextInput placeholder='Email' style={styles.input} onChangeText={setEmail} />
 
                 </View>
-                <View style={styles.inputView}>
-                    <TextInput placeholder='Contraseña' style={styles.input} onChangeText={setPassword} />
-                    <Icon name='remove-red-eye' size={40} style={styles.icon} />
 
-                </View>
+                <PasswordInput onChangeText={setPassword} />
 
                 <View style={styles.btnView}>
-                    <TouchableOpacity style={styles.btn} onPress={logIn}>
-                        <Text style={{ color: "white", fontWeight: "bold", fontSize: 20 }}>Log in</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.btn} onPress={googleLogIn} >
-                        <Text style={{ color: "white", fontWeight: "bold", fontSize: 20 }}>Log in with Google</Text>
-                    </TouchableOpacity>
-                    <Text>If you don't have an account,<Text style={{ color: "blue", textDecorationLine: "underline" }}> register</Text> now </Text>
+                
+
+                <ScreenButton  fn={() => navigation.navigate('Home')} text='Log in' />
+                        
+                <ScreenButton  fn={() => navigation.navigate('Home')}text='Log in with Google' />
+                        
+                    <Text>If you don't have an account,
+                    <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+                        <Text style={{ color: "blue", textDecorationLine: "underline" }}> register</Text>
+                    </TouchableOpacity> now </Text>
 
                 </View>
                 <Icon name='fingerprint' size={80} style={{ marginTop: 20 }} />
@@ -74,6 +76,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         borderColor: "black",
         borderWidth: 2,
+        paddingHorizontal: 15,
     },
     btnView: {
         width: "100%",

@@ -7,7 +7,9 @@ export const Stylesbuttons = StyleSheet.create({
     width: 190,
     backgroundColor: 'rgb(0, 59, 102)',
     borderRadius: 25,
-  },
+    marginTop: 10,
+    alignSelf: 'center',
+},
   TextButton: {
     textAlign: 'center',
     fontSize: 23,
