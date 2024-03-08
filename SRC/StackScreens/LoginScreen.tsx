@@ -3,7 +3,7 @@ import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-nativ
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import ImageComp from '../Components/ImageComponent';
-
+import { useDb } from '../Firebase/db';
 export default function Login({route}) {
     const navigation = useNavigation()
 
@@ -14,9 +14,11 @@ export default function Login({route}) {
         console.log(email, password)
     }
     const googleLogIn = () => {
-
+        console.log("google signin")
+        const res = useDb()
+        console.log(res)
     }
-
+    
     const profileImage = route.params?.profileImage;
 
     return (
