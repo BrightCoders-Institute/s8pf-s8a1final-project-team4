@@ -1,12 +1,13 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import ImageComp from '../Components/ImageComponent';
 import ScreenButton from '../Components/ScreenButton';
 import PasswordInput from '../Components/PasswordInput';
-
-
+import { GoogleSignin, } from '@react-native-google-signin/google-signin';
+import { GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
+import {auth} from '../Firebase/firebaseConfig'
 export default function Login({route}) {
     const navigation = useNavigation()
 
@@ -16,10 +17,23 @@ export default function Login({route}) {
     const logIn = () => {
         console.log(email, password)
     }
-    const googleLogIn = () => {
-        console.log("google signin")
-        const res = useDb()
-        console.log(res)
+    useEffect(() => {
+        GoogleSignin.configure({
+            webClientId: '665755295591-jkg5kodjv4c1446utumh51fs89o7h24j.apps.googleusercontent.com',
+           });
+      },[])
+    const handleSubmitgGoogle = async  () => {
+            try{
+            await GoogleSignin.hasPlayServices()
+           const {idToken}  = await GoogleSignin.signIn()
+           console.log("token", idToken)
+           const googleCredential = GoogleAuthProvider.credential(idToken)
+           console.log(googleCredential)
+           await signInWithCredential(auth,googleCredential)
+          
+        }catch(err:any){
+            console.log(err)
+        }
     }
     
     const profileImage = route.params?.profileImage;
@@ -47,7 +61,8 @@ export default function Login({route}) {
 
                 <ScreenButton  fn={() => navigation.navigate('Home')} text='Log in' />
                         
-                <ScreenButton  fn={() => navigation.navigate('Home')}text='Log in with Google' />
+                <ScreenButton  fn={() => handleSubmitgGoogle()}text='Log in with Google' />
+
                         
                     <Text>If you don't have an account,
                     <TouchableOpacity onPress={() => navigation.navigate('Register')}>
