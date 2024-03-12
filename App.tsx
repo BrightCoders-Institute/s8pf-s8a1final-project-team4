@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import MyStack from './SRC/StackNavigation/stackNavigation';
+import MyStack from './src/StackNavigation/stackNavigation';
 
 
 function App() {
