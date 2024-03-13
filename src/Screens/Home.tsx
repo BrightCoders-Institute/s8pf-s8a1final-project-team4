@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import NewIcon from 'react-native-vector-icons/FontAwesome5';
 
 export default function Home() {
   // const hi = 1;
@@ -53,7 +54,12 @@ export default function Home() {
             </TouchableOpacity>
             <Text style={styles.cardNumber}>**** **** **** 4545</Text>
           </View>
-          <Text style={styles.visaIcon}>Visa</Text>
+          <NewIcon
+            name="cc-visa"
+            size={35}
+            color={'white'}
+            style={styles.visaIcon}
+          />
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.button}>
@@ -167,7 +173,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   visaIcon: {
-    height: 20,
+    // height: 20,
     position: 'absolute',
     right: 15,
     top: 15,
