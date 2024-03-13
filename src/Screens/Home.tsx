@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import NewIcon from 'react-native-vector-icons/FontAwesome5';
 
 export default function Home() {
-  // const hi = 1;
+  const [showPassword, setShowPassword] = useState(false);
+  const [cardNumber, setCardNumber] = useState('1234 1234 1234 4545');
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -48,11 +50,19 @@ export default function Home() {
       </View>
       <View style={styles.cardView}>
         <TouchableOpacity style={styles.card}>
-          <View style={{flexDirection: 'row', gap: 12}}>
-            <TouchableOpacity>
-              <Text style={styles.cardIcon}>Icon</Text>
+          <View style={{flexDirection: 'row', gap: 15, alignItems: 'center'}}>
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+              <Icon
+                name={showPassword ? 'eye-outline' : 'eye-off-outline'}
+                size={30}
+                color={'white'}
+              />
             </TouchableOpacity>
-            <Text style={styles.cardNumber}>**** **** **** 4545</Text>
+            <Text style={styles.cardNumber}>
+              {showPassword
+                ? cardNumber
+                : '**** **** **** ' + cardNumber.split(' ')[3]}
+            </Text>
           </View>
           <NewIcon
             name="cc-visa"
@@ -157,6 +167,7 @@ const styles = StyleSheet.create({
     padding: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     paddingVertical: 35,
     shadowColor: 'black',
     shadowOffset: {width: 0, height: 100},
