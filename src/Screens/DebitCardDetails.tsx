@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import NewIcon from 'react-native-vector-icons/FontAwesome5';
 
 export default function DebitCardDetails() {
   // const getDebitCard = 1;
@@ -13,7 +14,7 @@ export default function DebitCardDetails() {
 
       <View style={styles.card}>
         <Text style={styles.cardNumber}>1234 1234 1324 4545</Text>
-        <Text style={styles.visaIcon}>Visa</Text>
+        <NewIcon name="cc-visa" size={35} color={'white'} />
       </View>
       <View>
         <Text style={styles.lastMove}>Ultimos Movimientos</Text>
@@ -42,7 +43,6 @@ const styles = StyleSheet.create({
   },
   accountContainer: {
     backgroundColor: 'white',
-    // marginHorizontal: 20,
     borderRadius: 3,
     padding: 15,
     alignItems: 'center',
@@ -71,25 +71,22 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   card: {
-    // marginHorizontal: 20,
     backgroundColor: '#00079A',
     borderRadius: 4,
     padding: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 25,
+    paddingVertical: 20,
     shadowColor: 'black',
     shadowOffset: {width: 0, height: 100},
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 15,
+    alignItems: 'center',
   },
   cardNumber: {
     color: 'white',
     fontSize: 20,
-  },
-  visaIcon: {
-    height: 20,
   },
   lastMove: {
     color: '#4A52FF',
