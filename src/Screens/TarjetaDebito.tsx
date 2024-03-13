@@ -3,7 +3,8 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default function TarjetaDebito() {
-  // const getDebitCard = 1;
+  const cardNumber = '1234 1234 1234 4545';
+
   return (
     <View style={styles.container}>
       <Text style={styles.tarjetas}>Mis Tarjetas</Text>
@@ -50,7 +51,9 @@ export default function TarjetaDebito() {
               <Icon name="card-outline" size={45} color={'#4A52FF'} />
               <View style={{gap: 20}}>
                 <Text style={styles.cardTitle}>Debito</Text>
-                <Text style={styles.cardNumber}>**** **** **** 4545</Text>
+                <Text style={styles.cardNumber}>
+                  **** **** **** {cardNumber.split(' ')[3]}
+                </Text>
               </View>
             </View>
             <Icon name="chevron-forward-outline" size={45} color={'#4A52FF'} />

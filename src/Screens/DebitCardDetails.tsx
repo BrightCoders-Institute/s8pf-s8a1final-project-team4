@@ -1,9 +1,10 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import NewIcon from 'react-native-vector-icons/FontAwesome5';
 
 export default function DebitCardDetails() {
-  // const getDebitCard = 1;
+  const cardNumber = '1234 1234 1234 4545';
+
   return (
     <View style={styles.container}>
       <View style={styles.accountContainer}>
@@ -13,11 +14,11 @@ export default function DebitCardDetails() {
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.cardNumber}>1234 1234 1324 4545</Text>
+        <Text style={styles.cardNumber}>{cardNumber}</Text>
         <NewIcon name="cc-visa" size={35} color={'white'} />
       </View>
       <View>
-        <Text style={styles.lastMove}>Ultimos Movimientos</Text>
+        <Text style={styles.lastMove}>Ultimos Movimientos:</Text>
       </View>
       <View>
         <Text style={styles.date}>8 marzo 2024</Text>
@@ -27,6 +28,16 @@ export default function DebitCardDetails() {
             <Text style={styles.payDesc}>Transferencia bancaria</Text>
           </View>
           <Text style={styles.payNum}>$500</Text>
+        </View>
+      </View>
+      <View>
+        <Text style={styles.date}>9 marzo 2024</Text>
+        <View style={styles.moveContainer}>
+          <View>
+            <Text style={styles.payName}>Pago Cuenta asdf</Text>
+            <Text style={styles.payDesc}>Transferencia bancaria</Text>
+          </View>
+          <Text style={styles.payNum}>$-500</Text>
         </View>
       </View>
     </View>
