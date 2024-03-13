@@ -12,7 +12,20 @@
           "package_name": "com.furrybank"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "665755295591-58t93abfc0t9e2h5dd99fr3o4j9k0s6f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.furrybank",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "665755295591-jkg5kodjv4c1446utumh51fs89o7h24j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCkSIFnwND4lKan6G-jq7fTnO8jCa4c3J0"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "665755295591-jkg5kodjv4c1446utumh51fs89o7h24j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
