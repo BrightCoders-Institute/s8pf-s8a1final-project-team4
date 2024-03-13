@@ -1,46 +1,52 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default function Home() {
   // const hi = 1;
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerImg}>Img</Text>
+        <Image
+          style={styles.headerImg}
+          source={{
+            uri: 'https://i.pinimg.com/736x/25/ed/64/25ed6467aa8b4677bf04e60295797802.jpg',
+          }}
+        />
         <Text style={styles.headerText}>Hola, Usuario</Text>
         <TouchableOpacity style={styles.congifIconContainer}>
-          <Text style={styles.configIcon}>Icon</Text>
+          <Icon name="settings-outline" size={26} color={'white'} />
         </TouchableOpacity>
       </View>
-      <View style={styles.accountContainer}>
+      <TouchableOpacity style={styles.accountContainer}>
         <View>
           <Text style={styles.accountTitle}>Cuentas</Text>
           <Text style={styles.accountNum}>● 4545</Text>
         </View>
         <Text style={styles.accountBalance}>$1990</Text>
-      </View>
+      </TouchableOpacity>
       <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
         <TouchableOpacity style={styles.optionTouchable}>
           <View style={styles.optionView}>
-            <Text style={styles.optionIcon}>Icon</Text>
+            <Icon name="swap-horizontal-outline" size={45} color={'white'} />
           </View>
           <Text style={styles.optionText}>Transferir</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.optionTouchable}>
           <View style={styles.optionView}>
-            <Text style={styles.optionIcon}>Icon</Text>
+            <Icon name="timer-outline" size={45} color={'white'} />
           </View>
           <Text style={styles.optionText}>Historial</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.optionTouchable}>
           <View style={styles.optionView}>
-            <Text style={styles.optionIcon}>Icon</Text>
+            <Icon name="cash-outline" size={45} color={'white'} />
           </View>
           <Text style={styles.optionText}>Retirar</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.cardView}>
-        <View style={styles.card}>
+        <TouchableOpacity style={styles.card}>
           <View style={{flexDirection: 'row', gap: 12}}>
             <TouchableOpacity>
               <Text style={styles.cardIcon}>Icon</Text>
@@ -48,7 +54,7 @@ export default function Home() {
             <Text style={styles.cardNumber}>**** **** **** 4545</Text>
           </View>
           <Text style={styles.visaIcon}>Visa</Text>
-        </View>
+        </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Mis Tarjetas</Text>
@@ -68,7 +74,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
     paddingVertical: 15,
   },
   headerImg: {
@@ -84,10 +90,6 @@ const styles = StyleSheet.create({
   },
   congifIconContainer: {
     alignSelf: 'flex-start',
-  },
-  configIcon: {
-    height: 20,
-    color: 'white',
   },
   accountContainer: {
     backgroundColor: 'white',
@@ -126,6 +128,8 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     height: 80,
     width: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   optionIcon: {
     height: 20,
