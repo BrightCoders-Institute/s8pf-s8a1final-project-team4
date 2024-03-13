@@ -5,7 +5,7 @@ import NewIcon from 'react-native-vector-icons/FontAwesome5';
 
 export default function Home() {
   const [showPassword, setShowPassword] = useState(false);
-  const [cardNumber, setCardNumber] = useState('1234 1234 1234 4545');
+  const cardNumber = '1234 1234 1234 4545';
 
   return (
     <View style={styles.container}>
