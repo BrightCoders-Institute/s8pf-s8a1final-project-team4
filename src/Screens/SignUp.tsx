@@ -8,6 +8,7 @@ import {auth} from '../Firebase/firebaseconfig';
 import {GoogleAuthProvider, signInWithCredential} from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
+import Icon2 from 'react-native-vector-icons/Feather';
 
 export default function SignUp() {
   const [name, setName] = React.useState<string>('');
@@ -62,9 +63,10 @@ export default function SignUp() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.imgView}>
-        <View style={styles.userImg} />
+      <View style={styles.logoView}>
+        <Text style={styles.logoText}>SnapPay</Text>
       </View>
+      <Icon2 name="user" size={80} color={'#4A52FF'} style={styles.align} />
       <View style={styles.inputView}>
         <FormInput
           text="Nombre completo"
@@ -91,20 +93,16 @@ export default function SignUp() {
             handleSignUpWithGoogle();
           }}
         />
-      </View>
-      <View style={styles.linksView}>
-        <Text style={styles.links}>
-          If you alredy have an account,{' '}
+        <View style={styles.textView}>
+          <Text style={styles.text}>Already an account?</Text>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('LogIn');
             }}>
-            <Text style={{color: 'blue', textDecorationLine: 'underline'}}>
-              log in
-            </Text>
+            <Text style={styles.register}>Log in</Text>
           </TouchableOpacity>
-          now
-        </Text>
+          <Text style={styles.text}>now</Text>
+        </View>
       </View>
     </View>
   );
@@ -113,39 +111,47 @@ export default function SignUp() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F2F2F2',
-    flex: 2,
-    display: 'flex',
+    flex: 1,
+    gap: 40,
   },
-  imgView: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    flex: 2,
+  logoView: {
+    backgroundColor: '#00079A',
+    alignSelf: 'flex-start',
+    paddingVertical: 10,
+    paddingHorizontal: 35,
+    borderBottomRightRadius: 8,
   },
-  userImg: {
-    borderRadius: 100,
-    width: 120,
-    height: 120,
-    backgroundColor: 'white',
+  logoText: {
+    color: 'white',
+    fontSize: 25,
+    fontWeight: '900',
+    fontStyle: 'italic',
   },
-  buttonView: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 2,
-  },
-
-  linksView: {
-    flex: 2,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  links: {
-    fontSize: 15,
+  align: {
+    alignSelf: 'center',
   },
   inputView: {
-    flex: 3,
-    justifyContent: 'flex-end',
     alignItems: 'center',
+    gap: 20,
+  },
+  buttonView: {
+    alignItems: 'center',
+    gap: 30,
+  },
+  textView: {
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  text: {
+    color: 'black',
+    fontSize: 15,
+  },
+  register: {
+    color: '#041CF0',
+    textDecorationLine: 'underline',
+    fontWeight: '900',
+    fontSize: 18,
   },
 });
