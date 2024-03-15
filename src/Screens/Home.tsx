@@ -2,9 +2,11 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import NewIcon from 'react-native-vector-icons/FontAwesome5';
+import {useNavigation} from '@react-navigation/native';
 
 export default function Home() {
   const [showPassword, setShowPassword] = useState(false);
+  const navigation = useNavigation();
   const cardNumber = '1234 1234 1234 4545';
 
   return (
@@ -17,11 +19,20 @@ export default function Home() {
           }}
         />
         <Text style={styles.headerText}>Hola, Usuario</Text>
-        <TouchableOpacity style={styles.congifIconContainer}>
+        <TouchableOpacity
+          style={styles.congifIconContainer}
+          onPress={() => {
+            // navigation.navigate('CuentaDebitoFisica');
+            //navigate to Configuracion
+          }}>
           <Icon name="settings-outline" size={26} color={'white'} />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.accountContainer}>
+      <TouchableOpacity
+        style={styles.accountContainer}
+        onPress={() => {
+          navigation.navigate('CuentaDebitoFisica');
+        }}>
         <View>
           <Text style={styles.accountTitle}>Cuentas</Text>
           <Text style={styles.accountNum}>● 4545</Text>
@@ -29,19 +40,33 @@ export default function Home() {
         <Text style={styles.accountBalance}>$1990</Text>
       </TouchableOpacity>
       <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-        <TouchableOpacity style={styles.optionTouchable}>
+        <TouchableOpacity
+          style={styles.optionTouchable}
+          onPress={() => {
+            navigation.navigate('TransferirA');
+          }}>
           <View style={styles.optionView}>
             <Icon name="swap-horizontal-outline" size={45} color={'white'} />
           </View>
           <Text style={styles.optionText}>Transferir</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.optionTouchable}>
+        <TouchableOpacity
+          style={styles.optionTouchable}
+          onPress={() => {
+            // navigation.navigate('CuentaDebitoFisica');
+            //navigate to Historial
+          }}>
           <View style={styles.optionView}>
             <Icon name="timer-outline" size={45} color={'white'} />
           </View>
           <Text style={styles.optionText}>Historial</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.optionTouchable}>
+        <TouchableOpacity
+          style={styles.optionTouchable}
+          onPress={() => {
+            // navigation.navigate('CuentaDebitoFisica');
+            //navigate to Retirar
+          }}>
           <View style={styles.optionView}>
             <Icon name="cash-outline" size={45} color={'white'} />
           </View>
@@ -49,7 +74,11 @@ export default function Home() {
         </TouchableOpacity>
       </View>
       <View style={styles.cardView}>
-        <TouchableOpacity style={styles.card}>
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => {
+            navigation.navigate('CuentaDebitoFisica');
+          }}>
           <View style={{flexDirection: 'row', gap: 15, alignItems: 'center'}}>
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
               <Icon
@@ -72,7 +101,11 @@ export default function Home() {
           />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          navigation.navigate('TarjetaDebito');
+        }}>
         <Text style={styles.buttonText}>Mis Tarjetas</Text>
       </TouchableOpacity>
     </View>
