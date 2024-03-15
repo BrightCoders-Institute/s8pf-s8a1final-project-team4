@@ -10,9 +10,9 @@ import DebitCardDetails from '../Screens/DebitCardDetails';
 import CreditCardDetails from '../Screens/CreditCardDetails';
 import TarjetaDebito from '../Screens/TarjetaDebito';
 import TarjetaCredito from '../Screens/TarjetaCredito';
-import AddContact from '../Screens/AddContact';
-import Destinatario from '../Screens/Destinatario';
+import SelectContact from '../Screens/SelectContact';
 import Transferir from '../Screens/Transferir';
+import AddContact from '../Screens/AddContact';
 
 const Stack = createNativeStackNavigator();
 
@@ -83,7 +83,7 @@ export default function MyStack() {
       />
       <Stack.Screen
         name="TransferirA"
-        component={AddContact}
+        component={SelectContact}
         options={{
           title: 'Transferir a:',
           headerTitleStyle: styles.title,
@@ -92,7 +92,7 @@ export default function MyStack() {
       />
       <Stack.Screen
         name="AddContact"
-        component={Destinatario}
+        component={AddContact}
         options={{
           title: 'Agregar contacto',
           headerTitleStyle: styles.title,
