@@ -1,28 +1,34 @@
-import { View, Text, Image, StyleSheet } from 'react-native'
-import React from 'react'
-import  Icon  from 'react-native-vector-icons/FontAwesome5';
-
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import React from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import {useNavigation} from '@react-navigation/native';
 
 type Props = {
-  nombre: string,
-  numero: number,
-  icono: string,
-  imagen: string,
+  nombre: string;
+  numero: number;
+  icono: string;
+  imagen: string;
 };
 
-export default function Contacto({ nombre, numero, icono, imagen }: Props) {
+export default function Contacto({nombre, numero, icono, imagen}: Props) {
+  const navigation = useNavigation();
+
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => {
+        navigation.navigate('Transferir');
+      }}>
       <Image style={styles.Img} source={require('../../img/Iconperfil.png')} />
-      <View style={styles.containerInfo}>  
+      <View style={styles.containerInfo}>
         <Text style={styles.Text}>{nombre}</Text>
-        <View style={styles.containerdos}>  
+        <View style={styles.containerdos}>
           <Text style={styles.Text}>{numero}</Text>
           <Icon name={icono} size={30} color="white" />
         </View>
       </View>
-    </View>
-  )
+    </TouchableOpacity>
+  );
 }
 const styles = StyleSheet.create({
   container: {
@@ -30,7 +36,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 20,
     marginTop: 20,
-  
   },
   Img: {
     width: 60,
