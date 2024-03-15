@@ -7,6 +7,7 @@ import LogIn from '../Screens/LogIn';
 import SignUp from '../Screens/SignUp';
 import Home from '../Screens/Home';
 import DebitCardDetails from '../Screens/DebitCardDetails';
+import CreditCardDetails from '../Screens/CreditCardDetails';
 import TarjetaDebito from '../Screens/TarjetaDebito';
 import TarjetaCredito from '../Screens/TarjetaCredito';
 import AddContact from '../Screens/AddContact';
@@ -50,7 +51,16 @@ export default function MyStack() {
         name="CuentaDebitoFisica"
         component={DebitCardDetails}
         options={{
-          title: 'Cuenta',
+          title: 'Mi Cuenta',
+          headerTitleStyle: styles.title,
+          headerStyle: styles.background,
+        }}
+      />
+      <Stack.Screen
+        name="CuentaCreditoFisica"
+        component={CreditCardDetails}
+        options={{
+          title: 'Mi Cuenta',
           headerTitleStyle: styles.title,
           headerStyle: styles.background,
         }}

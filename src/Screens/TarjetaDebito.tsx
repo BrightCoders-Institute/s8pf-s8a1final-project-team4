@@ -1,25 +1,42 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useNavigation} from '@react-navigation/native';
 
 export default function TarjetaDebito() {
+  const navigation = useNavigation();
   const cardNumber = '1234 1234 1234 4545';
 
   return (
     <View style={styles.container}>
-      <Text style={styles.tarjetas}>Mis Tarjetas</Text>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <TouchableOpacity
+          style={{paddingLeft: 20}}
+          onPress={() => {
+            navigation.navigate('Home');
+          }}>
+          <Icon name="close-outline" size={45} color={'#4A52FF'} />
+        </TouchableOpacity>
+        <Text style={styles.tarjetas}>Mis Tarjetas</Text>
+      </View>
       <View style={{flexDirection: 'row', alignItems: 'center', gap: 40}}>
         <View style={styles.debitTitle}>
           <Text style={styles.debitTitleText}>Debito</Text>
         </View>
-        <TouchableOpacity style={styles.creditTitle}>
+        <TouchableOpacity
+          style={styles.creditTitle}
+          onPress={() => {
+            navigation.navigate('TarjetaCredito');
+          }}>
           <Text style={styles.creditTitleText}>Credito</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.cardContainer}>
         <TouchableOpacity
           style={styles.card}
-          onPress={() => console.log('touch1')}>
+          onPress={() => {
+            navigation.navigate('CuentaDebitoFisica');
+          }}>
           <Text style={styles.cardTitle}>Fisica</Text>
           <View
             style={{
@@ -40,7 +57,9 @@ export default function TarjetaDebito() {
       <View style={styles.cardContainer}>
         <TouchableOpacity
           style={styles.card}
-          onPress={() => console.log('touch')}>
+          onPress={() => {
+            // navigation.navigate('CuentaDebitoVirtual');
+          }}>
           <Text style={styles.cardTitle}>Virtual</Text>
           <View
             style={{
@@ -73,7 +92,7 @@ const styles = StyleSheet.create({
   },
   tarjetas: {
     color: '#4A52FF',
-    fontSize: 22,
+    fontSize: 26,
     fontWeight: '900',
     paddingLeft: 50,
   },

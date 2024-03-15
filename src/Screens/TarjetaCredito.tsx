@@ -1,26 +1,43 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useNavigation} from '@react-navigation/native';
 
 export default function TarjetaCredito() {
+  const navigation = useNavigation();
   const cardNumber = '1234 1234 1234 4545';
 
   return (
     <View style={styles.container}>
-      <Text style={styles.tarjetas}>Mis Tarjetas</Text>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <TouchableOpacity
+          style={{paddingLeft: 20}}
+          onPress={() => {
+            navigation.navigate('Home');
+          }}>
+          <Icon name="close-outline" size={45} color={'#4A52FF'} />
+        </TouchableOpacity>
+        <Text style={styles.tarjetas}>Mis Tarjetas</Text>
+      </View>
       <View
         style={{flexDirection: 'row-reverse', alignItems: 'center', gap: 40}}>
         <View style={styles.debitTitle}>
           <Text style={styles.debitTitleText}>Credito</Text>
         </View>
-        <TouchableOpacity style={styles.creditTitle}>
+        <TouchableOpacity
+          style={styles.creditTitle}
+          onPress={() => {
+            navigation.navigate('TarjetaDebito');
+          }}>
           <Text style={styles.creditTitleText}>Debito</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.cardContainer}>
         <TouchableOpacity
           style={styles.card}
-          onPress={() => console.log('touch1')}>
+          onPress={() => {
+            navigation.navigate('CuentaCreditoFisica');
+          }}>
           <Text style={styles.cardTitle}>Fisica</Text>
           <View
             style={{
@@ -68,13 +85,13 @@ export default function TarjetaCredito() {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 40,
-    backgroundColor: 'black',
+    backgroundColor: '#F2F2F2',
     flex: 1,
     gap: 50,
   },
   tarjetas: {
-    color: 'white',
-    fontSize: 22,
+    color: '#4A52FF',
+    fontSize: 26,
     fontWeight: '900',
     paddingLeft: 50,
   },
@@ -111,7 +128,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   card: {
-    backgroundColor: '#DBDBDB',
+    backgroundColor: 'white',
     borderRadius: 3,
     padding: 20,
     shadowColor: 'nlue',
