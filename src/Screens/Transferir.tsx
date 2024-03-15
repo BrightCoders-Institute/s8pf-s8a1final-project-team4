@@ -1,22 +1,27 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Alert} from 'react-native';
 import React from 'react';
 import Contacto from '../Components/Contacto';
 import InputDestinatario from '../Components/InputDestinatario';
 import FormButton from '../Components/Button';
+import {useNavigation} from '@react-navigation/native';
 
 export default function Transferir() {
+  const navigation = useNavigation();
+  const currentUser = 'Yahir Cortes';
+  const transferTo = 'Ricardo ';
+
   return (
     <View style={styles.container}>
       <Text style={styles.Text}>Estas Transfiriendo a: </Text>
       <Contacto
-        nombre="Juan Perez"
+        nombre={transferTo}
         numero={1234}
         icono="cc-visa"
         imagen="../../img/Iconperfil.png"
       />
       <Text style={styles.Text}>Desde tu cuenta: </Text>
       <Contacto
-        nombre="Yahir Cortes"
+        nombre={currentUser}
         numero={1234}
         icono="cc-mastercard"
         imagen="../../img/Iconperfil.png"
@@ -28,7 +33,15 @@ export default function Transferir() {
           icono="money-bill-wave"
         />
         <InputDestinatario placeholder="Concepto" icono="comment" />
-        <FormButton text="Enviar" fn={() => {}} />
+        <FormButton
+          text="Enviar"
+          fn={() => {
+            //Alert
+            Alert.alert(`Has transferido con exito a: ${transferTo}`);
+            //Navigate
+            navigation.navigate('Home');
+          }}
+        />
       </View>
     </View>
   );
