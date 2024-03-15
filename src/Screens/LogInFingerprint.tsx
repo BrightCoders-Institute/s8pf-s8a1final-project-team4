@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Icon2 from 'react-native-vector-icons/AntDesign';
 import FormButton from '../Components/Button';
 import {useNavigation} from '@react-navigation/native';
 
