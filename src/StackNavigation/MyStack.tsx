@@ -7,17 +7,18 @@ import LogIn from '../Screens/LogIn';
 import SignUp from '../Screens/SignUp';
 import Home from '../Screens/Home';
 import DebitCardDetails from '../Screens/DebitCardDetails';
+import CreditCardDetails from '../Screens/CreditCardDetails';
 import TarjetaDebito from '../Screens/TarjetaDebito';
 import TarjetaCredito from '../Screens/TarjetaCredito';
-import AddContact from '../Screens/AddContact';
-import Destinatario from '../Screens/Destinatario';
+import SelectContact from '../Screens/SelectContact';
 import Transferir from '../Screens/Transferir';
+import AddContact from '../Screens/AddContact';
 
 const Stack = createNativeStackNavigator();
 
 export default function MyStack() {
   return (
-    <Stack.Navigator initialRouteName="LogIn">
+    <Stack.Navigator initialRouteName="LogInFingerprint">
       <Stack.Screen
         name="LogInFingerprint"
         component={LogInFingerprint}
@@ -50,7 +51,16 @@ export default function MyStack() {
         name="CuentaDebitoFisica"
         component={DebitCardDetails}
         options={{
-          title: 'Cuenta',
+          title: 'Mi Cuenta',
+          headerTitleStyle: styles.title,
+          headerStyle: styles.background,
+        }}
+      />
+      <Stack.Screen
+        name="CuentaCreditoFisica"
+        component={CreditCardDetails}
+        options={{
+          title: 'Mi Cuenta',
           headerTitleStyle: styles.title,
           headerStyle: styles.background,
         }}
@@ -73,7 +83,7 @@ export default function MyStack() {
       />
       <Stack.Screen
         name="TransferirA"
-        component={AddContact}
+        component={SelectContact}
         options={{
           title: 'Transferir a:',
           headerTitleStyle: styles.title,
@@ -82,7 +92,7 @@ export default function MyStack() {
       />
       <Stack.Screen
         name="AddContact"
-        component={Destinatario}
+        component={AddContact}
         options={{
           title: 'Agregar contacto',
           headerTitleStyle: styles.title,

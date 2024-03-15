@@ -1,64 +1,91 @@
-import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import Icon2 from 'react-native-vector-icons/AntDesign'
-import FormButton from '../Components/Button'
+import React from 'react';
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon2 from 'react-native-vector-icons/Feather';
+import FormButton from '../Components/Button';
+import {useNavigation} from '@react-navigation/native';
+
 export default function LogInFingerprint() {
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
-      <View style={styles.imgView}>
-        <View style={styles.userImg}></View>
+      <View style={styles.logoView}>
+        <Text style={styles.logoText}>SnapPay</Text>
       </View>
-      <View style={styles.buttonView}>
-        <FormButton text={"Log in"} fn={() => { }}></FormButton>
-        <FormButton text={"Log in with google"} fn={() => { }}></FormButton>
-      </View>
-      <View style={styles.linksView}>
-        <Text style={styles.links}>If you don't have an account, <Text onPress={() => { }} style={{ color: "blue", textDecorationLine: "underline" }}>register</Text> now</Text>
-        <Icon name='fingerprint' size={170} color={"rgba(74, 82, 255, 1)"}></Icon>
+      <Icon2 name="user" size={80} color={'#00079A'} style={styles.align} />
+      <View style={{gap: 30}}>
+        <FormButton
+          text={'Log in'}
+          fn={() => {
+            navigation.navigate('LogIn');
+          }}
+        />
+        <View style={{gap: 25}}>
+          <FormButton text={'Log in with Google'} fn={() => {}} />
+          <View style={styles.textView}>
+            <Text style={styles.text}>If you don't have an account,</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('SignUp');
+              }}>
+              <Text style={styles.register}>register</Text>
+            </TouchableOpacity>
+            <Text style={styles.text}>now</Text>
+          </View>
+        </View>
+        <View style={styles.align}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Home');
+            }}
+            style={{paddingTop: 20}}>
+            <Icon name="fingerprint" size={160} color={'#4A52FF'} />
+          </TouchableOpacity>
+          <Text style={{color: 'grey', fontSize: 15}}>
+            Entrar con huella digital
+          </Text>
+        </View>
       </View>
     </View>
-  )
+  );
 }
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F2F2F2',
-    flex: 2,
-    display: "flex"
-
+    flex: 1,
+    gap: 50,
   },
-  imgView: {
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    flex: 2,
-
+  logoView: {
+    backgroundColor: '#00079A',
+    alignSelf: 'flex-start',
+    paddingVertical: 10,
+    paddingHorizontal: 35,
+    borderBottomRightRadius: 8,
   },
-  userImg: {
-    borderRadius: 100,
-    width: 120,
-    height: 120,
-    backgroundColor: "white"
+  logoText: {
+    color: 'white',
+    fontSize: 25,
+    fontWeight: '900',
+    fontStyle: 'italic',
   },
-  buttonView: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 2,
-
+  align: {
+    alignSelf: 'center',
   },
-
-  linksView: {
-    flex: 3,
-    justifyContent: "space-around",
-    alignItems: "center",
-
-
+  textView: {
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
   },
-  links: {
-    fontSize: 15
+  text: {
+    color: 'black',
+    fontSize: 15,
   },
-  
-
-})
+  register: {
+    color: '#041CF0',
+    textDecorationLine: 'underline',
+    fontWeight: '900',
+    fontSize: 18,
+  },
+});
