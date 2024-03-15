@@ -2311,17 +2311,17 @@
     invariant "^2.2.4"
     nullthrows "^1.1.1"
 
-"@react-navigation/core@^6.4.13":
-  version "6.4.13"
-  resolved "https://registry.npmjs.org/@react-navigation/core/-/core-6.4.13.tgz"
-  integrity sha512-RBUpNG11SEYfvvWefJPxz8Xu/feWuPxln7ddRSY92aKs7u6fj/Z694Jun76Gmmw/RIHW6xcu3PH2v3Wm8nbumg==
+"@react-navigation/core@^6.4.15":
+  version "6.4.15"
+  resolved "https://registry.npmjs.org/@react-navigation/core/-/core-6.4.15.tgz"
+  integrity sha512-/ti6dulU68bsR3+zM9rlrqOUG8x7Xor35B4W1sA/AbDC0b1veexMGUQHXeyF+qh/3loG8JTwBUgTsPXkoLO2mw==
   dependencies:
     "@react-navigation/routers" "^6.1.9"
     escape-string-regexp "^4.0.0"
     nanoid "^3.1.23"
     query-string "^7.1.3"
     react-is "^16.13.0"
-    use-latest-callback "^0.1.7"
+    use-latest-callback "^0.1.9"
 
 "@react-navigation/elements@^1.3.26":
   version "1.3.26"
@@ -2336,12 +2336,12 @@
     "@react-navigation/elements" "^1.3.26"
     warn-once "^0.1.0"
 
-"@react-navigation/native@^6.0.0", "@react-navigation/native@^6.1.14":
-  version "6.1.14"
-  resolved "https://registry.npmjs.org/@react-navigation/native/-/native-6.1.14.tgz"
-  integrity sha512-nCrVi4cHXx6VnXV8fj+lLb8zjLt1LZkpxudhfV/i1KstgaoGzh9FgFDIvbWONGE8f403FIsYUnZxKHvN7asp1w==
+"@react-navigation/native@^6.0.0", "@react-navigation/native@^6.1.16":
+  version "6.1.16"
+  resolved "https://registry.npmjs.org/@react-navigation/native/-/native-6.1.16.tgz"
+  integrity sha512-nlP9RrpNs0ogMQpYXURIIMZYOYvg51jvcC3wfE9GFKQO0Av+GsvWd/kPtliWzWmtFwPnqiu5dw4bCvNtfsB3bA==
   dependencies:
-    "@react-navigation/core" "^6.4.13"
+    "@react-navigation/core" "^6.4.15"
     escape-string-regexp "^4.0.0"
     fast-deep-equal "^3.1.3"
     nanoid "^3.1.23"
@@ -7106,7 +7106,7 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
-use-latest-callback@^0.1.7:
+use-latest-callback@^0.1.9:
   version "0.1.9"
   resolved "https://registry.npmjs.org/use-latest-callback/-/use-latest-callback-0.1.9.tgz"
   integrity sha512-CL/29uS74AwreI/f2oz2hLTW7ZqVeV5+gxFeGudzQrgkCytrHw33G4KbnQOrRlAEzzAFXi7dDLMC9zhWcVpzmw==
