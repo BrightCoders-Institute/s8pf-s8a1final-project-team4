@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native'
+import  Icon  from 'react-native-vector-icons/AntDesign';
 interface buttonInterface {
     text:string;
     fn:() => void;
@@ -10,6 +11,11 @@ export default function FormButton({text ,fn,iconName}:buttonInterface) {
         
             <TouchableOpacity onPress={fn} style={styles.buttons}>
                 <Text style={styles.btnText}>{text}</Text>
+                {
+                    iconName != null && 
+                    <Icon name={iconName} size={30} style={styles.icon}></Icon>
+                }
+                
             </TouchableOpacity>
         
 
@@ -17,6 +23,8 @@ export default function FormButton({text ,fn,iconName}:buttonInterface) {
 }
 const styles = StyleSheet.create({
     buttons: {
+        display:"flex",
+        flexDirection:"row",
         backgroundColor: "rgba(74, 82, 255, 1)",
         color: "white",
         width: "55%",
@@ -32,5 +40,11 @@ const styles = StyleSheet.create({
         color:"white",
         fontSize:20,
         fontWeight:"bold"
+      },
+      icon:{
+        position:"absolute",
+        alignSelf:"center",
+        right:10,
+        color:"white"
       }
 })
