@@ -17,7 +17,7 @@ const Stack = createNativeStackNavigator();
 
 export default function MyStack() {
   return (
-    <Stack.Navigator initialRouteName="LogIn">
+    <Stack.Navigator initialRouteName="LogInFingerprint">
       <Stack.Screen
         name="LogInFingerprint"
         component={LogInFingerprint}
