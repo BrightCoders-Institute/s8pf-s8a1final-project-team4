@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {StyleSheet, View, Text, Alert, TouchableOpacity} from 'react-native';
 import FormButton from '../Components/Button';
 import FormInput from '../Components/Input';
+import  Icon  from 'react-native-vector-icons/Feather';
 import {
   GoogleAuthProvider,
   signInWithCredential,
@@ -10,12 +11,15 @@ import {
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {auth} from '../Firebase/firebaseconfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, StackActions} from '@react-navigation/native';
 import Icon2 from 'react-native-vector-icons/Feather';
 
 export default function LogIn() {
   const [user, setUser] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [userError, setUserError] = React.useState<string>('');
+  const [password, setPassword] = React.useState<string>('');
+  const [passwordError, setPasswordError] = React.useState<string>('');
+  const [rePasswordVisible, setRePasswordVisible] = React.useState(true);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -25,13 +29,26 @@ export default function LogIn() {
     });
   }, []);
 
+  const handleEmailChange = (value: string) => {
+    // Expresión regular que verifica si el valor es un correo electrónico válido
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  
+    if (regex.test(value) || value === "") {
+      setUser(value);
+      setUserError(''); // Limpiar el mensaje de error
+    } else {
+      setUserError('El correo electrónico no es válido');
+    }
+  };
+
+ 
   const handleLogInWithFirebase = () => {
     console.log('user', user, password);
     signInWithEmailAndPassword(auth, user, password)
       .then(userCredential => {
         const user = userCredential.user;
         AsyncStorage.setItem('userID', user.uid);
-        navigation.navigate('Home');
+        navigation.dispatch(StackActions.replace('Home'));
       })
       .catch(error => {
         const errorCode = error.code;
@@ -41,8 +58,7 @@ export default function LogIn() {
         } else {
           console.log('error', errorCode, errorMessage);
         }
-
-        Alert.alert('Ocurrio un error en el servidor');
+       setPasswordError('El correo o la Contraseña son incorrectos');
       });
   };
 
@@ -54,8 +70,7 @@ export default function LogIn() {
       const googleCredential = GoogleAuthProvider.credential(idToken);
       const result = await signInWithCredential(auth, googleCredential);
       await AsyncStorage.setItem('userUID', result.user.uid);
-
-      navigation.navigate('Home');
+      navigation.dispatch(StackActions.replace('Home'));
     } catch (err: any) {
       Alert.alert(
         'Ocurrio un error al iniciar sesion con google, trate nuevamente',
@@ -70,10 +85,17 @@ export default function LogIn() {
       </View>
       <Icon2 name="user" size={80} color={'#4A52FF'} style={styles.align} />
       <View style={styles.inputView}>
-        <FormInput text="Correo" iconName="mail" onInputChange={setUser} />
+        <FormInput 
+          text="Correo" 
+          iconName="user"
+          msgError={userError}
+          onInputChange={value => handleEmailChange(value)} />
         <FormInput
           text="Contraseña"
-          iconName="eyeo"
+          secureTextEntry={rePasswordVisible}
+          iconName = {rePasswordVisible ? "eye-off" : "eye"} 
+          viewPass={() => setRePasswordVisible(!rePasswordVisible)}
+          msgError={passwordError}
           onInputChange={setPassword}
         />
       </View>
