@@ -17,14 +17,14 @@ export default function Contacto({nombre, numero, icono, imagen}: Props) {
     <TouchableOpacity
       style={styles.container}
       onPress={() => {
-        navigation.navigate('Transferir');
+        navigation.navigate('Transferir',{name:nombre, card_number:numero});
       }}>
       <Image style={styles.Img} source={require('../../img/Iconperfil.png')} />
       <View style={styles.containerInfo}>
         <Text style={styles.Text}>{nombre}</Text>
         <View style={styles.containerdos}>
-          <Text style={styles.Text}>{numero}</Text>
-          <Icon name={icono} size={30} color="white" />
+          <Text style={styles.Text}>{ "**** " + numero?.toString().slice(-4)}</Text>
+          <Icon name={icono} size={30} color="white"/>
         </View>
       </View>
     </TouchableOpacity>

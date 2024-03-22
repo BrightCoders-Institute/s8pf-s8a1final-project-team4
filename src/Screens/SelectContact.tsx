@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {
   View,
@@ -7,13 +7,23 @@ import {
   Touchable,
   TouchableOpacity,
   ScrollView,
+  FlatList,
 } from 'react-native';
 import Contacto from '../Components/Contacto';
 import {useNavigation} from '@react-navigation/native';
+import { getContact } from '../Firebase/db';
 
 export default function SelectContact() {
   const navigation = useNavigation();
-
+  const [contact,setContact] = useState([])
+  const getData = async () =>{
+    let arr = await getContact()
+    console.log("COntacts",arr)
+    setContact(arr)
+  }
+  useEffect(() =>{
+   getData()
+  },[])
   return (
     <View style={styles.container}>
       <Text style={styles.Titledestino}>Destinatario</Text>
@@ -28,13 +38,13 @@ export default function SelectContact() {
         </View>
       </TouchableOpacity>
       <Text style={styles.Titleguardado}>Guardados</Text>
-      <ScrollView>
-        <Contacto nombre="Yahir Cortes" numero={1234} icono="cc-visa" />
-        <Contacto nombre="Roberto" numero={1234} icono="cc-mastercard" />
-        <Contacto nombre="Enrique" numero={1234} icono="cc-visa" />
-        <Contacto nombre="Ricardo Milos" numero={1234} icono="cc-mastercard" />
-        <Contacto nombre="Yahir Cortes" numero={1234} icono="cc-visa" />
-      </ScrollView>
+      {
+        contact.length == 0 && <Text>Cagando...</Text>
+      }
+      <FlatList data={contact}
+      renderItem={(item) => (<Contacto nombre={item.item.name} numero={(item.item.number)} icono="cc-visa" />)}>
+
+      </FlatList>
     </View>
   );
 }
