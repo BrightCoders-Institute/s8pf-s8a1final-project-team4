@@ -9,6 +9,7 @@ type Props = {
   nombre: string;
   numero: number;
   icono: string;
+  onChange:(value:string) => void;
 };
 
 export default function InputDestinatario({
@@ -18,6 +19,7 @@ export default function InputDestinatario({
   icono,
   style,
   tipo,
+  onChange
 }: Props) {
   return (
     <View style={[styles.InputContainer, style]}>
@@ -25,6 +27,7 @@ export default function InputDestinatario({
         style={styles.InputSty}
         placeholder={placeholder}
         keyboardType={tipo}
+        onChangeText={onChange}
       />
       <Icon style={styles.IconSty} name={icono} size={25} color="blue" />
     </View>
