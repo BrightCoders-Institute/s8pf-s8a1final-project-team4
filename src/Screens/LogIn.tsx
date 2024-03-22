@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {StyleSheet, View, Text, Alert, TouchableOpacity} from 'react-native';
 import FormButton from '../Components/Button';
 import FormInput from '../Components/Input';
-import  Icon  from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/Feather';
 import {
   GoogleAuthProvider,
   signInWithCredential,
@@ -32,8 +32,8 @@ export default function LogIn() {
   const handleEmailChange = (value: string) => {
     // Expresión regular que verifica si el valor es un correo electrónico válido
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  
-    if (regex.test(value) || value === "") {
+
+    if (regex.test(value) || value === '') {
       setUser(value);
       setUserError(''); // Limpiar el mensaje de error
     } else {
@@ -41,7 +41,6 @@ export default function LogIn() {
     }
   };
 
- 
   const handleLogInWithFirebase = () => {
     console.log('user', user, password);
     signInWithEmailAndPassword(auth, user, password)
@@ -58,7 +57,7 @@ export default function LogIn() {
         } else {
           console.log('error', errorCode, errorMessage);
         }
-       setPasswordError('El correo o la Contraseña son incorrectos');
+        setPasswordError('El correo o la Contraseña son incorrectos');
       });
   };
 
@@ -85,15 +84,16 @@ export default function LogIn() {
       </View>
       <Icon2 name="user" size={80} color={'#4A52FF'} style={styles.align} />
       <View style={styles.inputView}>
-        <FormInput 
-          text="Correo" 
+        <FormInput
+          text="Correo"
           iconName="user"
           msgError={userError}
-          onInputChange={value => handleEmailChange(value)} />
+          onInputChange={value => handleEmailChange(value)}
+        />
         <FormInput
           text="Contraseña"
           secureTextEntry={rePasswordVisible}
-          iconName = {rePasswordVisible ? "eye-off" : "eye"} 
+          iconName={rePasswordVisible ? 'eye-off' : 'eye'}
           viewPass={() => setRePasswordVisible(!rePasswordVisible)}
           msgError={passwordError}
           onInputChange={setPassword}
