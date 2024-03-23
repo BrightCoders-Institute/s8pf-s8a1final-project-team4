@@ -4,11 +4,12 @@ import FormButton from '../Components/Button';
 import FormInput from '../Components/Input';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {createUserWithEmailAndPassword} from 'firebase/auth';
-import {auth} from '../Firebase/firebaseconfig';
+import {auth, db} from '../Firebase/firebaseconfig';
 import {GoogleAuthProvider, signInWithCredential} from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation, StackActions} from '@react-navigation/native';
 import Icon2 from 'react-native-vector-icons/Feather';
+import {doc, setDoc, collection, addDoc} from 'firebase/firestore';
 
 export default function SignUp() {
   const [name, setName] = React.useState<string>('');
@@ -23,8 +24,8 @@ export default function SignUp() {
   const handleEmailChange = (value: string) => {
     // Expresión regular que verifica si el valor es un correo electrónico válido
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  
-    if (regex.test(value) || value === "") {
+
+    if (regex.test(value) || value === '') {
       setEmail(value);
       setEmailError(''); // Limpiar el mensaje de error
     } else {
@@ -35,19 +36,21 @@ export default function SignUp() {
   const handlePasswordChange = (value: string) => {
     // Expresión regular que verifica si el valor tiene al menos 8 caracteres, incluye al menos una letra mayúscula, una letra minúscula y un número
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-  
-    if (regex.test(value) || value === "") {
+
+    if (regex.test(value) || value === '') {
       setPassword(value);
       setPasswordError(''); // Limpiar el mensaje de error
     } else {
-      setPasswordError('La contraseña debe tener al menos 8 caracteres, incluir al menos una letra mayúscula, una letra minúscula y un número');
+      setPasswordError(
+        'La contraseña debe tener al menos 8 caracteres, incluir al menos una letra mayúscula, una letra minúscula y un número',
+      );
     }
   };
 
   const handleNameChange = (value: string) => {
     // Expresión regular que verifica si el valor solo contiene letras y espacios
     const regex = /^[a-zA-Z\s]*$/;
-  
+
     if (regex.test(value)) {
       setName(value);
       setNameError(''); // Limpiar el mensaje de error
@@ -55,7 +58,7 @@ export default function SignUp() {
       setNameError('El nombre solo puede contener letras y espacios');
     }
   };
-  
+
   useEffect(() => {
     GoogleSignin.configure({
       webClientId:
@@ -64,33 +67,49 @@ export default function SignUp() {
   }, []);
 
   const handleSignUpFirebase = () => {
-    if(name.length === 0 && email.length === 0 && password.length === 0) {
-      setNameError('El nombre solo puede contener letras y espacios')
-      setEmailError('El correo electrónico no es válido')
-      setPasswordError('La contraseña debe tener al menos 8 caracteres, incluir al menos una letra mayúscula, una letra minúscula y un número')
-    }else{
-      if(nameError.length === 0 && emailError.length === 0 && passwordError.length === 0) {
-        createUserWithEmailAndPassword(auth, email, password)
-        .then(userCredential => {
-          // Signed in
-          console.log('User created!');
-          const user = userCredential.user;
-          console.log('user', user);
-          navigation.dispatch(StackActions.replace('LogIn'));
-          // ...
-        })
-        .catch(error => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          if (errorMessage === 'auth/email-already-in-use') {
-            setEmailError('Este correo ya esta en uso');
-          } else {
-            setEmailError('Este correo ya esta en uso');
-          }
-  
-          console.log('error', errorCode, errorMessage);
-          // ..
-        });
+    if (name.length === 0 && email.length === 0 && password.length === 0) {
+      setNameError('El nombre solo puede contener letras y espacios');
+      setEmailError('El correo electrónico no es válido');
+      setPasswordError(
+        'La contraseña debe tener al menos 8 caracteres, incluir al menos una letra mayúscula, una letra minúscula y un número',
+      );
+    } else {
+      if (
+        nameError.length === 0 &&
+        emailError.length === 0 &&
+        passwordError.length === 0
+      ) {
+        return createUserWithEmailAndPassword(auth, email, password)
+          .then(userCredential => {
+            const user = userCredential.user;
+            const uid = user.uid;
+            // Crear documento en Firestore en la colección "users"
+            const userDocRef = doc(db, 'users', uid);
+            const userData = {
+              email: email,
+              name: name,
+            };
+            return setDoc(userDocRef, userData).then(() => {
+              // Crear documento en la subcolección "cards" dentro de la colección "users"
+              const cardsCollectionRef = collection(db, `users/${uid}/cards`);
+              const cardData = {
+                number: 1234567890123456, // Número de la tarjeta
+                saldo: 10000,
+              };
+              navigation.dispatch(StackActions.replace('Home'));
+              return addDoc(cardsCollectionRef, cardData);
+            });
+          })
+          .catch(error => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            if (errorMessage === 'auth/email-already-in-use') {
+              setEmailError('Este correo ya esta en uso');
+            } else {
+              setEmailError('Este correo ya esta en uso');
+            }
+            console.log('error', errorCode, errorMessage);
+          });
       }
     }
   };
@@ -122,15 +141,16 @@ export default function SignUp() {
           msgError={nameError}
           onInputChange={handleNameChange}
         />
-        <FormInput 
-          text="Email" 
+        <FormInput
+          text="Email"
           iconName="mail"
           msgError={emailError}
-          onInputChange={value => handleEmailChange(value)} />
+          onInputChange={value => handleEmailChange(value)}
+        />
         <FormInput
           text="Contraseña"
           secureTextEntry={rePasswordVisible}
-          iconName = {rePasswordVisible ? "eye-off" : "eye"} 
+          iconName={rePasswordVisible ? 'eye-off' : 'eye'}
           viewPass={() => setRePasswordVisible(!rePasswordVisible)}
           msgError={passwordError}
           onInputChange={handlePasswordChange}
