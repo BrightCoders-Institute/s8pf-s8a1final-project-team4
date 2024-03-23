@@ -11,6 +11,15 @@ import {useNavigation, StackActions} from '@react-navigation/native';
 import Icon2 from 'react-native-vector-icons/Feather';
 import {doc, setDoc, collection, addDoc} from 'firebase/firestore';
 
+function getRandomCardNumber() {
+  const cardNum = [];
+  for (let i = 0; i < 16; i++) {
+    const randomNum = Math.floor(Math.random() * 10);
+    cardNum.push(randomNum);
+  }
+  return cardNum.join('');
+}
+
 export default function SignUp() {
   const [name, setName] = React.useState<string>('');
   const [nameError, setNameError] = React.useState<string>('');
@@ -93,11 +102,24 @@ export default function SignUp() {
               // Crear documento en la subcolección "cards" dentro de la colección "users"
               const cardsCollectionRef = collection(db, `users/${uid}/cards`);
               const cardData = {
-                number: 1234567890123456, // Número de la tarjeta
+                number: getRandomCardNumber(),
                 saldo: 10000,
+                tipo: 'debito',
               };
-              navigation.dispatch(StackActions.replace('Home'));
-              return addDoc(cardsCollectionRef, cardData);
+              const cardData2 = {
+                number: getRandomCardNumber(),
+                saldo: 5000,
+                tipo: 'credito',
+              };
+              return addDoc(cardsCollectionRef, cardData)
+                .then(() => {
+                  // Añadir la segunda tarjeta
+                  return addDoc(cardsCollectionRef, cardData2);
+                })
+                .then(() => {
+                  navigation.dispatch(StackActions.replace('Home'));
+                  console.log('Dos tarjetas creadas exitosamente.');
+                });
             });
           })
           .catch(error => {
