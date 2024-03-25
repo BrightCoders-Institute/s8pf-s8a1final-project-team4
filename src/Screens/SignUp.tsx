@@ -12,6 +12,7 @@ import Icon2 from 'react-native-vector-icons/Feather';
 import {doc, setDoc, collection, addDoc, getDoc} from 'firebase/firestore';
 import {UserContext} from '../../App';
 
+
 function getRandomCardNumber() {
   const cardNum = [];
   for (let i = 0; i < 16; i++) {
@@ -20,6 +21,7 @@ function getRandomCardNumber() {
   }
   return cardNum.join('');
 }
+
 function getCurrentDate() {
   const currentDate = new Date();
   const year = currentDate.getFullYear();
@@ -28,6 +30,7 @@ function getCurrentDate() {
   const formattedDate = `${year}-${month}-${day}`;
   return formattedDate;
 }
+
 
 export default function SignUp() {
   const [name, setName] = React.useState<string>('');
@@ -156,6 +159,7 @@ export default function SignUp() {
           }
           console.log('error', errorCode, errorMessage);
         }
+
       }
     }
   };

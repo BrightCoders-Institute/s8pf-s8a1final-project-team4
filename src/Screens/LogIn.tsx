@@ -89,7 +89,6 @@ export default function LogIn() {
       const result = await signInWithCredential(auth, googleCredential);
       const uid = result.user.uid;
       await AsyncStorage.setItem('userUID', uid);
-      //asignar uid a context
       // Crear documento en Firestore en la colección "users"
       const userDocRef = doc(db, 'users', uid);
       const docSnap = await getDoc(userDocRef);

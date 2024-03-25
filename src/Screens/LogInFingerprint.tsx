@@ -11,6 +11,7 @@ import {doc, setDoc, collection, addDoc, getDoc} from 'firebase/firestore';
 import {auth, db} from '../Firebase/firebaseconfig';
 import {useEffect} from 'react';
 
+
 function getRandomCardNumber() {
   const cardNum = [];
   for (let i = 0; i < 16; i++) {
@@ -40,6 +41,48 @@ export default function LogInFingerprint() {
       const userDocRef = doc(db, 'users', uid);
       const docSnap = await getDoc(userDocRef);
       //// CHECK IF EXIST
+      console.log(docSnap.exists());
+      if (!docSnap.exists()) {
+        const userData = {
+          name: result.user.displayName,
+          email: result.user.email,
+          photo: result.user.photoURL,
+        };
+        await setDoc(userDocRef, userData);
+        // Crear documento en la subcolección "cards" dentro de la colección "users"
+        const cardsCollectionRef = collection(db, `users/${uid}/cards`);
+        const cardData = {
+          number: getRandomCardNumber(),
+          saldo: 10000,
+          tipo: 'debito',
+        };
+        await addDoc(cardsCollectionRef, cardData);
+        const cardData2 = {
+          number: getRandomCardNumber(),
+          saldo: 5000,
+          tipo: 'credito',
+        };
+        await addDoc(cardsCollectionRef, cardData2);
+      }
+      navigation.navigate('Home');
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Ocurrio un error al registrarse');
+    }
+  };
+
+  const handleLogInWithGoogle = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const {idToken} = await GoogleSignin.signIn();
+      const googleCredential = GoogleAuthProvider.credential(idToken);
+      const result = await signInWithCredential(auth, googleCredential);
+      const uid = result.user.uid;
+      await AsyncStorage.setItem('userUID', uid);
+      // Crear documento en Firestore en la colección "users"
+      const userDocRef = doc(db, 'users', uid);
+      const docSnap = await getDoc(userDocRef);
+      //// CHECK IF IT EXIST
       console.log(docSnap.exists());
       if (!docSnap.exists()) {
         const userData = {
