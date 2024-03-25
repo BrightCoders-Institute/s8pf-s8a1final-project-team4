@@ -9,6 +9,7 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {doc, setDoc, collection, addDoc, getDoc} from 'firebase/firestore';
 import {auth, db} from '../Firebase/firebaseconfig';
+import {useEffect} from 'react';
 
 function getRandomCardNumber() {
   const cardNum = [];
@@ -21,6 +22,11 @@ function getRandomCardNumber() {
 
 export default function LogInFingerprint() {
   const navigation = useNavigation();
+  useEffect(() => {
+    (async () => {
+      await AsyncStorage.removeItem('userID');
+    })();
+  }, []);
 
   const handleLogInWithGoogle = async () => {
     try {

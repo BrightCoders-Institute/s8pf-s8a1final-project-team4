@@ -23,6 +23,14 @@ function getRandomCardNumber() {
   }
   return cardNum.join('');
 }
+function getCurrentDate() {
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  const day = String(currentDate.getDate()).padStart(2, '0');
+  const formattedDate = `${year}-${month}-${day}`;
+  return formattedDate;
+}
 
 export default function LogIn() {
   const [user, setUser] = React.useState('');
@@ -34,11 +42,10 @@ export default function LogIn() {
   const {handleUserActive} = useContext(UserContext);
 
   useEffect(() => {
-    GoogleSignin.configure({
-      webClientId:
-        '665755295591-jkg5kodjv4c1446utumh51fs89o7h24j.apps.googleusercontent.com',
-    });
-  }, []);
+    (async () => {
+      await AsyncStorage.removeItem('userID');
+    })();
+  }, []); //DELETE
 
   const handleEmailChange = (value: string) => {
     // Expresión regular que verifica si el valor es un correo electrónico válido
@@ -57,7 +64,7 @@ export default function LogIn() {
     signInWithEmailAndPassword(auth, user, password)
       .then(userCredential => {
         const userUID = userCredential.user.uid;
-        AsyncStorage.setItem('userID', userUID);
+        AsyncStorage.setItem('userUID', userUID);
         //asignar userUid a context
         handleUserActive();
         navigation.dispatch(StackActions.replace('Home'));
@@ -83,7 +90,6 @@ export default function LogIn() {
       const uid = result.user.uid;
       await AsyncStorage.setItem('userUID', uid);
       //asignar uid a context
-      handleUserActive();
       // Crear documento en Firestore en la colección "users"
       const userDocRef = doc(db, 'users', uid);
       const docSnap = await getDoc(userDocRef);
@@ -94,23 +100,49 @@ export default function LogIn() {
           name: result.user.displayName,
           email: result.user.email,
           photo: result.user.photoURL,
+          tarjetaDebito: {
+            number: getRandomCardNumber(),
+            saldo: 10000,
+            tipo: 'debito',
+            movimientos: [
+              {
+                fecha: getCurrentDate(),
+                monto: 10000,
+                descripcion: 'Apertura de cuenta',
+              },
+            ],
+          },
+          tarjetaCredito: {
+            number: getRandomCardNumber(),
+            saldo: 10000,
+            tipo: 'debito',
+            movimientos: [
+              {
+                fecha: getCurrentDate(),
+                monto: 10000,
+                descripcion: 'Apertura de cuenta',
+              },
+            ],
+          },
         };
         await setDoc(userDocRef, userData);
         // Crear documento en la subcolección "cards" dentro de la colección "users"
-        const cardsCollectionRef = collection(db, `users/${uid}/cards`);
-        const cardData = {
-          number: getRandomCardNumber(),
-          saldo: 10000,
-          tipo: 'debito',
-        };
-        await addDoc(cardsCollectionRef, cardData);
-        const cardData2 = {
-          number: getRandomCardNumber(),
-          saldo: 5000,
-          tipo: 'credito',
-        };
-        await addDoc(cardsCollectionRef, cardData2);
+
+        // const cardsCollectionRef = collection(db, `users/${uid}/cards`);
+        // const cardData = {
+        //   number: getRandomCardNumber(),
+        //   saldo: 10000,
+        //   tipo: 'debito',
+        // };
+        // await addDoc(cardsCollectionRef, cardData);
+        // const cardData2 = {
+        //   number: getRandomCardNumber(),
+        //   saldo: 5000,
+        //   tipo: 'credito',
+        // };
+        // await addDoc(cardsCollectionRef, cardData2);
       }
+      handleUserActive();
       navigation.navigate('Home');
     } catch (error) {
       console.error(error);
