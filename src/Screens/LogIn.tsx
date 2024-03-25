@@ -45,7 +45,7 @@ export default function LogIn() {
     (async () => {
       await AsyncStorage.removeItem('userID');
     })();
-  }, []); //DELETE
+  }, []);
 
   const handleEmailChange = (value: string) => {
     // Expresión regular que verifica si el valor es un correo electrónico válido

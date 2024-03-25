@@ -3,10 +3,18 @@ import React, {createContext, useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import MyStack from './src/StackNavigation/MyStack';
 import {db} from './src/Firebase/firebaseconfig';
-import {doc, collection, getDoc, getDocs} from 'firebase/firestore';
+import {doc, getDoc} from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const UserContext = createContext({
+  userInfo: {
+    email: '',
+    name: '',
+    photo: '',
+    password: '',
+    tarjetaDebito: {monto: '', number: '', movimientos: []},
+    tarjetaCredito: {monto: '', number: '', movimientos: []},
+  },
   handleUserActive: () => {},
 });
 
@@ -22,7 +30,6 @@ function App() {
     (async () => {
       try {
         const userUid = await AsyncStorage.getItem('userUID');
-
         const userDocRef = doc(db, 'users', userUid);
         const docSnapshot = await getDoc(userDocRef);
         if (docSnapshot.exists()) {

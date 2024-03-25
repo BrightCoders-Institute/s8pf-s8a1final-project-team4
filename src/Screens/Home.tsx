@@ -1,29 +1,40 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import NewIcon from 'react-native-vector-icons/FontAwesome5';
 import {useNavigation} from '@react-navigation/native';
+import {UserContext} from '../../App';
 
 export default function Home() {
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
-  const cardNumber = '1234 1234 1234 4545';
+  const {userInfo} = useContext(UserContext);
+  const cardNumber = userInfo.tarjetaDebito.number.replace(
+    /\d{4}(?=.)/g,
+    '$& ',
+  );
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image
-          style={styles.headerImg}
-          source={{
-            uri: 'https://i.pinimg.com/736x/25/ed/64/25ed6467aa8b4677bf04e60295797802.jpg',
-          }}
-        />
-        <Text style={styles.headerText}>Hola, Usuario</Text>
+        {userInfo.photo ? (
+          <Image
+            style={styles.headerImg}
+            source={{
+              uri: userInfo.photo,
+            }}
+          />
+        ) : (
+          <View style={styles.headerImgTextCont}>
+            <Text style={styles.headerImgText}>{userInfo.name[0]}</Text>
+          </View>
+        )}
+
+        <Text style={styles.headerText}>Hola, {userInfo.name}</Text>
         <TouchableOpacity
           style={styles.congifIconContainer}
           onPress={() => {
-            // navigation.navigate('CuentaDebitoFisica');
-            //navigate to Configuracion
+            //navigate to ConfiguracionScreen
           }}>
           <Icon name="settings-outline" size={26} color={'white'} />
         </TouchableOpacity>
@@ -35,9 +46,11 @@ export default function Home() {
         }}>
         <View>
           <Text style={styles.accountTitle}>Cuentas</Text>
-          <Text style={styles.accountNum}>● 4545</Text>
+          <Text style={styles.accountNum}>● {cardNumber.split(' ')[3]}</Text>
         </View>
-        <Text style={styles.accountBalance}>$1990</Text>
+        <Text style={styles.accountBalance}>
+          ${userInfo.tarjetaDebito.saldo}
+        </Text>
       </TouchableOpacity>
       <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
         <TouchableOpacity
@@ -130,7 +143,23 @@ const styles = StyleSheet.create({
     height: 70,
     width: 70,
     borderRadius: 100,
-    backgroundColor: 'white',
+  },
+  headerImgView: {
+    color: 'white',
+    textAlign: 'center',
+    alignItems: 'center',
+  },
+  headerImgTextCont: {
+    height: 70,
+    width: 70,
+    borderRadius: 100,
+    backgroundColor: '#00079A',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerImgText: {
+    color: 'white',
+    fontSize: 28,
   },
   headerText: {
     color: 'white',
