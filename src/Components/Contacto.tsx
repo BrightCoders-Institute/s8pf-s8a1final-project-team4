@@ -10,21 +10,25 @@ type Props = {
   imagen: string;
 };
 
-export default function Contacto({nombre, numero, icono, imagen}: Props) {
+export default function Contacto({nombre, numero, icono}: Props) {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity
       style={styles.container}
       onPress={() => {
-        navigation.navigate('Transferir',{name:nombre, card_number:numero});
+        navigation.navigate('Transferir', {name: nombre, card_number: numero});
       }}>
-      <Image style={styles.Img} source={require('../../img/Iconperfil.png')} />
+      <View style={styles.headerImgTextCont}>
+        <Text style={styles.headerImgText}>{nombre[0].toUpperCase()}</Text>
+      </View>
       <View style={styles.containerInfo}>
         <Text style={styles.Text}>{nombre}</Text>
         <View style={styles.containerdos}>
-          <Text style={styles.Text}>{ "**** " + numero?.toString().slice(-4)}</Text>
-          <Icon name={icono} size={30} color="white"/>
+          <Text style={styles.Text}>
+            {'**** ' + numero?.toString().slice(-4)}
+          </Text>
+          <Icon name={icono} size={30} color="white" />
         </View>
       </View>
     </TouchableOpacity>
@@ -34,13 +38,20 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 20,
+    gap: 15,
     marginTop: 20,
   },
-  Img: {
-    width: 60,
-    height: 60,
-    borderRadius: 50,
+  headerImgTextCont: {
+    height: 70,
+    width: 70,
+    borderRadius: 100,
+    backgroundColor: '#4A52FF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerImgText: {
+    color: 'white',
+    fontSize: 28,
   },
   containerInfo: {
     flex: 1,
@@ -48,11 +59,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 5,
     backgroundColor: '#00079A',
-    padding: 10,
+    padding: 15,
+    borderRadius: 4,
   },
   Text: {
-    fontSize: 15,
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontWeight: '900',
     color: '#fff',
   },
   containerdos: {
@@ -60,6 +72,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    gap: 20,
+    gap: 15,
   },
 });
