@@ -2,10 +2,17 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
+import {UserContext} from '../../App';
+import {useContext} from 'react';
 
 export default function TarjetaDebito() {
   const navigation = useNavigation();
-  const cardNumber = '1234 1234 1234 4545';
+  const {userInfo} = useContext(UserContext);
+  const cardNumber = userInfo.tarjetaDebito.number.replace(
+    /\d{4}(?=.)/g,
+    '$& ',
+  );
+  const saldo = userInfo.tarjetaDebito.saldo;
 
   return (
     <View style={styles.container}>
@@ -47,7 +54,9 @@ export default function TarjetaDebito() {
               <Icon name="card-outline" size={45} color={'#4A52FF'} />
               <View style={{gap: 20}}>
                 <Text style={styles.cardTitle}>Debito</Text>
-                <Text style={styles.cardNumber}>**** **** **** 4545</Text>
+                <Text style={styles.cardNumber}>
+                  **** **** **** {cardNumber.split(' ')[3]}
+                </Text>
               </View>
             </View>
             <Icon name="chevron-forward-outline" size={45} color={'#4A52FF'} />

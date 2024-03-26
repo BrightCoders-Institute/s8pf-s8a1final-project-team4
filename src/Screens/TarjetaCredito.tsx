@@ -2,10 +2,17 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
+import {UserContext} from '../../App';
+import {useContext} from 'react';
 
 export default function TarjetaCredito() {
   const navigation = useNavigation();
-  const cardNumber = '1234 1234 1234 4545';
+  const {userInfo} = useContext(UserContext);
+  const cardNumber = userInfo.tarjetaCredito.number.replace(
+    /\d{4}(?=.)/g,
+    '$& ',
+  );
+  const cvv = userInfo.tarjetaCredito.cvv;
 
   return (
     <View style={styles.container}>

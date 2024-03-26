@@ -1,15 +1,22 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import NewIcon from 'react-native-vector-icons/FontAwesome5';
+import {UserContext} from '../../App';
+import {useContext} from 'react';
 
 export default function CreditCardDetails() {
-  const cardNumber = '1234 1234 1234 4545';
+  const {userInfo} = useContext(UserContext);
+  const cardNumber = userInfo.tarjetaCredito.number.replace(
+    /\d{4}(?=.)/g,
+    '$& ',
+  );
+  const saldo = userInfo.tarjetaCredito.saldo;
 
   return (
     <View style={styles.container}>
       <View style={styles.accountContainer}>
         <Text style={styles.accountTitle}>Credito</Text>
-        <Text style={styles.accountBalance}>$1990</Text>
+        <Text style={styles.accountBalance}>${saldo}</Text>
         <Text style={styles.accountDesc}>Saldo Disponible</Text>
       </View>
 
