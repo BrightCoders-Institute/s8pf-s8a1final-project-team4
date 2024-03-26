@@ -31,14 +31,8 @@ export default function DebitCardDetails() {
           <Text style={styles.cardNumber}>{cardNumber}</Text>
           <NewIcon name="cc-visa" size={35} color={'white'} />
         </View>
-        <View
-          style={{
-            alignSelf: 'flex-end',
-            gap: 20,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
-          <Text style={styles.cvv}>{showCvv ? cvv : '***'}</Text>
+        <View style={styles.cvvView}>
+          <Text style={styles.cvv}>{showCvv ? cvv : 'cvv'}</Text>
           <TouchableOpacity onPress={() => setShowCvv(!showCvv)}>
             <Icon
               name={showCvv ? 'eye-outline' : 'eye-off-outline'}
@@ -119,6 +113,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 20,
   },
+
   cardNumber: {
     color: 'white',
     fontSize: 20,
@@ -126,14 +121,22 @@ const styles = StyleSheet.create({
     borderBottomWidth: 3,
     padding: 3,
   },
+  cvvView: {
+    alignSelf: 'flex-end',
+    gap: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(60, 105, 255, .5)',
+    paddingRight: 5,
+  },
   cvv: {
+    padding: 5,
     fontSize: 18,
     letterSpacing: 3,
     fontStyle: 'italic',
     backgroundColor: 'rgba(60, 105, 255, .5)',
     borderRadius: 2,
     color: 'white',
-    padding: 5,
     fontWeight: '900',
   },
   lastMove: {
