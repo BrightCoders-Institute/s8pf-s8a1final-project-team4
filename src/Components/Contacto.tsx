@@ -10,7 +10,7 @@ type Props = {
   imagen: string;
 };
 
-export default function Contacto({nombre, numero, icono}: Props) {
+export default function Contacto({nombre, numero, icono, imagen}: Props) {
   const navigation = useNavigation();
 
   return (
@@ -19,9 +19,18 @@ export default function Contacto({nombre, numero, icono}: Props) {
       onPress={() => {
         navigation.navigate('Transferir', {name: nombre, card_number: numero});
       }}>
-      <View style={styles.headerImgTextCont}>
-        <Text style={styles.headerImgText}>{nombre[0].toUpperCase()}</Text>
-      </View>
+      {imagen ? (
+        <Image
+          style={styles.Img}
+          source={{
+            uri: imagen,
+          }}
+        />
+      ) : (
+        <View style={styles.headerImgTextCont}>
+          <Text style={styles.headerImgText}>{nombre[0].toUpperCase()}</Text>
+        </View>
+      )}
       <View style={styles.containerInfo}>
         <Text style={styles.Text}>{nombre}</Text>
         <View style={styles.containerdos}>
@@ -40,6 +49,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 15,
     marginTop: 20,
+  },
+  Img: {
+    height: 70,
+    width: 70,
+    borderRadius: 100,
   },
   headerImgTextCont: {
     height: 70,

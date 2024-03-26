@@ -20,7 +20,9 @@ export default function DebitCardDetails() {
     <View style={styles.container}>
       <View style={styles.accountContainer}>
         <Text style={styles.accountTitle}>Debito</Text>
-        <Text style={styles.accountBalance}>${saldo}</Text>
+        <Text style={styles.accountBalance}>
+          ${saldo.toLocaleString('es-ES')}
+        </Text>
         <Text style={styles.accountDesc}>Saldo Disponible</Text>
       </View>
 
