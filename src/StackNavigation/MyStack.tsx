@@ -13,6 +13,7 @@ import TarjetaCredito from '../Screens/TarjetaCredito';
 import SelectContact from '../Screens/SelectContact';
 import Transferir from '../Screens/Transferir';
 import AddContact from '../Screens/AddContact';
+import Config from '../Screens/Config';
 
 const Stack = createNativeStackNavigator();
 
@@ -104,6 +105,15 @@ export default function MyStack() {
         component={Transferir}
         options={{
           title: 'Transferir',
+          headerTitleStyle: styles.title,
+          headerStyle: styles.background,
+        }}
+      />
+      <Stack.Screen
+        name="Configuracion"
+        component={Config}
+        options={{
+          title: 'Configuracion',
           headerTitleStyle: styles.title,
           headerStyle: styles.background,
         }}

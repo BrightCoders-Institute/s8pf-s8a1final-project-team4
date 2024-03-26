@@ -34,7 +34,7 @@ export default function Home() {
         <TouchableOpacity
           style={styles.congifIconContainer}
           onPress={() => {
-            //navigate to ConfiguracionScreen
+            navigation.navigate('Configuracion');
           }}>
           <Icon name="settings-outline" size={26} color={'white'} />
         </TouchableOpacity>
