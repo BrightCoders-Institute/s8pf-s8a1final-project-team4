@@ -15,113 +15,129 @@ export default function Home() {
   );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        {userInfo.photo ? (
-          <Image
-            style={styles.headerImg}
-            source={{
-              uri: userInfo.photo,
-            }}
-          />
-        ) : (
-          <View style={styles.headerImgTextCont}>
-            <Text style={styles.headerImgText}>{userInfo.name[0]}</Text>
-          </View>
-        )}
+    <>
+      {userInfo.tarjetaDebito ? (
+        <View style={styles.container}>
+          <View style={styles.header}>
+            {userInfo.photo ? (
+              <Image
+                style={styles.headerImg}
+                source={{
+                  uri: userInfo.photo,
+                }}
+              />
+            ) : (
+              <View style={styles.headerImgTextCont}>
+                <Text style={styles.headerImgText}>{userInfo.name[0]}</Text>
+              </View>
+            )}
 
-        <Text style={styles.headerText}>Hola, {userInfo.name}</Text>
-        <TouchableOpacity
-          style={styles.congifIconContainer}
-          onPress={() => {
-            //navigate to ConfiguracionScreen
-          }}>
-          <Icon name="settings-outline" size={26} color={'white'} />
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity
-        style={styles.accountContainer}
-        onPress={() => {
-          navigation.navigate('CuentaDebitoFisica');
-        }}>
-        <View>
-          <Text style={styles.accountTitle}>Cuentas</Text>
-          <Text style={styles.accountNum}>● {cardNumber.split(' ')[3]}</Text>
-        </View>
-        <Text style={styles.accountBalance}>
-          ${userInfo.tarjetaDebito.saldo}
-        </Text>
-      </TouchableOpacity>
-      <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-        <TouchableOpacity
-          style={styles.optionTouchable}
-          onPress={() => {
-            navigation.navigate('TransferirA');
-          }}>
-          <View style={styles.optionView}>
-            <Icon name="swap-horizontal-outline" size={45} color={'white'} />
+            <Text style={styles.headerText}>Hola, {userInfo.name}</Text>
+            <TouchableOpacity
+              style={styles.congifIconContainer}
+              onPress={() => {
+                //navigate to ConfiguracionScreen
+              }}>
+              <Icon name="settings-outline" size={26} color={'white'} />
+            </TouchableOpacity>
           </View>
-          <Text style={styles.optionText}>Transferir</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.optionTouchable}
-          onPress={() => {
-            // navigation.navigate('CuentaDebitoFisica');
-            //navigate to Historial
-          }}>
-          <View style={styles.optionView}>
-            <Icon name="timer-outline" size={45} color={'white'} />
+          <TouchableOpacity
+            style={styles.accountContainer}
+            onPress={() => {
+              navigation.navigate('CuentaDebitoFisica');
+            }}>
+            <View>
+              <Text style={styles.accountTitle}>Cuentas</Text>
+              <Text style={styles.accountNum}>
+                ● {cardNumber.split(' ')[3]}
+              </Text>
+            </View>
+            <Text style={styles.accountBalance}>
+              ${userInfo.tarjetaDebito.saldo}
+            </Text>
+          </TouchableOpacity>
+          <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+            <TouchableOpacity
+              style={styles.optionTouchable}
+              onPress={() => {
+                navigation.navigate('TransferirA');
+              }}>
+              <View style={styles.optionView}>
+                <Icon
+                  name="swap-horizontal-outline"
+                  size={45}
+                  color={'white'}
+                />
+              </View>
+              <Text style={styles.optionText}>Transferir</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.optionTouchable}
+              onPress={() => {
+                // navigation.navigate('CuentaDebitoFisica');
+                //navigate to Historial
+              }}>
+              <View style={styles.optionView}>
+                <Icon name="timer-outline" size={45} color={'white'} />
+              </View>
+              <Text style={styles.optionText}>Historial</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.optionTouchable}
+              onPress={() => {
+                // navigation.navigate('CuentaDebitoFisica');
+                //navigate to Retirar
+              }}>
+              <View style={styles.optionView}>
+                <Icon name="cash-outline" size={45} color={'white'} />
+              </View>
+              <Text style={styles.optionText}>Retirar</Text>
+            </TouchableOpacity>
           </View>
-          <Text style={styles.optionText}>Historial</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.optionTouchable}
-          onPress={() => {
-            // navigation.navigate('CuentaDebitoFisica');
-            //navigate to Retirar
-          }}>
-          <View style={styles.optionView}>
-            <Icon name="cash-outline" size={45} color={'white'} />
-          </View>
-          <Text style={styles.optionText}>Retirar</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.cardView}>
-        <TouchableOpacity
-          style={styles.card}
-          onPress={() => {
-            navigation.navigate('CuentaDebitoFisica');
-          }}>
-          <View style={{flexDirection: 'row', gap: 15, alignItems: 'center'}}>
-            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-              <Icon
-                name={showPassword ? 'eye-outline' : 'eye-off-outline'}
-                size={30}
+          <View style={styles.cardView}>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() => {
+                navigation.navigate('CuentaDebitoFisica');
+              }}>
+              <View
+                style={{flexDirection: 'row', gap: 15, alignItems: 'center'}}>
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}>
+                  <Icon
+                    name={showPassword ? 'eye-outline' : 'eye-off-outline'}
+                    size={30}
+                    color={'white'}
+                  />
+                </TouchableOpacity>
+                <Text style={styles.cardNumber}>
+                  {showPassword
+                    ? cardNumber
+                    : '**** **** **** ' + cardNumber.split(' ')[3]}
+                </Text>
+              </View>
+              <NewIcon
+                name="cc-visa"
+                size={35}
                 color={'white'}
+                style={styles.visaIcon}
               />
             </TouchableOpacity>
-            <Text style={styles.cardNumber}>
-              {showPassword
-                ? cardNumber
-                : '**** **** **** ' + cardNumber.split(' ')[3]}
-            </Text>
           </View>
-          <NewIcon
-            name="cc-visa"
-            size={35}
-            color={'white'}
-            style={styles.visaIcon}
-          />
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          navigation.navigate('TarjetaDebito');
-        }}>
-        <Text style={styles.buttonText}>Mis Tarjetas</Text>
-      </TouchableOpacity>
-    </View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              navigation.navigate('TarjetaDebito');
+            }}>
+            <Text style={styles.buttonText}>Mis Tarjetas</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View>
+          <Text>Cargando</Text>
+        </View>
+      )}
+    </>
   );
 }
 

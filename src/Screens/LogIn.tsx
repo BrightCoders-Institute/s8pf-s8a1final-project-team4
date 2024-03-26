@@ -11,7 +11,7 @@ import {
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation, StackActions} from '@react-navigation/native';
-import {doc, setDoc, collection, addDoc, getDoc} from 'firebase/firestore';
+import {doc, setDoc, getDoc} from 'firebase/firestore';
 import {auth, db} from '../Firebase/firebaseconfig';
 import {UserContext} from '../../App';
 
@@ -22,6 +22,14 @@ function getRandomCardNumber() {
     cardNum.push(randomNum);
   }
   return cardNum.join('');
+}
+function getRandomCvv() {
+  const cvv = [];
+  for (let i = 0; i < 3; i++) {
+    const randomNum = Math.floor(Math.random() * 10);
+    cvv.push(randomNum);
+  }
+  return cvv.join('');
 }
 function getCurrentDate() {
   const currentDate = new Date();
@@ -42,15 +50,14 @@ export default function LogIn() {
   const {handleUserActive} = useContext(UserContext);
 
   useEffect(() => {
-    (async () => {
-      await AsyncStorage.removeItem('userID');
-    })();
+    GoogleSignin.configure({
+      webClientId:
+        '665755295591-jkg5kodjv4c1446utumh51fs89o7h24j.apps.googleusercontent.com',
+    });
   }, []);
 
   const handleEmailChange = (value: string) => {
-    // Expresión regular que verifica si el valor es un correo electrónico válido
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
     if (regex.test(value) || value === '') {
       setUser(value);
       setUserError(''); // Limpiar el mensaje de error
@@ -59,26 +66,26 @@ export default function LogIn() {
     }
   };
 
-  const handleLogInWithFirebase = () => {
-    console.log('user', user, password);
-    signInWithEmailAndPassword(auth, user, password)
-      .then(userCredential => {
-        const userUID = userCredential.user.uid;
-        AsyncStorage.setItem('userUID', userUID);
-        //asignar userUid a context
-        handleUserActive();
-        navigation.dispatch(StackActions.replace('Home'));
-      })
-      .catch(error => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        if (errorMessage === 'auth/user-not-found') {
-          Alert.alert('Este usuario no esta registrado');
-        } else {
-          console.log('error', errorCode, errorMessage);
-        }
-        setPasswordError('El correo o la Contraseña son incorrectos');
-      });
+  const handleLogInWithFirebase = async () => {
+    try {
+      const credential = await signInWithEmailAndPassword(auth, user, password);
+      const userUID = credential.user.uid;
+      AsyncStorage.setItem('userUID', userUID);
+      const userDocRef = doc(db, 'users', userUID);
+      const docSnapshot = await getDoc(userDocRef);
+      const userData = docSnapshot.data();
+      handleUserActive(userData);
+      navigation.navigate('Home');
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      if (errorMessage === 'auth/user-not-found') {
+        Alert.alert('Este usuario no esta registrado');
+      } else {
+        console.log('error', errorCode, errorMessage);
+      }
+      setPasswordError('El correo o la Contraseña son incorrectos');
+    }
   };
 
   const handleLogInWithGoogle = async () => {
@@ -89,11 +96,8 @@ export default function LogIn() {
       const result = await signInWithCredential(auth, googleCredential);
       const uid = result.user.uid;
       await AsyncStorage.setItem('userUID', uid);
-      // Crear documento en Firestore en la colección "users"
-      const userDocRef = doc(db, 'users', uid);
+      const userDocRef = doc(db, 'users', uid); // Crear documento en Firestore en la colección "users"
       const docSnap = await getDoc(userDocRef);
-      //// CHECK IF IT EXIST
-      console.log(docSnap.exists());
       if (!docSnap.exists()) {
         const userData = {
           name: result.user.displayName,
@@ -102,46 +106,37 @@ export default function LogIn() {
           tarjetaDebito: {
             number: getRandomCardNumber(),
             saldo: 10000,
-            tipo: 'debito',
+            cvv: getRandomCvv(),
             movimientos: [
               {
                 fecha: getCurrentDate(),
                 monto: 10000,
                 descripcion: 'Apertura de cuenta',
+                tipo: 'Transferencia bancaria',
               },
             ],
           },
           tarjetaCredito: {
             number: getRandomCardNumber(),
             saldo: 10000,
-            tipo: 'debito',
+            cvv: getRandomCvv(),
             movimientos: [
               {
                 fecha: getCurrentDate(),
                 monto: 10000,
                 descripcion: 'Apertura de cuenta',
+                tipo: 'Transferencia bancaria',
               },
             ],
           },
+          contactos: [],
         };
+        handleUserActive(userData);
         await setDoc(userDocRef, userData);
-        // Crear documento en la subcolección "cards" dentro de la colección "users"
-
-        // const cardsCollectionRef = collection(db, `users/${uid}/cards`);
-        // const cardData = {
-        //   number: getRandomCardNumber(),
-        //   saldo: 10000,
-        //   tipo: 'debito',
-        // };
-        // await addDoc(cardsCollectionRef, cardData);
-        // const cardData2 = {
-        //   number: getRandomCardNumber(),
-        //   saldo: 5000,
-        //   tipo: 'credito',
-        // };
-        // await addDoc(cardsCollectionRef, cardData2);
+      } else {
+        const userData = docSnap.data();
+        handleUserActive(userData);
       }
-      handleUserActive();
       navigation.navigate('Home');
     } catch (error) {
       console.error(error);
@@ -188,7 +183,7 @@ export default function LogIn() {
           <Text style={styles.text}>If you don't have an account,</Text>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Home');
+              navigation.navigate('SignUp');
             }}>
             <Text style={styles.register}>register</Text>
           </TouchableOpacity>

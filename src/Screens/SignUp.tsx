@@ -7,11 +7,10 @@ import {createUserWithEmailAndPassword} from 'firebase/auth';
 import {auth, db} from '../Firebase/firebaseconfig';
 import {GoogleAuthProvider, signInWithCredential} from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation, StackActions} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Icon2 from 'react-native-vector-icons/Feather';
 import {doc, setDoc, collection, addDoc, getDoc} from 'firebase/firestore';
 import {UserContext} from '../../App';
-
 
 function getRandomCardNumber() {
   const cardNum = [];
@@ -20,6 +19,14 @@ function getRandomCardNumber() {
     cardNum.push(randomNum);
   }
   return cardNum.join('');
+}
+function getRandomCvv() {
+  const cvv = [];
+  for (let i = 0; i < 3; i++) {
+    const randomNum = Math.floor(Math.random() * 10);
+    cvv.push(randomNum);
+  }
+  return cvv.join('');
 }
 
 function getCurrentDate() {
@@ -30,7 +37,6 @@ function getCurrentDate() {
   const formattedDate = `${year}-${month}-${day}`;
   return formattedDate;
 }
-
 
 export default function SignUp() {
   const [name, setName] = React.useState<string>('');
@@ -50,9 +56,7 @@ export default function SignUp() {
   }, []);
 
   const handleEmailChange = (value: string) => {
-    // Expresión regular que verifica si el valor es un correo electrónico válido
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
     if (regex.test(value) || value === '') {
       setEmail(value);
       setEmailError(''); // Limpiar el mensaje de error
@@ -62,9 +66,7 @@ export default function SignUp() {
   };
 
   const handlePasswordChange = (value: string) => {
-    // Expresión regular que verifica si el valor tiene al menos 8 caracteres, incluye al menos una letra mayúscula, una letra minúscula y un número
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-
     if (regex.test(value) || value === '') {
       setPassword(value);
       setPasswordError(''); // Limpiar el mensaje de error
@@ -76,9 +78,7 @@ export default function SignUp() {
   };
 
   const handleNameChange = (value: string) => {
-    // Expresión regular que verifica si el valor solo contiene letras y espacios
     const regex = /^[a-zA-Z\s]*$/;
-
     if (regex.test(value)) {
       setName(value);
       setNameError(''); // Limpiar el mensaje de error
@@ -115,8 +115,7 @@ export default function SignUp() {
           );
           const uid = userCredential.user.uid;
           await AsyncStorage.setItem('userUID', uid);
-          // Crear documento en Firestore en la colección "users"
-          const userDocRef = doc(db, 'users', uid);
+          const userDocRef = doc(db, 'users', uid); // Crear documento en Firestore en la colección "users"
           const userData = {
             email: email,
             name: name,
@@ -124,30 +123,33 @@ export default function SignUp() {
             tarjetaDebito: {
               number: getRandomCardNumber(),
               saldo: 10000,
-              tipo: 'debito',
+              cvv: getRandomCvv(),
               movimientos: [
                 {
                   fecha: getCurrentDate(),
                   monto: 10000,
                   descripcion: 'Apertura de cuenta',
+                  tipo: 'Transferencia bancaria',
                 },
               ],
             },
             tarjetaCredito: {
               number: getRandomCardNumber(),
               saldo: 10000,
-              tipo: 'debito',
+              cvv: getRandomCvv(),
               movimientos: [
                 {
                   fecha: getCurrentDate(),
                   monto: 10000,
                   descripcion: 'Apertura de cuenta',
+                  tipo: 'Transferencia bancaria',
                 },
               ],
             },
+            contactos: [],
           };
+          handleUserActive(userData);
           await setDoc(userDocRef, userData);
-          handleUserActive();
           navigation.navigate('Home');
         } catch (error) {
           const errorCode = error.code;
@@ -159,7 +161,6 @@ export default function SignUp() {
           }
           console.log('error', errorCode, errorMessage);
         }
-
       }
     }
   };
@@ -172,11 +173,8 @@ export default function SignUp() {
       const result = await signInWithCredential(auth, googleCredential);
       const uid = result.user.uid;
       await AsyncStorage.setItem('userUID', uid);
-      // Crear documento en Firestore en la colección "users"
-      const userDocRef = doc(db, 'users', uid);
+      const userDocRef = doc(db, 'users', uid); // Crear documento en Firestore en la colección "users"
       const docSnap = await getDoc(userDocRef);
-      //// CHECK IF IT EXIST
-      console.log(docSnap.exists());
       if (!docSnap.exists()) {
         const userData = {
           name: result.user.displayName,
@@ -185,46 +183,37 @@ export default function SignUp() {
           tarjetaDebito: {
             number: getRandomCardNumber(),
             saldo: 10000,
-            tipo: 'debito',
+            cvv: getRandomCvv(),
             movimientos: [
               {
                 fecha: getCurrentDate(),
                 monto: 10000,
                 descripcion: 'Apertura de cuenta',
+                tipo: 'Transferencia bancaria',
               },
             ],
           },
           tarjetaCredito: {
             number: getRandomCardNumber(),
             saldo: 10000,
-            tipo: 'debito',
+            cvv: getRandomCvv(),
             movimientos: [
               {
                 fecha: getCurrentDate(),
                 monto: 10000,
                 descripcion: 'Apertura de cuenta',
+                tipo: 'Transferencia bancaria',
               },
             ],
           },
+          contactos: [],
         };
+        handleUserActive(userData);
         await setDoc(userDocRef, userData);
-        // Crear documento en la subcolección "cards" dentro de la colección "users"
-
-        // const cardsCollectionRef = collection(db, `users/${uid}/cards`);
-        // const cardData = {
-        //   number: getRandomCardNumber(),
-        //   saldo: 10000,
-        //   tipo: 'debito',
-        // };
-        // await addDoc(cardsCollectionRef, cardData);
-        // const cardData2 = {
-        //   number: getRandomCardNumber(),
-        //   saldo: 5000,
-        //   tipo: 'credito',
-        // };
-        // await addDoc(cardsCollectionRef, cardData2);
+      } else {
+        const userData = docSnap.data();
+        handleUserActive(userData);
       }
-      handleUserActive();
       navigation.navigate('Home');
     } catch (error) {
       console.error(error);
