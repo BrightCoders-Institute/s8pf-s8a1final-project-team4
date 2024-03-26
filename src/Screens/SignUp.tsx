@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
 import {StyleSheet, View, Text, Alert, TouchableOpacity} from 'react-native';
 import FormButton from '../Components/Button';
 import FormInput from '../Components/Input';
@@ -10,6 +10,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation, StackActions} from '@react-navigation/native';
 import Icon2 from 'react-native-vector-icons/Feather';
 import {doc, setDoc, collection, addDoc, getDoc} from 'firebase/firestore';
+import {UserContext} from '../../App';
+
 
 function getRandomCardNumber() {
   const cardNum = [];
@@ -20,6 +22,16 @@ function getRandomCardNumber() {
   return cardNum.join('');
 }
 
+function getCurrentDate() {
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  const day = String(currentDate.getDate()).padStart(2, '0');
+  const formattedDate = `${year}-${month}-${day}`;
+  return formattedDate;
+}
+
+
 export default function SignUp() {
   const [name, setName] = React.useState<string>('');
   const [nameError, setNameError] = React.useState<string>('');
@@ -29,6 +41,13 @@ export default function SignUp() {
   const [passwordError, setPasswordError] = React.useState<string>('');
   const [rePasswordVisible, setRePasswordVisible] = React.useState(true);
   const navigation = useNavigation();
+  const {handleUserActive} = useContext(UserContext);
+
+  useEffect(() => {
+    (async () => {
+      await AsyncStorage.removeItem('userID');
+    })();
+  }, []);
 
   const handleEmailChange = (value: string) => {
     // Expresión regular que verifica si el valor es un correo electrónico válido
@@ -75,7 +94,7 @@ export default function SignUp() {
     });
   }, []);
 
-  const handleSignUpFirebase = () => {
+  const handleSignUpFirebase = async () => {
     if (name.length === 0 && email.length === 0 && password.length === 0) {
       setNameError('El nombre solo puede contener letras y espacios');
       setEmailError('El correo electrónico no es válido');
@@ -88,50 +107,59 @@ export default function SignUp() {
         emailError.length === 0 &&
         passwordError.length === 0
       ) {
-        return createUserWithEmailAndPassword(auth, email, password)
-          .then(userCredential => {
-            const user = userCredential.user;
-            const uid = user.uid;
-            // Crear documento en Firestore en la colección "users"
-            const userDocRef = doc(db, 'users', uid);
-            const userData = {
-              email: email,
-              name: name,
-            };
-            return setDoc(userDocRef, userData).then(() => {
-              // Crear documento en la subcolección "cards" dentro de la colección "users"
-              const cardsCollectionRef = collection(db, `users/${uid}/cards`);
-              const cardData = {
-                number: getRandomCardNumber(),
-                saldo: 10000,
-                tipo: 'debito',
-              };
-              const cardData2 = {
-                number: getRandomCardNumber(),
-                saldo: 5000,
-                tipo: 'credito',
-              };
-              return addDoc(cardsCollectionRef, cardData)
-                .then(() => {
-                  // Añadir la segunda tarjeta
-                  return addDoc(cardsCollectionRef, cardData2);
-                })
-                .then(() => {
-                  navigation.dispatch(StackActions.replace('Home'));
-                  console.log('Dos tarjetas creadas exitosamente.');
-                });
-            });
-          })
-          .catch(error => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            if (errorMessage === 'auth/email-already-in-use') {
-              setEmailError('Este correo ya esta en uso');
-            } else {
-              setEmailError('Este correo ya esta en uso');
-            }
-            console.log('error', errorCode, errorMessage);
-          });
+        try {
+          const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password,
+          );
+          const uid = userCredential.user.uid;
+          await AsyncStorage.setItem('userUID', uid);
+          // Crear documento en Firestore en la colección "users"
+          const userDocRef = doc(db, 'users', uid);
+          const userData = {
+            email: email,
+            name: name,
+            password: password,
+            tarjetaDebito: {
+              number: getRandomCardNumber(),
+              saldo: 10000,
+              tipo: 'debito',
+              movimientos: [
+                {
+                  fecha: getCurrentDate(),
+                  monto: 10000,
+                  descripcion: 'Apertura de cuenta',
+                },
+              ],
+            },
+            tarjetaCredito: {
+              number: getRandomCardNumber(),
+              saldo: 10000,
+              tipo: 'debito',
+              movimientos: [
+                {
+                  fecha: getCurrentDate(),
+                  monto: 10000,
+                  descripcion: 'Apertura de cuenta',
+                },
+              ],
+            },
+          };
+          await setDoc(userDocRef, userData);
+          handleUserActive();
+          navigation.navigate('Home');
+        } catch (error) {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          if (errorMessage === 'auth/email-already-in-use') {
+            setEmailError('Este correo ya esta en uso');
+          } else {
+            setEmailError('Este correo ya esta en uso');
+          }
+          console.log('error', errorCode, errorMessage);
+        }
+
       }
     }
   };
@@ -154,23 +182,49 @@ export default function SignUp() {
           name: result.user.displayName,
           email: result.user.email,
           photo: result.user.photoURL,
+          tarjetaDebito: {
+            number: getRandomCardNumber(),
+            saldo: 10000,
+            tipo: 'debito',
+            movimientos: [
+              {
+                fecha: getCurrentDate(),
+                monto: 10000,
+                descripcion: 'Apertura de cuenta',
+              },
+            ],
+          },
+          tarjetaCredito: {
+            number: getRandomCardNumber(),
+            saldo: 10000,
+            tipo: 'debito',
+            movimientos: [
+              {
+                fecha: getCurrentDate(),
+                monto: 10000,
+                descripcion: 'Apertura de cuenta',
+              },
+            ],
+          },
         };
         await setDoc(userDocRef, userData);
         // Crear documento en la subcolección "cards" dentro de la colección "users"
-        const cardsCollectionRef = collection(db, `users/${uid}/cards`);
-        const cardData = {
-          number: getRandomCardNumber(),
-          saldo: 10000,
-          tipo: 'debito',
-        };
-        await addDoc(cardsCollectionRef, cardData);
-        const cardData2 = {
-          number: getRandomCardNumber(),
-          saldo: 5000,
-          tipo: 'credito',
-        };
-        await addDoc(cardsCollectionRef, cardData2);
+
+        // const cardsCollectionRef = collection(db, `users/${uid}/cards`);
+        // const cardData = {
+        //   number: getRandomCardNumber(),
+        //   saldo: 10000,
+        //   tipo: 'debito',
+        // };
+        // await addDoc(cardsCollectionRef, cardData);
+        // const cardData2 = {
+        //   number: getRandomCardNumber(),
+        //   saldo: 5000,
+        //   tipo: 'credito',
+        // };
+        // await addDoc(cardsCollectionRef, cardData2);
       }
+      handleUserActive();
       navigation.navigate('Home');
     } catch (error) {
       console.error(error);

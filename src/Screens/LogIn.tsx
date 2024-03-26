@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
 import {StyleSheet, View, Text, Alert, TouchableOpacity} from 'react-native';
 import FormButton from '../Components/Button';
 import FormInput from '../Components/Input';
@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation, StackActions} from '@react-navigation/native';
 import {doc, setDoc, collection, addDoc, getDoc} from 'firebase/firestore';
 import {auth, db} from '../Firebase/firebaseconfig';
+import {UserContext} from '../../App';
 
 function getRandomCardNumber() {
   const cardNum = [];
@@ -22,6 +23,14 @@ function getRandomCardNumber() {
   }
   return cardNum.join('');
 }
+function getCurrentDate() {
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  const day = String(currentDate.getDate()).padStart(2, '0');
+  const formattedDate = `${year}-${month}-${day}`;
+  return formattedDate;
+}
 
 export default function LogIn() {
   const [user, setUser] = React.useState('');
@@ -30,12 +39,12 @@ export default function LogIn() {
   const [passwordError, setPasswordError] = React.useState<string>('');
   const [rePasswordVisible, setRePasswordVisible] = React.useState(true);
   const navigation = useNavigation();
+  const {handleUserActive} = useContext(UserContext);
 
   useEffect(() => {
-    GoogleSignin.configure({
-      webClientId:
-        '665755295591-jkg5kodjv4c1446utumh51fs89o7h24j.apps.googleusercontent.com',
-    });
+    (async () => {
+      await AsyncStorage.removeItem('userID');
+    })();
   }, []);
 
   const handleEmailChange = (value: string) => {
@@ -54,8 +63,10 @@ export default function LogIn() {
     console.log('user', user, password);
     signInWithEmailAndPassword(auth, user, password)
       .then(userCredential => {
-        const user = userCredential.user;
-        AsyncStorage.setItem('userID', user.uid);
+        const userUID = userCredential.user.uid;
+        AsyncStorage.setItem('userUID', userUID);
+        //asignar userUid a context
+        handleUserActive();
         navigation.dispatch(StackActions.replace('Home'));
       })
       .catch(error => {
@@ -88,23 +99,49 @@ export default function LogIn() {
           name: result.user.displayName,
           email: result.user.email,
           photo: result.user.photoURL,
+          tarjetaDebito: {
+            number: getRandomCardNumber(),
+            saldo: 10000,
+            tipo: 'debito',
+            movimientos: [
+              {
+                fecha: getCurrentDate(),
+                monto: 10000,
+                descripcion: 'Apertura de cuenta',
+              },
+            ],
+          },
+          tarjetaCredito: {
+            number: getRandomCardNumber(),
+            saldo: 10000,
+            tipo: 'debito',
+            movimientos: [
+              {
+                fecha: getCurrentDate(),
+                monto: 10000,
+                descripcion: 'Apertura de cuenta',
+              },
+            ],
+          },
         };
         await setDoc(userDocRef, userData);
         // Crear documento en la subcolección "cards" dentro de la colección "users"
-        const cardsCollectionRef = collection(db, `users/${uid}/cards`);
-        const cardData = {
-          number: getRandomCardNumber(),
-          saldo: 10000,
-          tipo: 'debito',
-        };
-        await addDoc(cardsCollectionRef, cardData);
-        const cardData2 = {
-          number: getRandomCardNumber(),
-          saldo: 5000,
-          tipo: 'credito',
-        };
-        await addDoc(cardsCollectionRef, cardData2);
+
+        // const cardsCollectionRef = collection(db, `users/${uid}/cards`);
+        // const cardData = {
+        //   number: getRandomCardNumber(),
+        //   saldo: 10000,
+        //   tipo: 'debito',
+        // };
+        // await addDoc(cardsCollectionRef, cardData);
+        // const cardData2 = {
+        //   number: getRandomCardNumber(),
+        //   saldo: 5000,
+        //   tipo: 'credito',
+        // };
+        // await addDoc(cardsCollectionRef, cardData2);
       }
+      handleUserActive();
       navigation.navigate('Home');
     } catch (error) {
       console.error(error);
@@ -151,7 +188,7 @@ export default function LogIn() {
           <Text style={styles.text}>If you don't have an account,</Text>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('SignUp');
+              navigation.navigate('Home');
             }}>
             <Text style={styles.register}>register</Text>
           </TouchableOpacity>
