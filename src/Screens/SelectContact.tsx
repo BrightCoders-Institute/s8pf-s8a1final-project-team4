@@ -1,31 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Touchable,
-  TouchableOpacity,
-  ScrollView,
-  FlatList,
-} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import Contacto from '../Components/Contacto';
 import {useNavigation} from '@react-navigation/native';
-import {getContact} from '../Firebase/db';
+import {UserContext} from '../../App';
 
 export default function SelectContact() {
+  const {userInfo} = useContext(UserContext);
   const navigation = useNavigation();
-  const [contact, setContact] = useState([]);
 
-  const getData = async () => {
-    let arr = await getContact();
-    console.log('COntacts', arr);
-    setContact(arr);
-  };
+  const contacts = userInfo.contactos;
 
-  useEffect(() => {
-    getData();
-  }, []);
   return (
     <View style={styles.container}>
       <Text style={styles.Titledestino}>Destinatario</Text>
@@ -40,14 +25,14 @@ export default function SelectContact() {
         </View>
       </TouchableOpacity>
       <Text style={styles.Titleguardado}>Guardados</Text>
-      {contact.length === 0 && <Text>Cagando...</Text>}
+
       <FlatList
-        data={contact}
+        data={contacts}
         renderItem={item => (
           <Contacto
-            nombre={item.item.name}
-            numero={item.item.number}
-            icono="cc-visa"
+            nombre={item.item.nombre}
+            numero={item.item.tarjeta}
+            icono="cc-mastercard"
           />
         )}
       />

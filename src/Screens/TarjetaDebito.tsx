@@ -2,10 +2,17 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
+import {UserContext} from '../../App';
+import {useContext} from 'react';
 
 export default function TarjetaDebito() {
   const navigation = useNavigation();
-  const cardNumber = '1234 1234 1234 4545';
+  const {userInfo} = useContext(UserContext);
+  const cardNumber = userInfo.tarjetaDebito.number.replace(
+    /\d{4}(?=.)/g,
+    '$& ',
+  );
+  const cvv = userInfo.tarjetaDebito.cvv;
 
   return (
     <View style={styles.container}>
@@ -38,29 +45,6 @@ export default function TarjetaDebito() {
             navigation.navigate('CuentaDebitoFisica');
           }}>
           <Text style={styles.cardTitle}>Fisica</Text>
-          <View
-            style={{
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-            }}>
-            <View style={{flexDirection: 'row', gap: 20, alignItems: 'center'}}>
-              <Icon name="card-outline" size={45} color={'#4A52FF'} />
-              <View style={{gap: 20}}>
-                <Text style={styles.cardTitle}>Debito</Text>
-                <Text style={styles.cardNumber}>**** **** **** 4545</Text>
-              </View>
-            </View>
-            <Icon name="chevron-forward-outline" size={45} color={'#4A52FF'} />
-          </View>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.cardContainer}>
-        <TouchableOpacity
-          style={styles.card}
-          onPress={() => {
-            // navigation.navigate('CuentaDebitoVirtual');
-          }}>
-          <Text style={styles.cardTitle}>Virtual</Text>
           <View
             style={{
               justifyContent: 'space-between',
@@ -123,9 +107,11 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     paddingHorizontal: 20,
-    paddingTop: 50,
+    paddingVertical: 50,
     borderTopColor: '#4A52FF',
     borderTopWidth: 3,
+    borderBottomColor: '#4A52FF',
+    borderBottomWidth: 3,
     justifyContent: 'center',
   },
   card: {

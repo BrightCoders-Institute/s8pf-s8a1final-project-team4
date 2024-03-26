@@ -34,7 +34,7 @@ export default function Home() {
         <TouchableOpacity
           style={styles.congifIconContainer}
           onPress={() => {
-            //navigate to ConfiguracionScreen
+            navigation.navigate('Configuracion');
           }}>
           <Icon name="settings-outline" size={26} color={'white'} />
         </TouchableOpacity>
@@ -49,7 +49,7 @@ export default function Home() {
           <Text style={styles.accountNum}>● {cardNumber.split(' ')[3]}</Text>
         </View>
         <Text style={styles.accountBalance}>
-          ${userInfo.tarjetaDebito.saldo}
+          ${userInfo.tarjetaDebito.saldo.toLocaleString('es-ES')}
         </Text>
       </TouchableOpacity>
       <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>

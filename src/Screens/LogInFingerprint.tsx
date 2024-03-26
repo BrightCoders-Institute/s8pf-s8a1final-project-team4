@@ -7,10 +7,10 @@ import {useNavigation} from '@react-navigation/native';
 import {GoogleAuthProvider, signInWithCredential} from 'firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {doc, setDoc, collection, addDoc, getDoc} from 'firebase/firestore';
+import {doc, setDoc, getDoc} from 'firebase/firestore';
 import {auth, db} from '../Firebase/firebaseconfig';
-import {useEffect} from 'react';
-
+import {useEffect, useContext} from 'react';
+import {UserContext} from '../../App';
 
 function getRandomCardNumber() {
   const cardNum = [];
@@ -20,13 +20,32 @@ function getRandomCardNumber() {
   }
   return cardNum.join('');
 }
+function getRandomCvv() {
+  const cvv = [];
+  for (let i = 0; i < 3; i++) {
+    const randomNum = Math.floor(Math.random() * 10);
+    cvv.push(randomNum);
+  }
+  return cvv.join('');
+}
+function getCurrentDate() {
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  const day = String(currentDate.getDate()).padStart(2, '0');
+  const formattedDate = `${year}-${month}-${day}`;
+  return formattedDate;
+}
 
 export default function LogInFingerprint() {
   const navigation = useNavigation();
+  const {handleUserActive} = useContext(UserContext);
+
   useEffect(() => {
-    (async () => {
-      await AsyncStorage.removeItem('userID');
-    })();
+    GoogleSignin.configure({
+      webClientId:
+        '665755295591-jkg5kodjv4c1446utumh51fs89o7h24j.apps.googleusercontent.com',
+    });
   }, []);
 
   const handleLogInWithGoogle = async () => {
@@ -37,74 +56,46 @@ export default function LogInFingerprint() {
       const result = await signInWithCredential(auth, googleCredential);
       const uid = result.user.uid;
       await AsyncStorage.setItem('userUID', uid);
-      // Crear documento en Firestore en la colección "users"
-      const userDocRef = doc(db, 'users', uid);
+      const userDocRef = doc(db, 'users', uid); // Crear documento en Firestore en la colección "users"
       const docSnap = await getDoc(userDocRef);
-      //// CHECK IF EXIST
-      console.log(docSnap.exists());
       if (!docSnap.exists()) {
         const userData = {
           name: result.user.displayName,
           email: result.user.email,
           photo: result.user.photoURL,
+          tarjetaDebito: {
+            number: getRandomCardNumber(),
+            saldo: 10000,
+            cvv: getRandomCvv(),
+            movimientos: [
+              {
+                fecha: getCurrentDate(),
+                monto: 10000,
+                descripcion: 'Apertura de cuenta',
+                tipo: 'Transferencia bancaria',
+              },
+            ],
+          },
+          tarjetaCredito: {
+            number: getRandomCardNumber(),
+            saldo: 10000,
+            cvv: getRandomCvv(),
+            movimientos: [
+              {
+                fecha: getCurrentDate(),
+                monto: 10000,
+                descripcion: 'Apertura de cuenta',
+                tipo: 'Transferencia bancaria',
+              },
+            ],
+          },
+          contactos: [],
         };
+        handleUserActive(userData);
         await setDoc(userDocRef, userData);
-        // Crear documento en la subcolección "cards" dentro de la colección "users"
-        const cardsCollectionRef = collection(db, `users/${uid}/cards`);
-        const cardData = {
-          number: getRandomCardNumber(),
-          saldo: 10000,
-          tipo: 'debito',
-        };
-        await addDoc(cardsCollectionRef, cardData);
-        const cardData2 = {
-          number: getRandomCardNumber(),
-          saldo: 5000,
-          tipo: 'credito',
-        };
-        await addDoc(cardsCollectionRef, cardData2);
-      }
-      navigation.navigate('Home');
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Ocurrio un error al registrarse');
-    }
-  };
-
-  const handleLogInWithGoogle = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const {idToken} = await GoogleSignin.signIn();
-      const googleCredential = GoogleAuthProvider.credential(idToken);
-      const result = await signInWithCredential(auth, googleCredential);
-      const uid = result.user.uid;
-      await AsyncStorage.setItem('userUID', uid);
-      // Crear documento en Firestore en la colección "users"
-      const userDocRef = doc(db, 'users', uid);
-      const docSnap = await getDoc(userDocRef);
-      //// CHECK IF IT EXIST
-      console.log(docSnap.exists());
-      if (!docSnap.exists()) {
-        const userData = {
-          name: result.user.displayName,
-          email: result.user.email,
-          photo: result.user.photoURL,
-        };
-        await setDoc(userDocRef, userData);
-        // Crear documento en la subcolección "cards" dentro de la colección "users"
-        const cardsCollectionRef = collection(db, `users/${uid}/cards`);
-        const cardData = {
-          number: getRandomCardNumber(),
-          saldo: 10000,
-          tipo: 'debito',
-        };
-        await addDoc(cardsCollectionRef, cardData);
-        const cardData2 = {
-          number: getRandomCardNumber(),
-          saldo: 5000,
-          tipo: 'credito',
-        };
-        await addDoc(cardsCollectionRef, cardData2);
+      } else {
+        const userData = docSnap.data();
+        handleUserActive(userData);
       }
       navigation.navigate('Home');
     } catch (error) {
@@ -145,7 +136,7 @@ export default function LogInFingerprint() {
         <View style={styles.align}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Home');
+              navigation.navigate('LogIn');
             }}
             style={{paddingTop: 20}}>
             <Icon name="fingerprint" size={160} color={'#4A52FF'} />

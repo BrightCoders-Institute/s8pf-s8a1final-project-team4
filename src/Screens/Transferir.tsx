@@ -1,13 +1,14 @@
 import {View, Text, StyleSheet, Alert} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import Contacto from '../Components/Contacto';
 import InputDestinatario from '../Components/InputDestinatario';
 import FormButton from '../Components/Button';
 import {useNavigation} from '@react-navigation/native';
+import {UserContext} from '../../App';
 
 export default function Transferir({route}: any) {
+  const {userInfo} = useContext(UserContext);
   const navigation = useNavigation();
-  const currentUser = 'Yahir Cortes';
   const transferTo = route.params.name;
   const card_number = route.params.card_number;
   const [amount, setAmount] = useState<string>();
@@ -24,15 +25,14 @@ export default function Transferir({route}: any) {
       <Contacto
         nombre={transferTo}
         numero={card_number}
-        icono="cc-visa"
-        imagen="../../img/Iconperfil.png"
+        icono="cc-mastercard"
       />
       <Text style={styles.Text}>Desde tu cuenta: </Text>
       <Contacto
-        nombre={currentUser}
-        numero={1234}
-        icono="cc-mastercard"
-        imagen="../../img/Iconperfil.png"
+        nombre={userInfo.name.split(' ')[0]}
+        numero={userInfo.tarjetaDebito.number}
+        icono="cc-visa"
+        imagen={userInfo.photo ? userInfo.photo : ''}
       />
       <View style={styles.containerdos}>
         <InputDestinatario
@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginTop: 50,
+    color: 'darkgrey',
   },
   containerdos: {
     marginTop: 50,
