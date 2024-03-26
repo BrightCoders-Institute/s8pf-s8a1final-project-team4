@@ -58,7 +58,7 @@ export default function Config() {
           }}>
           <View style={style.Viewcontainer}>
             <IconC name="return-down-back" size={45} color="blue" />
-            <Text style={style.TextView}> Cierra sesion</Text>
+            <Text style={style.TextView}>Cerrar sesion</Text>
           </View>
         </TouchableOpacity>
       </View>

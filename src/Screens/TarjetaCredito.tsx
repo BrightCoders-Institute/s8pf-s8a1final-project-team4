@@ -64,27 +64,6 @@ export default function TarjetaCredito() {
           </View>
         </TouchableOpacity>
       </View>
-      <View style={styles.cardContainer}>
-        <TouchableOpacity
-          style={styles.card}
-          onPress={() => console.log('touch')}>
-          <Text style={styles.cardTitle}>Virtual</Text>
-          <View
-            style={{
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-            }}>
-            <View style={{flexDirection: 'row', gap: 20, alignItems: 'center'}}>
-              <Icon name="card-outline" size={45} color={'#4A52FF'} />
-              <View style={{gap: 20}}>
-                <Text style={styles.cardTitle}>Credito</Text>
-                <Text style={styles.cardNumber}>**** **** **** 4545</Text>
-              </View>
-            </View>
-            <Icon name="chevron-forward-outline" size={45} color={'#4A52FF'} />
-          </View>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 }
@@ -129,9 +108,11 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     paddingHorizontal: 20,
-    paddingTop: 50,
+    paddingVertical: 50,
     borderTopColor: '#4A52FF',
     borderTopWidth: 3,
+    borderBottomColor: '#4A52FF',
+    borderBottomWidth: 3,
     justifyContent: 'center',
   },
   card: {
