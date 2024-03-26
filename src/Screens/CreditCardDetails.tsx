@@ -3,6 +3,7 @@ import {View, Text, StyleSheet} from 'react-native';
 import NewIcon from 'react-native-vector-icons/FontAwesome5';
 import {UserContext} from '../../App';
 import {useContext} from 'react';
+import MoveCard from '../Components/MoveCard';
 
 export default function CreditCardDetails() {
   const {userInfo} = useContext(UserContext);
@@ -27,26 +28,15 @@ export default function CreditCardDetails() {
       <View>
         <Text style={styles.lastMove}>Ultimos Movimientos:</Text>
       </View>
-      <View>
-        <Text style={styles.date}>8 marzo 2024</Text>
-        <View style={styles.moveContainer}>
-          <View>
-            <Text style={styles.payName}>Pago Cuenta asdf</Text>
-            <Text style={styles.payDesc}>Transferencia bancaria</Text>
-          </View>
-          <Text style={styles.payNum}>$500</Text>
-        </View>
-      </View>
-      <View>
-        <Text style={styles.date}>9 marzo 2024</Text>
-        <View style={styles.moveContainer}>
-          <View>
-            <Text style={styles.payName}>Pago Cuenta asdf</Text>
-            <Text style={styles.payDesc}>Transferencia bancaria</Text>
-          </View>
-          <Text style={styles.payNum}>$-500</Text>
-        </View>
-      </View>
+      {userInfo.tarjetaDebito.movimientos.map((move, index) => (
+        <MoveCard
+          key={index}
+          date={move.fecha}
+          desc={move.descripcion}
+          monto={move.monto}
+          tipo={move.tipo}
+        />
+      ))}
     </View>
   );
 }
@@ -111,30 +101,5 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     fontSize: 19,
     letterSpacing: 1,
-  },
-  //styles for movements (Component)
-  date: {
-    color: 'black',
-    fontWeight: '900',
-    fontStyle: 'italic',
-    fontSize: 15,
-    paddingBottom: 10,
-  },
-  moveContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  payName: {
-    color: '#00079A',
-    fontStyle: 'italic',
-    fontSize: 18,
-  },
-  payDesc: {
-    color: 'grey',
-    fontSize: 15,
-  },
-  payNum: {
-    color: '#4A52FF',
-    fontSize: 20,
   },
 });

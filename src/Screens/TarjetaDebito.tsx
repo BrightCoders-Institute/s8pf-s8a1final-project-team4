@@ -12,7 +12,7 @@ export default function TarjetaDebito() {
     /\d{4}(?=.)/g,
     '$& ',
   );
-  const saldo = userInfo.tarjetaDebito.saldo;
+  const cvv = userInfo.tarjetaDebito.cvv;
 
   return (
     <View style={styles.container}>
