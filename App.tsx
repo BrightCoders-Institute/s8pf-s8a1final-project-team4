@@ -22,25 +22,6 @@ function App() {
     setUserInfo(user);
   }
 
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       const userUid = await AsyncStorage.getItem('userUID');
-  //       const userDocRef = doc(db, 'users', userUid);
-  //       const docSnapshot = await getDoc(userDocRef);
-  //       if (docSnapshot.exists()) {
-  //         const userData = docSnapshot.data();
-  //         console.log(userData);
-  //         setUserInfo(userData);
-  //       } else {
-  //         console.log('no se puedo recuperar la informacion del usuario');
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   })();
-  // }, [userActive]);
-
   return (
     <UserContext.Provider value={{userInfo, handleUserActive}}>
       <NavigationContainer>
