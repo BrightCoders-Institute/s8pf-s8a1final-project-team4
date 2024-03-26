@@ -1,17 +1,20 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import NewIcon from 'react-native-vector-icons/FontAwesome5';
 import {UserContext} from '../../App';
-import {useContext} from 'react';
+import {useContext, useState} from 'react';
 import MoveCard from '../Components/MoveCard';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default function DebitCardDetails() {
+  const [showCvv, setShowCvv] = useState(false);
   const {userInfo} = useContext(UserContext);
   const cardNumber = userInfo.tarjetaDebito.number.replace(
     /\d{4}(?=.)/g,
     '$& ',
   );
   const saldo = userInfo.tarjetaDebito.saldo;
+  const cvv = userInfo.tarjetaDebito.cvv;
 
   return (
     <View style={styles.container}>
@@ -22,9 +25,28 @@ export default function DebitCardDetails() {
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.cardNumber}>{cardNumber}</Text>
-        <NewIcon name="cc-visa" size={35} color={'white'} />
+        <View style={styles.cardView}>
+          <Text style={styles.cardNumber}>{cardNumber}</Text>
+          <NewIcon name="cc-visa" size={35} color={'white'} />
+        </View>
+        <View
+          style={{
+            alignSelf: 'flex-end',
+            gap: 20,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <Text style={styles.cvv}>{showCvv ? cvv : '***'}</Text>
+          <TouchableOpacity onPress={() => setShowCvv(!showCvv)}>
+            <Icon
+              name={showCvv ? 'eye-outline' : 'eye-off-outline'}
+              size={32}
+              color={'white'}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
+
       <View>
         <Text style={styles.lastMove}>Ultimos Movimientos:</Text>
       </View>
@@ -81,20 +103,36 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#00079A',
     borderRadius: 4,
-    padding: 15,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    padding: 30,
     paddingVertical: 20,
     shadowColor: 'black',
-    shadowOffset: {width: 0, height: 100},
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 15,
+    gap: 15,
+  },
+  cardView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    gap: 20,
   },
   cardNumber: {
     color: 'white',
     fontSize: 20,
+    borderBottomColor: 'white',
+    borderBottomWidth: 3,
+    padding: 3,
+  },
+  cvv: {
+    fontSize: 18,
+    letterSpacing: 3,
+    fontStyle: 'italic',
+    backgroundColor: 'rgba(60, 105, 255, .5)',
+    borderRadius: 2,
+    color: 'white',
+    padding: 5,
+    fontWeight: '900',
   },
   lastMove: {
     color: '#4A52FF',
