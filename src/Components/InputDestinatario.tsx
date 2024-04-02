@@ -41,10 +41,12 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderRadius: 5,
     marginVertical: 15,
+    paddingVertical: 2,
   },
   InputSty: {
+    color: 'black',
     flex: 1,
-    fontSize: 15,
+    fontSize: 16,
     padding: 10,
     fontWeight: 'bold',
   },

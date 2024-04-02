@@ -67,10 +67,12 @@ export default function RetiroDetalles({route}) {
             <Text style={styles.details}>{getCurrentDate()}</Text>
             <Text style={styles.details}>{getCurrentHour()} h</Text>
           </View>
-          {concepto !== 'Retiro sin tarjeta' && (
-            <Text style={styles.accountBalance}>{concepto}</Text>
-          )}
-          <Text style={styles.accountBalance}>${importe}</Text>
+          <View style={{gap: 10, alignItems: 'center'}}>
+            {concepto !== 'Retiro sin tarjeta' && (
+              <Text style={styles.accountConcept}>{concepto}</Text>
+            )}
+            <Text style={styles.accountBalance}>${importe}</Text>
+          </View>
           <Text>Este retiro no genera comision</Text>
         </View>
         <View>
@@ -129,6 +131,11 @@ const styles = StyleSheet.create({
   accountBalance: {
     color: 'white',
     fontSize: 28,
+    fontWeight: '900',
+  },
+  accountConcept: {
+    color: 'white',
+    fontSize: 24,
     fontWeight: '900',
   },
   details: {

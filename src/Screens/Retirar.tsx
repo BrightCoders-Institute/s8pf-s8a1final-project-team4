@@ -10,6 +10,7 @@ import {useContext, useState} from 'react';
 
 export default function Retirar() {
   const [modalVisible, setModalVisible] = useState(false);
+  const [showError, setShowError] = useState('');
   const [importe, setImporte] = useState('');
   const [concepto, setConcepto] = useState('');
   const navigation = useNavigation();
@@ -40,8 +41,16 @@ export default function Retirar() {
         <InputDestinatario
           placeholder="$"
           tipo="numeric"
-          onChange={val => setImporte(val)}
+          onChange={val => {
+            if (parseInt(val, 10) < 50 || parseInt(val, 10) % 50 !== 0) {
+              setShowError('Solo multiplos de 50');
+            } else {
+              setShowError('');
+            }
+            setImporte(val);
+          }}
         />
+        {showError !== '' && <Text style={styles.error}>{showError}</Text>}
       </View>
       <View style={styles.inputView}>
         <Text style={styles.inputTitle}>CONCEPTO</Text>
@@ -55,6 +64,8 @@ export default function Retirar() {
         fn={() => {
           if (importe !== '') {
             setModalVisible(true);
+          } else {
+            setShowError('Ingresa una cantidad');
           }
         }}
       />
@@ -87,6 +98,7 @@ const styles = StyleSheet.create({
     padding: 20,
     gap: 50,
     borderBottomRightRadius: 150,
+    // paddingBottom: 20,
   },
   title: {
     color: 'white',
@@ -127,5 +139,9 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '900',
     fontSize: 15,
+  },
+  error: {
+    color: 'red',
+    alignSelf: 'center',
   },
 });
