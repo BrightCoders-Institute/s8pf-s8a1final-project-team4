@@ -50,7 +50,15 @@ export default function Retirar() {
           onChange={val => setConcepto(val)}
         />
       </View>
-      <Button text="Continuar" fn={() => setModalVisible(true)} />
+      <Button
+        text="Continuar"
+        fn={() => {
+          if (importe !== '') {
+            setModalVisible(true);
+          }
+        }}
+      />
+
       <ConfirmationModal
         visible={modalVisible}
         message={'¿Estas seguro de realizar el retiro?'}

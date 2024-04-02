@@ -18,8 +18,8 @@ export default function ConfirmationModal({
         <View style={styles.container}>
           <Text style={styles.message}>{message}</Text>
           <View style={styles.buttonView}>
-            <Button text="Cancelar" fn={onCancel} />
             <Button text="Confirmar" fn={onConfirm} />
+            <Button text="Cancelar" fn={onCancel} />
           </View>
         </View>
       </View>

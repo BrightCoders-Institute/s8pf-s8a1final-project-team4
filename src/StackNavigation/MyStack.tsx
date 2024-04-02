@@ -15,6 +15,7 @@ import Transferir from '../Screens/Transferir';
 import AddContact from '../Screens/AddContact';
 import Config from '../Screens/Config';
 import Retirar from '../Screens/Retirar';
+import RetiroDetalles from '../Screens/RetiroDetalles';
 
 const Stack = createNativeStackNavigator();
 
@@ -124,8 +125,14 @@ export default function MyStack() {
         component={Retirar}
         options={{
           title: 'Retiro sin tarjeta',
-          // headerTitleStyle: styles.title,
-          // headerStyle: styles.background,
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="RetiroDetalles"
+        component={RetiroDetalles}
+        options={{
+          title: 'Retiro sin tarjeta',
           headerShown: false,
         }}
       />
