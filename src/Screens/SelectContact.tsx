@@ -1,16 +1,24 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect,useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import Contacto from '../Components/Contacto';
 import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
+import { getContact } from '../Firebase/db';
 
 export default function SelectContact() {
   const {userInfo} = useContext(UserContext);
+  const [contacs, setContacts] = useState([])
   const navigation = useNavigation();
-
-  const contacts = userInfo.contactos;
-
+  useEffect(() => {
+    handleGetContacts()
+   },[])
+  
+  const handleGetContacts = async () =>{
+     let data = await getContact()
+      setContacts(data)
+  } 
+  
   return (
     <View style={styles.container}>
       <Text style={styles.Titledestino}>Destinatario</Text>
@@ -25,17 +33,20 @@ export default function SelectContact() {
         </View>
       </TouchableOpacity>
       <Text style={styles.Titleguardado}>Guardados</Text>
-
-      <FlatList
-        data={contacts}
-        renderItem={item => (
-          <Contacto
-            nombre={item.item.nombre}
-            numero={item.item.tarjeta}
-            icono="cc-mastercard"
-          />
-        )}
-      />
+        
+           <FlatList
+          data={contacs}
+          renderItem={item => (
+            
+            <Contacto
+              nombre={item.item.nombre}
+              numero={item.item.numero}
+              icono="cc-mastercard"
+            />
+          )}
+        />
+        
+      
     </View>
   );
 }

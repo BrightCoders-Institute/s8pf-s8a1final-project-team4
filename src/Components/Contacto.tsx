@@ -7,12 +7,12 @@ type Props = {
   nombre: string;
   numero: number;
   icono: string;
-  imagen: string;
+  imagen?: string;
 };
 
 export default function Contacto({nombre, numero, icono, imagen}: Props) {
   const navigation = useNavigation();
-
+  console.log("nombre", nombre)
   return (
     <TouchableOpacity
       style={styles.container}
