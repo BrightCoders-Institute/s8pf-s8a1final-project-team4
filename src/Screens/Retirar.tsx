@@ -10,28 +10,33 @@ import {useContext} from 'react';
 export default function Retirar() {
   const navigation = useNavigation();
   const {userInfo} = useContext(UserContext);
+  const cardNum = userInfo.tarjetaDebito.number.replace(/\d{4}(?=.)/g, '$& ');
 
   return (
-    <View>
-      <View>
-        <Text>Retiro sin tarjeta</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-          <Icon name="close-outline" size={45} color={'white'} />
-        </TouchableOpacity>
-        <Text>CUENTA DE RETIRO</Text>
-        <Text>°4545</Text>
-        <Text>$1950</Text>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.titleView}>
+          <Text style={styles.title}>Retiro sin tarjeta</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+            <Icon name="close-outline" size={45} color={'white'} />
+          </TouchableOpacity>
+        </View>
+        <View>
+          <Text style={styles.accountTitle}>CUENTA DE RETIRO</Text>
+          <View style={styles.accountView}>
+            <Text style={styles.accountNum}>● {cardNum.split(' ')[3]}</Text>
+            <Text style={styles.accountBalance}>
+              ${userInfo.tarjetaDebito.saldo.toLocaleString('es-ES')}
+            </Text>
+          </View>
+        </View>
       </View>
-      <View>
-        <Text>IMPORTE</Text>
-        <InputDestinatario
-          placeholder="$$"
-          tipo="numeric"
-          onChange={() => {}}
-        />
+      <View style={styles.inputView}>
+        <Text style={styles.inputTitle}>IMPORTE</Text>
+        <InputDestinatario placeholder="$" tipo="numeric" onChange={() => {}} />
       </View>
-      <View>
-        <Text>Concepto</Text>
+      <View style={styles.inputView}>
+        <Text style={styles.inputTitle}>CONCEPTO</Text>
         <InputDestinatario placeholder="(opcional)" onChange={() => {}} />
       </View>
       <Button text="Continuar" fn={() => {}} />
@@ -40,12 +45,53 @@ export default function Retirar() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    gap: 30,
+  },
+  header: {
+    backgroundColor: '#00079A',
+    padding: 20,
+    gap: 50,
+    borderBottomRightRadius: 150,
+  },
   title: {
     color: 'white',
-    fontWeight: '900',
-    fontSize: 25,
+    fontSize: 22,
+    paddingLeft: 20,
   },
-  background: {
-    backgroundColor: '#4A52FF',
+  titleView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  accountTitle: {
+    color: 'white',
+    fontWeight: '900',
+    fontSize: 23,
+  },
+  accountView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  accountNum: {
+    color: 'white',
+    fontSize: 19,
+    paddingVertical: 30,
+    fontWeight: '900',
+  },
+  accountBalance: {
+    color: 'white',
+    fontSize: 28,
+    fontStyle: 'italic',
+    paddingRight: 50,
+  },
+  inputView: {
+    alignSelf: 'center',
+  },
+  inputTitle: {
+    color: 'black',
+    fontWeight: '900',
+    fontSize: 15,
   },
 });
