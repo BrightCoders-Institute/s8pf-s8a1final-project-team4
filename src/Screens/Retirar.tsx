@@ -70,7 +70,7 @@ export default function Retirar() {
           setModalVisible(false);
           navigation.navigate('RetiroDetalles', {
             importe: importe,
-            concepto: concepto,
+            concepto: concepto !== '' ? concepto : 'Retiro sin tarjeta',
           });
         }}
       />

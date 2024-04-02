@@ -50,7 +50,7 @@ export default function RetiroDetalles({route}) {
   const navigation = useNavigation();
   const key = getKeyNumber();
   const importe = route.params.importe;
-  // const concepto = route.params.concepto;
+  const concepto = route.params.concepto;
 
   return (
     <View style={styles.container}>
@@ -67,6 +67,9 @@ export default function RetiroDetalles({route}) {
             <Text style={styles.details}>{getCurrentDate()}</Text>
             <Text style={styles.details}>{getCurrentHour()} h</Text>
           </View>
+          {concepto !== 'Retiro sin tarjeta' && (
+            <Text style={styles.accountBalance}>{concepto}</Text>
+          )}
           <Text style={styles.accountBalance}>${importe}</Text>
           <Text>Este retiro no genera comision</Text>
         </View>
