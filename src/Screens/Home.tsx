@@ -77,8 +77,7 @@ export default function Home() {
         <TouchableOpacity
           style={styles.optionTouchable}
           onPress={() => {
-            // navigation.navigate('CuentaDebitoFisica');
-            //navigate to Retirar
+            navigation.navigate('Retirar');
           }}>
           <View style={styles.optionView}>
             <Icon name="cash-outline" size={45} color={'white'} />
