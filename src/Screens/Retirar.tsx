@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Modal} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import InputDestinatario from '../Components/InputDestinatario';
 import Button from '../Components/Button';
@@ -63,12 +63,16 @@ export default function Retirar() {
         visible={modalVisible}
         message={'¿Estas seguro de realizar el retiro?'}
         onCancel={() => setModalVisible(false)}
-        onConfirm={() =>
+        onConfirm={() => {
+          if (concepto === '') {
+            setConcepto('Retiro sin tarjeta');
+          }
+          setModalVisible(false);
           navigation.navigate('RetiroDetalles', {
             importe: importe,
             concepto: concepto,
-          })
-        }
+          });
+        }}
       />
     </View>
   );
