@@ -124,8 +124,9 @@ export default function MyStack() {
         component={Retirar}
         options={{
           title: 'Retiro sin tarjeta',
-          headerTitleStyle: styles.title,
-          headerStyle: styles.background,
+          // headerTitleStyle: styles.title,
+          // headerStyle: styles.background,
+          headerShown: false,
         }}
       />
     </Stack.Navigator>
