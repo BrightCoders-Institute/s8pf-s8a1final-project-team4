@@ -1,13 +1,17 @@
 import React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Modal} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import InputDestinatario from '../Components/InputDestinatario';
 import Button from '../Components/Button';
+import ConfirmationModal from '../Components/ConfirmationModal';
 import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
-import {useContext} from 'react';
+import {useContext, useState} from 'react';
 
 export default function Retirar() {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [importe, setImporte] = useState('');
+  const [concepto, setConcepto] = useState('');
   const navigation = useNavigation();
   const {userInfo} = useContext(UserContext);
   const cardNum = userInfo.tarjetaDebito.number.replace(/\d{4}(?=.)/g, '$& ');
@@ -33,13 +37,31 @@ export default function Retirar() {
       </View>
       <View style={styles.inputView}>
         <Text style={styles.inputTitle}>IMPORTE</Text>
-        <InputDestinatario placeholder="$" tipo="numeric" onChange={() => {}} />
+        <InputDestinatario
+          placeholder="$"
+          tipo="numeric"
+          onChange={val => setImporte(val)}
+        />
       </View>
       <View style={styles.inputView}>
         <Text style={styles.inputTitle}>CONCEPTO</Text>
-        <InputDestinatario placeholder="(opcional)" onChange={() => {}} />
+        <InputDestinatario
+          placeholder="(opcional)"
+          onChange={val => setConcepto(val)}
+        />
       </View>
-      <Button text="Continuar" fn={() => {}} />
+      <Button text="Continuar" fn={() => setModalVisible(true)} />
+      <ConfirmationModal
+        visible={modalVisible}
+        message={'¿Estas seguro de realizar el retiro?'}
+        onCancel={() => setModalVisible(false)}
+        onConfirm={() =>
+          navigation.navigate('RetiroDetalles', {
+            importe: importe,
+            concepto: concepto,
+          })
+        }
+      />
     </View>
   );
 }
