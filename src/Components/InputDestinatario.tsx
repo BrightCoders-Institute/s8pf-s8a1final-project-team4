@@ -9,23 +9,22 @@ type Props = {
   nombre: string;
   numero: number;
   icono: string;
-  onChange:(value:string) => void;
+  onChange: (value: string) => void;
 };
 
 export default function InputDestinatario({
   placeholder,
-  nombre,
-  numero,
   icono,
   style,
   tipo,
-  onChange
+  onChange,
 }: Props) {
   return (
     <View style={[styles.InputContainer, style]}>
       <TextInput
         style={styles.InputSty}
         placeholder={placeholder}
+        placeholderTextColor="lightgrey"
         keyboardType={tipo}
         onChangeText={onChange}
       />
@@ -42,10 +41,12 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderRadius: 5,
     marginVertical: 15,
+    paddingVertical: 2,
   },
   InputSty: {
+    color: 'black',
     flex: 1,
-    fontSize: 15,
+    fontSize: 16,
     padding: 10,
     fontWeight: 'bold',
   },

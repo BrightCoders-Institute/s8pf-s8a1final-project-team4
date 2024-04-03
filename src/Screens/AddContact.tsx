@@ -1,19 +1,27 @@
 import {View, StyleSheet} from 'react-native';
-import React, {useState, useSyncExternalStore} from 'react';
+import React, {useState, useSyncExternalStore, useContext} from 'react';
 import InputDestinatario from '../Components/InputDestinatario';
 import FormButton from '../Components/Button';
 import {useNavigation} from '@react-navigation/native';
 import {AddContactDoc} from '../Firebase/db';
+import {UserContext} from '../../App';
 
 export default function AddContact() {
   const navigation = useNavigation();
   const [name, setName] = useState<string>('');
   const [number, setNumber] = useState<number>(0);
+  const {userInfo, handleUserActive} = useContext(UserContext);
   const [nickname, setNickname] = useState<string>('');
 
   const handleAddContact = async () => {
     try {
       AddContactDoc(name, number);
+      const userUpdated = {...userInfo};
+      userUpdated.contactos.push({
+        nombre: name,
+        numero: number,
+      });
+      handleUserActive(userUpdated);
       navigation.navigate('Transferir', {name: name, card_number: number});
     } catch (err) {
       console.log(err);

@@ -12,7 +12,7 @@ type Props = {
 
 export default function Contacto({nombre, numero, icono, imagen}: Props) {
   const navigation = useNavigation();
-  console.log("nombre", nombre)
+  console.log('nombre', nombre);
   return (
     <TouchableOpacity
       style={styles.container}
@@ -34,9 +34,7 @@ export default function Contacto({nombre, numero, icono, imagen}: Props) {
       <View style={styles.containerInfo}>
         <Text style={styles.Text}>{nombre}</Text>
         <View style={styles.containerdos}>
-          <Text style={styles.Text}>
-            {'**** ' + numero?.toString().slice(-4)}
-          </Text>
+          <Text style={styles.Text}>{'● ' + numero?.toString().slice(-4)}</Text>
           <Icon name={icono} size={30} color="white" />
         </View>
       </View>

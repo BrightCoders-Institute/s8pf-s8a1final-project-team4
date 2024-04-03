@@ -11,7 +11,7 @@ import {
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation, StackActions} from '@react-navigation/native';
-import {doc, setDoc, getDoc} from 'firebase/firestore';
+import {doc, setDoc, getDoc, onSnapshot} from 'firebase/firestore';
 import {auth, db} from '../Firebase/firebaseconfig';
 import {UserContext} from '../../App';
 
@@ -75,7 +75,16 @@ export default function LogIn() {
       const docSnapshot = await getDoc(userDocRef);
       const userData = docSnapshot.data();
       handleUserActive(userData);
+      // Suscribirse a cambios en los datos del usuario
+      const unsubscribe = onSnapshot(userDocRef, doc => {
+        if (doc.exists()) {
+          const userData = doc.data();
+          handleUserActive(userData);
+        }
+      });
       navigation.navigate('Home');
+      // Retornar la función de limpieza para cancelar la suscripción
+      return () => unsubscribe();
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -98,6 +107,7 @@ export default function LogIn() {
       await AsyncStorage.setItem('userUID', uid);
       const userDocRef = doc(db, 'users', uid); // Crear documento en Firestore en la colección "users"
       const docSnap = await getDoc(userDocRef);
+
       if (!docSnap.exists()) {
         const userData = {
           name: result.user.displayName,
@@ -137,7 +147,16 @@ export default function LogIn() {
         const userData = docSnap.data();
         handleUserActive(userData);
       }
+      // Suscribirse a cambios en los datos del usuario
+      const unsubscribe = onSnapshot(userDocRef, doc => {
+        if (doc.exists()) {
+          const userData = doc.data();
+          handleUserActive(userData);
+        }
+      });
       navigation.navigate('Home');
+      // Retornar la función de limpieza para cancelar la suscripción
+      return () => unsubscribe();
     } catch (error) {
       console.error(error);
       Alert.alert('Ocurrio un error al registrarse');

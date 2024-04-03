@@ -45,15 +45,17 @@ export default function CreditCardDetails() {
       <View>
         <Text style={styles.lastMove}>Ultimos Movimientos:</Text>
       </View>
-      {userInfo.tarjetaDebito.movimientos.map((move, index) => (
-        <MoveCard
-          key={index}
-          date={move.fecha}
-          desc={move.descripcion}
-          monto={move.monto}
-          tipo={move.tipo}
-        />
-      ))}
+      <View>
+        {userInfo.tarjetaDebito.movimientos.map((move, index) => (
+          <MoveCard
+            key={index}
+            date={move.fecha}
+            desc={move.descripcion}
+            monto={move.monto}
+            tipo={move.tipo}
+          />
+        ))}
+      </View>
     </View>
   );
 }
