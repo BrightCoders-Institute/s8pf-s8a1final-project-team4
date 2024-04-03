@@ -75,7 +75,16 @@ export default function LogIn() {
       const docSnapshot = await getDoc(userDocRef);
       const userData = docSnapshot.data();
       handleUserActive(userData);
+      // Suscribirse a cambios en los datos del usuario
+      const unsubscribe = onSnapshot(userDocRef, doc => {
+        if (doc.exists()) {
+          const userData = doc.data();
+          handleUserActive(userData);
+        }
+      });
       navigation.navigate('Home');
+      // Retornar la función de limpieza para cancelar la suscripción
+      return () => unsubscribe();
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
