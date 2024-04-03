@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import NewIcon from 'react-native-vector-icons/FontAwesome5';
 import {UserContext} from '../../App';
 import {useContext, useState} from 'react';
@@ -17,47 +23,49 @@ export default function DebitCardDetails() {
   const cvv = userInfo.tarjetaDebito.cvv;
 
   return (
-    <View style={styles.container}>
-      <View style={styles.accountContainer}>
-        <Text style={styles.accountTitle}>Debito</Text>
-        <Text style={styles.accountBalance}>
-          ${saldo.toLocaleString('es-ES')}
-        </Text>
-        <Text style={styles.accountDesc}>Saldo Disponible</Text>
-      </View>
-
-      <View style={styles.card}>
-        <View style={styles.cardView}>
-          <Text style={styles.cardNumber}>{cardNumber}</Text>
-          <NewIcon name="cc-visa" size={35} color={'white'} />
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.accountContainer}>
+          <Text style={styles.accountTitle}>Debito</Text>
+          <Text style={styles.accountBalance}>
+            ${saldo.toLocaleString('es-ES')}
+          </Text>
+          <Text style={styles.accountDesc}>Saldo Disponible</Text>
         </View>
-        <View style={styles.cvvView}>
-          <Text style={styles.cvv}>{showCvv ? cvv : 'cvv'}</Text>
-          <TouchableOpacity onPress={() => setShowCvv(!showCvv)}>
-            <Icon
-              name={showCvv ? 'eye-outline' : 'eye-off-outline'}
-              size={32}
-              color={'white'}
+
+        <View style={styles.card}>
+          <View style={styles.cardView}>
+            <Text style={styles.cardNumber}>{cardNumber}</Text>
+            <NewIcon name="cc-visa" size={35} color={'white'} />
+          </View>
+          <View style={styles.cvvView}>
+            <Text style={styles.cvv}>{showCvv ? cvv : 'cvv'}</Text>
+            <TouchableOpacity onPress={() => setShowCvv(!showCvv)}>
+              <Icon
+                name={showCvv ? 'eye-outline' : 'eye-off-outline'}
+                size={32}
+                color={'white'}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View>
+          <Text style={styles.lastMove}>Ultimos Movimientos:</Text>
+        </View>
+        <View>
+          {userInfo.tarjetaDebito.movimientos.reverse().map((move, index) => (
+            <MoveCard
+              key={index}
+              date={move.fecha}
+              desc={move.descripcion}
+              monto={move.monto}
+              tipo={move.tipo}
             />
-          </TouchableOpacity>
+          ))}
         </View>
       </View>
-
-      <View>
-        <Text style={styles.lastMove}>Ultimos Movimientos:</Text>
-      </View>
-      <View>
-        {userInfo.tarjetaDebito.movimientos.map((move, index) => (
-          <MoveCard
-            key={index}
-            date={move.fecha}
-            desc={move.descripcion}
-            monto={move.monto}
-            tipo={move.tipo}
-          />
-        ))}
-      </View>
-    </View>
+    </ScrollView>
   );
 }
 
