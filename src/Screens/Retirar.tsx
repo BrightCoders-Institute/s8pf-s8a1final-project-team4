@@ -7,6 +7,7 @@ import ConfirmationModal from '../Components/ConfirmationModal';
 import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
 import {useContext, useState} from 'react';
+import {userWithdraw} from '../Firebase/db';
 
 export default function Retirar() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -76,8 +77,11 @@ export default function Retirar() {
         onCancel={() => setModalVisible(false)}
         onConfirm={() => {
           if (concepto === '') {
-            setConcepto('Retiro sin tarjeta');
+            userWithdraw(importe, 'Retiro sin tarjeta');
+          } else {
+            userWithdraw(importe, concepto);
           }
+          //actualizar contexto
           setModalVisible(false);
           navigation.navigate('RetiroDetalles', {
             importe: importe,

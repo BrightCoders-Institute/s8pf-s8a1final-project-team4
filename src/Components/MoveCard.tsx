@@ -44,11 +44,12 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     fontStyle: 'italic',
     fontSize: 15,
-    paddingBottom: 10,
+    paddingBottom: 5,
   },
   moveContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingBottom: 15,
   },
   payName: {
     color: '#00079A',

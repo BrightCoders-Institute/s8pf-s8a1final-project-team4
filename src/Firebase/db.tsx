@@ -15,6 +15,15 @@ import {
 import {db} from './firebaseconfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+function getCurrentDate() {
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  const day = String(currentDate.getDate()).padStart(2, '0');
+  const formattedDate = `${year}-${month}-${day}`;
+  return formattedDate;
+}
+
 async function getDocRef() {
   //this function return the document Reference for the current user
   try {
@@ -37,7 +46,6 @@ export async function AddContactDoc(name: string, number: number) {
       numero: number,
     });
     setDoc(ref, data);
-    console.log('Nuevo documento agregado con ID:');
   } catch (err) {
     console.log('2', err);
   }
@@ -90,5 +98,25 @@ export async function transferToCard(amount: number, destination: number) {
     }
   } catch (err) {
     console.log(err);
+  }
+}
+
+export async function userWithdraw(quantity: any, concepto: any) {
+  //use
+  try {
+    const ref = await getDocRef();
+    const doc = getDoc(ref);
+    const data: DocumentData = (await doc).data();
+    data.tarjetaDebito.saldo -= quantity;
+    //generar movimiento del retiro
+    data.tarjetaDebito.movimientos.push({
+      fecha: getCurrentDate(),
+      monto: -quantity,
+      descripcion: concepto,
+      tipo: 'Retiro de efectivo',
+    });
+    setDoc(ref, data);
+  } catch (err) {
+    console.log('2', err);
   }
 }
