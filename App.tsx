@@ -11,7 +11,7 @@ const UserContext = createContext({
     password: '',
     tarjetaDebito: {monto: '', number: '', movimientos: []},
     tarjetaCredito: {monto: '', number: '', movimientos: []},
-    contactos:[]
+    contactos: [],
   },
   handleUserActive: () => {},
 });
