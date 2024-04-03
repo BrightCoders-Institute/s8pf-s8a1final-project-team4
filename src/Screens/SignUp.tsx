@@ -9,7 +9,7 @@ import {GoogleAuthProvider, signInWithCredential} from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import Icon2 from 'react-native-vector-icons/Feather';
-import {doc, setDoc, collection, addDoc, getDoc} from 'firebase/firestore';
+import {doc, setDoc, onSnapshot, getDoc} from 'firebase/firestore';
 import {UserContext} from '../../App';
 
 function getRandomCardNumber() {
@@ -214,7 +214,16 @@ export default function SignUp() {
         const userData = docSnap.data();
         handleUserActive(userData);
       }
+      // Suscribirse a cambios en los datos del usuario
+      const unsubscribe = onSnapshot(userDocRef, doc => {
+        if (doc.exists()) {
+          const userData = doc.data();
+          handleUserActive(userData);
+        }
+      });
       navigation.navigate('Home');
+      // Retornar la función de limpieza para cancelar la suscripción
+      return () => unsubscribe();
     } catch (error) {
       console.error(error);
       Alert.alert('Ocurrio un error al registrarse');
