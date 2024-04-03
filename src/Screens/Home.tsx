@@ -66,6 +66,16 @@ export default function Home() {
         <TouchableOpacity
           style={styles.optionTouchable}
           onPress={() => {
+            navigation.navigate('Retirar');
+          }}>
+          <View style={styles.optionView}>
+            <Icon name="cash-outline" size={45} color={'white'} />
+          </View>
+          <Text style={styles.optionText}>Retirar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.optionTouchable}
+          onPress={() => {
             // navigation.navigate('CuentaDebitoFisica');
             //navigate to Historial
           }}>
@@ -73,16 +83,6 @@ export default function Home() {
             <Icon name="timer-outline" size={45} color={'white'} />
           </View>
           <Text style={styles.optionText}>Historial</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.optionTouchable}
-          onPress={() => {
-            navigation.navigate('Retirar');
-          }}>
-          <View style={styles.optionView}>
-            <Icon name="cash-outline" size={45} color={'white'} />
-          </View>
-          <Text style={styles.optionText}>Retirar</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.cardView}>
