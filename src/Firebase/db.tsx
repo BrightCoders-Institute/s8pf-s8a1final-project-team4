@@ -28,7 +28,7 @@ async function getDocRef() {
   //this function return the document Reference for the current user
   try {
     const uid: string | any = await AsyncStorage.getItem('userUID');
-    const q = query(collection(db, 'users'), where('__name__', '==', uid)); //change to user UID from async storage or global context
+    const q = query(collection(db, 'users'), where('__name__', '==', uid)); //change to user UID from async storage
     const docRef: DocumentReference | any = doc(db, 'users', uid);
     return docRef;
   } catch (err) {
@@ -63,13 +63,20 @@ export async function getContact() {
     console.log('error en getContact', err);
   }
 }
-async function minusTransfer(amount: number) {
+async function minusTransfer(amount: number, concepto: string) {
   try {
     const ref = await getDocRef();
     const doc = getDoc(ref);
     const data: DocumentData = (await doc).data();
-    data.tarjetaDebito.saldo -= amount;
-    setDoc(ref, data);
+    data.tarjetaDebito.saldo -= amount; //substract money
+    //add substract movement
+    data.tarjetaDebito.movimientos.push({
+      fecha: getCurrentDate(),
+      monto: -amount,
+      descripcion: concepto,
+      tipo: 'Transferencia bancaria',
+    });
+    setDoc(ref, data); //update user data
   } catch (err) {
     console.log(err);
   }
@@ -83,6 +90,8 @@ export async function transferToCard(amount: number, destination: number) {
       where('tarjetaDebito.number', '==', destination),
     );
     const querySnapshot: DocumentReference | any = await getDocs(q);
+    console.log('this is the query: ', querySnapshot);
+    //query console
 
     if (!querySnapshot.empty) {
       querySnapshot.forEach(async (document: DocumentData) => {
