@@ -11,6 +11,7 @@ import {
   DocumentReference,
   DocumentData,
   setDoc,
+  runTransaction,
 } from 'firebase/firestore';
 import {db} from './firebaseconfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -28,7 +29,6 @@ async function getDocRef() {
   //this function return the document Reference for the current user
   try {
     const uid: string | any = await AsyncStorage.getItem('userUID');
-    const q = query(collection(db, 'users'), where('__name__', '==', uid)); //change to user UID from async storage or global context
     const docRef: DocumentReference | any = doc(db, 'users', uid);
     return docRef;
   } catch (err) {
@@ -50,6 +50,7 @@ export async function AddContactDoc(name: string, number: number) {
     console.log('2', err);
   }
 }
+
 export async function getContact() {
   try {
     let contacts: Array<object> = [];
@@ -63,36 +64,56 @@ export async function getContact() {
     console.log('error en getContact', err);
   }
 }
-async function minusTransfer(amount: number) {
+
+async function minusTransfer(amount: number, concepto: string) {
   try {
     const ref = await getDocRef();
     const doc = getDoc(ref);
     const data: DocumentData = (await doc).data();
     data.tarjetaDebito.saldo -= amount;
+    //generar movimiento de transferencia
+    data.tarjetaDebito.movimientos.push({
+      fecha: getCurrentDate(),
+      monto: -amount,
+      descripcion: concepto,
+      tipo: 'Transferencia bancaria',
+    });
     setDoc(ref, data);
   } catch (err) {
     console.log(err);
   }
 }
 
-export async function transferToCard(amount: number, destination: number) {
+export async function transferToCard(
+  amount: number,
+  destination: number,
+  concept: string,
+) {
   try {
-    minusTransfer(amount);
     const q = query(
       collection(db, 'users'),
       where('tarjetaDebito.number', '==', destination),
     );
-    const querySnapshot: DocumentReference | any = await getDocs(q);
+
+    const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
-      querySnapshot.forEach(async (document: DocumentData) => {
-        console.log('Usuario encontrado:', document.id, document.data());
-        const docref: DocumentReference = doc(db, 'users', document.id);
-        const data: DocumentData = document.data();
-        data.tarjetaDebito.saldo =
-          Number(data.tarjetaDebito.saldo) + Number(amount);
-        setDoc(docref, data);
+      await runTransaction(db, async transaction => {
+        querySnapshot.forEach(async document => {
+          const destinyRef = doc(db, 'users', document.id);
+          const destinyData = document.data();
+          console.log(destinyData);
+          destinyData.tarjetaDebito.saldo += parseInt(amount);
+          destinyData.tarjetaDebito.movimientos.push({
+            fecha: getCurrentDate(),
+            monto: amount,
+            descripcion: concept,
+            tipo: 'Transferencia bancaria',
+          });
+          transaction.set(destinyRef, destinyData);
+        });
       });
+      await minusTransfer(amount, concept); //descontar del usuario activo
     } else {
       console.log('No se encontró ningún usuario con esta tarjeta');
     }
@@ -115,7 +136,7 @@ export async function userWithdraw(quantity: any, concepto: any) {
       descripcion: concepto,
       tipo: 'Retiro de efectivo',
     });
-    setDoc(ref, data);
+    await setDoc(ref, data);
   } catch (err) {
     console.log('2', err);
   }

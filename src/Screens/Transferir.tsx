@@ -5,7 +5,7 @@ import InputDestinatario from '../Components/InputDestinatario';
 import FormButton from '../Components/Button';
 import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
-import { minusTransfer, transferToCard } from '../Firebase/db';
+import {minusTransfer, transferToCard} from '../Firebase/db';
 
 export default function Transferir({route}: any) {
   const {userInfo} = useContext(UserContext);
@@ -17,6 +17,9 @@ export default function Transferir({route}: any) {
   const [clickedSend, setClickedSend] = useState<boolean>(false);
 
   const handleClick = () => {
+
+    transferToCard(amount, card_number, concept);
+
 
     if (!amount || !concept) {
       Alert.alert('Error', 'Por favor, complete todos los campos.');
@@ -30,8 +33,10 @@ export default function Transferir({route}: any) {
 
     console.log(amount, concept);
     transferToCard(amount,card_number)
+
     navigation.navigate('Home');
-     Alert.alert(`Has transferido con exito a: ${transferTo}`);
+    Alert.alert(`Has transferido con exito a: ${transferTo}`);
+    //modal message
   };
 
   // Verificar si los campos de importe y concepto están vacíos

@@ -7,7 +7,7 @@ import {useNavigation} from '@react-navigation/native';
 import {GoogleAuthProvider, signInWithCredential} from 'firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {doc, setDoc, getDoc} from 'firebase/firestore';
+import {doc, setDoc, getDoc, onSnapshot} from 'firebase/firestore';
 import {auth, db} from '../Firebase/firebaseconfig';
 import {useEffect, useContext} from 'react';
 import {UserContext} from '../../App';

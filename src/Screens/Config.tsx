@@ -6,10 +6,12 @@ import IconS from 'react-native-vector-icons/Ionicons';
 import {UserContext} from '../../App';
 import {useContext} from 'react';
 import {useNavigation} from '@react-navigation/native';
-// import {auth} from '../Firebase/firebaseconfig';
+import {signOut} from 'firebase/auth';
+import {auth} from '../Firebase/firebaseconfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Config() {
-  const {userInfo} = useContext(UserContext);
+  const {userInfo, handleUserActive} = useContext(UserContext);
   const navigation = useNavigation();
 
   return (
@@ -49,9 +51,10 @@ export default function Config() {
           onPress={async () => {
             try {
               //CERRAR SESION
-              // await auth().signOut();
-              // console.log('auth');
+              await signOut(auth);
+              AsyncStorage.removeItem('userUID');
               navigation.navigate('LogInFingerprint');
+              handleUserActive(null);
             } catch (error) {
               console.log(error);
             }
