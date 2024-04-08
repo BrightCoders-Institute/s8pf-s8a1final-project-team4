@@ -5,7 +5,7 @@ import InputDestinatario from '../Components/InputDestinatario';
 import FormButton from '../Components/Button';
 import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
-import { minusTransfer, transferToCard } from '../Firebase/db';
+import {minusTransfer, transferToCard} from '../Firebase/db';
 
 export default function Transferir({route}: any) {
   const {userInfo} = useContext(UserContext);
@@ -16,10 +16,10 @@ export default function Transferir({route}: any) {
   const [concept, setConcept] = useState<string>('');
 
   const handleClick = () => {
-    console.log(amount, concept);
-    transferToCard(amount,card_number)
+    transferToCard(amount, card_number, concept);
     navigation.navigate('Home');
-     Alert.alert(`Has transferido con exito a: ${transferTo}`);
+    Alert.alert(`Has transferido con exito a: ${transferTo}`);
+    //modal message
   };
   return (
     <View style={styles.container}>
