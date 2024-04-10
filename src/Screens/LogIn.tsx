@@ -10,8 +10,8 @@ import {
 } from 'firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation, StackActions} from '@react-navigation/native';
-import {doc, setDoc, getDoc, onSnapshot} from 'firebase/firestore';
+import {useNavigation} from '@react-navigation/native';
+import {doc, setDoc, getDoc, onSnapshot, signOut} from 'firebase/firestore';
 import {auth, db} from '../Firebase/firebaseconfig';
 import {UserContext} from '../../App';
 
@@ -54,6 +54,16 @@ export default function LogIn() {
       webClientId:
         '665755295591-jkg5kodjv4c1446utumh51fs89o7h24j.apps.googleusercontent.com',
     });
+    async () => {
+      try {
+        //CERRAR SESION
+        AsyncStorage.removeItem('userUID');
+        await signOut(auth);
+        handleUserActive(null);
+      } catch (err) {
+        console.log(err);
+      }
+    };
   }, []);
 
   const handleEmailChange = (value: string) => {

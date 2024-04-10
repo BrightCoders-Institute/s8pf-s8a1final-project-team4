@@ -6,6 +6,8 @@ import FormButton from '../Components/Button';
 import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
 import {transferToCard } from '../Firebase/db';
+import {minusTransfer, transferToCard} from '../Firebase/db';
+
 
 export default function Transferir({route}: any) {
   const {userInfo} = useContext(UserContext);
@@ -14,13 +16,34 @@ export default function Transferir({route}: any) {
   const card_number = route.params.card_number;
   const [amount, setAmount] = useState<number>(0);
   const [concept, setConcept] = useState<string>('');
+  const [clickedSend, setClickedSend] = useState<boolean>(false);
 
   const handleClick = () => {
+
+    transferToCard(amount, card_number, concept);
+
+
+    if (!amount || !concept) {
+      Alert.alert('Error', 'Por favor, complete todos los campos.');
+      return;
+    }
+
+    if (concept.length > 15) {
+      Alert.alert('Error', 'El concepto no puede exceder los 15 caracteres.');
+      return;
+    }
+
     console.log(amount, concept);
     transferToCard(amount,card_number)
+
     navigation.navigate('Home');
-     Alert.alert(`Has transferido con exito a: ${transferTo}`);
+    Alert.alert(`Has transferido con exito a: ${transferTo}`);
+    //modal message
   };
+
+  // Verificar si los campos de importe y concepto están vacíos
+  const areFieldsEmpty = !amount || !concept;
+
   return (
     <View style={styles.container}>
       <Text style={styles.Text}>Estas Transfiriendo a: </Text>
@@ -37,18 +60,26 @@ export default function Transferir({route}: any) {
         imagen={userInfo.photo ? userInfo.photo : ''}
       />
       <View style={styles.containerdos}>
-        <InputDestinatario
+      <InputDestinatario
           placeholder="Importe"
-          tipo="number-pad"
           icono="money-bill-wave"
-          onChange={setAmount}
+          onChange={(text) => setAmount(Number(text))}
+          modo="numero"
+          showError={clickedSend && !amount}
         />
         <InputDestinatario
           placeholder="Concepto"
           icono="comment"
-          onChange={setConcept}
+          onChange={(text) => setConcept(text)}
+          modo="texto"
+          maxLength={15}
+          showError={clickedSend && !concept}
         />
-        <FormButton text="Enviar" fn={() => handleClick()} />
+         <FormButton 
+          text="Enviar" 
+          fn={() => {setClickedSend(true); handleClick();}} 
+          disabled={areFieldsEmpty} // Deshabilitar el botón si los campos están vacíos
+        />
       </View>
     </View>
   );

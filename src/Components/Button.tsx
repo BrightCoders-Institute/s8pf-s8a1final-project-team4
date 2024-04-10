@@ -5,11 +5,12 @@ import {StyleSheet, TouchableOpacity, Text} from 'react-native';
 interface buttonInterface {
   text: string;
   fn: () => void;
+  disabled: boolean;
   //   iconName?: string;
 }
-export default function FormButton({text, fn}: buttonInterface) {
+export default function FormButton({text, fn,disabled}: buttonInterface) {
   return (
-    <TouchableOpacity onPress={fn} style={styles.buttons}>
+    <TouchableOpacity onPress={fn} style={[styles.buttons, disabled && styles.disabledButton]} disabled={disabled}>
       <Text style={styles.btnText}>{text}</Text>
     </TouchableOpacity>
   );
@@ -32,5 +33,8 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     fontWeight: '900',
+  },
+  disabledButton: {
+    backgroundColor: 'rgba(74, 82, 255, 0.5)',
   },
 });
