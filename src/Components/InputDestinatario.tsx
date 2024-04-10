@@ -1,5 +1,5 @@
-import { View, StyleSheet, TextInput, Text } from 'react-native';
-import React, { useState } from 'react';
+import {View, StyleSheet, TextInput, Text} from 'react-native';
+import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 type Props = {
@@ -41,7 +41,12 @@ export default function InputDestinatario({
 
   return (
     <View>
-      <View style={[styles.InputContainer, style, !isValidLength && styles.invalid]}>
+      <View
+        style={[
+          styles.InputContainer,
+          style,
+          !isValidLength && styles.invalid,
+        ]}>
         <TextInput
           style={styles.InputSty}
           placeholder={placeholder}
@@ -63,7 +68,8 @@ export default function InputDestinatario({
 const styles = StyleSheet.create({
   InputContainer: {
     flexDirection: 'row',
-    width: '80%',
+    width: 285,
+    alignSelf: 'center',
     backgroundColor: 'white',
     elevation: 5,
     borderRadius: 5,

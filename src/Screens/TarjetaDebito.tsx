@@ -15,33 +15,21 @@ export default function TarjetaDebito() {
   const cvv = userInfo.tarjetaDebito.cvv;
 
   return (
-    
     <View style={styles.container}>
-
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View style={styles.containerdos}>
+        <Text style={styles.tarjetas}>Mis Tarjetas</Text>
         <TouchableOpacity
-          style={{paddingLeft: 20}}
+          style={{paddingRight: 20}}
           onPress={() => {
             navigation.navigate('Home');
           }}>
-          <Icon name="back" size={45} color={'#4A52FF'} />
+          <Icon name="close-outline" size={45} color={'white'} />
         </TouchableOpacity>
-
-      <View style={styles.containerdos}>
-
-        <Text style={styles.tarjetas}>Mis Tarjetas</Text>
-          <TouchableOpacity
-              style={{paddingRight: 20}}
-              onPress={() => {
-                navigation.navigate('Home');
-              }}>
-            <Icon name="close-outline" size={45} color={'white'} />
-          </TouchableOpacity>
       </View>
       <View style={styles.header}>
-      <View style={{flexDirection: 'row', alignItems: 'center', gap: 40}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', gap: 40}}>
           <Text style={styles.titlecards}>Debito</Text>
-      </View>
+        </View>
         <View style={styles.cardContainer}>
           <TouchableOpacity
             style={styles.card}
@@ -54,7 +42,8 @@ export default function TarjetaDebito() {
                 justifyContent: 'space-between',
                 flexDirection: 'row',
               }}>
-              <View style={{flexDirection: 'row', gap: 20, alignItems: 'center'}}>
+              <View
+                style={{flexDirection: 'row', gap: 20, alignItems: 'center'}}>
                 <Icon name="card-outline" size={45} color={'#4A52FF'} />
                 <View style={{gap: 20}}>
                   <Text style={styles.cardTitle}>Debito</Text>
@@ -63,41 +52,48 @@ export default function TarjetaDebito() {
                   </Text>
                 </View>
               </View>
-              <Icon name="chevron-forward-outline" size={45} color={'#4A52FF'} />
+              <Icon
+                name="chevron-forward-outline"
+                size={45}
+                color={'#4A52FF'}
+              />
             </View>
           </TouchableOpacity>
         </View>
-        
-      <Text style={styles.titlecards}>Credito</Text>
+
+        <Text style={styles.titlecards}>Credito</Text>
         <View style={styles.cardContainer}>
-        <TouchableOpacity
-          style={styles.card}
-          onPress={() => {
-            navigation.navigate('CuentaCreditoFisica');
-          }}>
-          <Text style={styles.cardTitle}>Fisica</Text>
-          <View
-            style={{
-              justifyContent: 'space-between',
-              flexDirection: 'row',
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => {
+              navigation.navigate('CuentaCreditoFisica');
             }}>
-            <View style={{flexDirection: 'row', gap: 20, alignItems: 'center'}}>
-              <Icon name="card-outline" size={45} color={'#4A52FF'} />
-              <View style={{gap: 20}}>
-                <Text style={styles.cardTitle}>Credito</Text>
-                <Text style={styles.cardNumber}>
-                  **** **** **** {cardNumber.split(' ')[3]}
-                </Text>
+            <Text style={styles.cardTitle}>Fisica</Text>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+              }}>
+              <View
+                style={{flexDirection: 'row', gap: 20, alignItems: 'center'}}>
+                <Icon name="card-outline" size={45} color={'#4A52FF'} />
+                <View style={{gap: 20}}>
+                  <Text style={styles.cardTitle}>Credito</Text>
+                  <Text style={styles.cardNumber}>
+                    **** **** **** {cardNumber.split(' ')[3]}
+                  </Text>
+                </View>
               </View>
+              <Icon
+                name="chevron-forward-outline"
+                size={45}
+                color={'#4A52FF'}
+              />
             </View>
-            <Icon name="chevron-forward-outline" size={45} color={'#4A52FF'} />
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
-
-    
   );
 }
 
@@ -119,13 +115,13 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 10,
   },
-    header: {
-      backgroundColor: '#00079A',
-      padding: 0,
-      gap: 50,
-      height: '80%',
-      borderBottomRightRadius: 150,
-      // paddingBottom: 20,
+  header: {
+    backgroundColor: '#00079A',
+    padding: 0,
+    gap: 50,
+    height: '80%',
+    borderBottomRightRadius: 150,
+    // paddingBottom: 20,
   },
   tarjetas: {
     color: 'white',

@@ -96,6 +96,7 @@ export default function Retirar() {
 const styles = StyleSheet.create({
   container: {
     gap: 30,
+    // alignContent: 'center',
   },
   header: {
     backgroundColor: '#00079A',
@@ -138,6 +139,7 @@ const styles = StyleSheet.create({
   },
   inputView: {
     alignSelf: 'center',
+    // width: '100%',
   },
   inputTitle: {
     color: 'black',
