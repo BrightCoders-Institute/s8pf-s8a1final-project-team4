@@ -30,9 +30,7 @@ export default function MisTarjetas() {
         </TouchableOpacity>
       </View>
       <View style={styles.header}>
-        <View style={{flexDirection: 'row', alignItems: 'center', gap: 40}}>
-          <Text style={styles.titlecards}>Debito</Text>
-        </View>
+        <Text style={styles.titlecards}>Debito</Text>
 
         <View style={styles.cardContainer}>
           <TouchableOpacity
@@ -113,7 +111,7 @@ export default function MisTarjetas() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: '"F4F4F4"',
     flex: 1,
   },
   containerdos: {
@@ -121,18 +119,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#021B9E',
-    borderRadius: 0,
     padding: 15,
-    // shadowColor: 'white',
-    // // shadowOffset: {width: 0, height: 100},
-    // shadowOpacity: 0.9,
-    // shadowRadius: 10,
-    // elevation: 10,
+    shadowColor: 'black',
+    elevation: 60,
   },
   header: {
     backgroundColor: '#00079A',
-    padding: 0,
-    gap: 50,
+    gap: 40,
     height: '80%',
     borderBottomRightRadius: 150,
   },
@@ -147,7 +140,7 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     fontSize: 26,
     paddingLeft: 50,
-    marginTop: 25,
+    marginTop: 35,
   },
   debitTitle: {
     backgroundColor: '#4A52FF',
@@ -179,6 +172,7 @@ const styles = StyleSheet.create({
     marginRight: 25,
     backgroundColor: '#4A52FF',
     borderRadius: 10,
+    elevation: 60,
   },
   card: {
     transform: [{translateX: -12}, {translateY: -12}],
@@ -186,6 +180,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 20,
     gap: 12,
+    elevation: 60,
+    shadowColor: 'white',
   },
   cardTitle: {
     color: '#4A52FF',
