@@ -6,7 +6,6 @@ import FormButton from '../Components/Button';
 import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
 import {transferToCard } from '../Firebase/db';
-import {minusTransfer, transferToCard} from '../Firebase/db';
 
 
 export default function Transferir({route}: any) {

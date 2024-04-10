@@ -96,10 +96,14 @@ export default function TarjetaDebito() {
         </View>
       </View>
     </View>
+  </View>
 
     
-  );
+  )
+   
 }
+ 
+
 
 const styles = StyleSheet.create({
   container: {
@@ -187,5 +191,5 @@ const styles = StyleSheet.create({
   cardNumber: {
     color: 'black',
     fontWeight: '900',
-  },
+  }
 });
