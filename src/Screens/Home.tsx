@@ -62,7 +62,7 @@ export default function Home() {
         }}>
         <View style={{gap: 20}}>
           <Text style={styles.accountTitle}>Cuenta</Text>
-          <Icon name="card-outline" size={60} color={'blue'} />
+          <Icon name="card-outline" size={60} color={'#4A52FF'} />
         </View>
         <Text style={styles.accountNum}>● {cardNumber?.split(' ')[3]}</Text>
         <Text style={styles.accountBalance}>

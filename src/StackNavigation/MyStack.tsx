@@ -22,14 +22,7 @@ const Stack = createNativeStackNavigator();
 
 export default function MyStack() {
   return (
-    <Stack.Navigator initialRouteName="LogInFingerprint">
-      <Stack.Screen
-        name="LogInFingerprint"
-        component={LogInFingerprint}
-        options={{
-          headerShown: false,
-        }}
-      />
+    <Stack.Navigator initialRouteName="LogIn">
       <Stack.Screen
         name="LogIn"
         component={LogIn}
@@ -143,7 +136,6 @@ export default function MyStack() {
         options={{
           title: 'Historial',
           headerShown: false,
-          
         }}
       />
     </Stack.Navigator>
@@ -158,5 +150,5 @@ const styles = StyleSheet.create({
   },
   background: {
     backgroundColor: '#4A52FF',
-  }
+  },
 });
