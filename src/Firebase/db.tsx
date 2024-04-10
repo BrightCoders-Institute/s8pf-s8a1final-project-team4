@@ -92,7 +92,7 @@ export async function transferToCard(
   try {
     const q = query(
       collection(db, 'users'),
-      where('tarjetaDebito.number', '==', destination),
+      where('tarjetaDebito.number', '==', destination.toString()),
     );
 
     const querySnapshot = await getDocs(q);
@@ -139,5 +139,20 @@ export async function userWithdraw(quantity: any, concepto: any) {
     await setDoc(ref, data);
   } catch (err) {
     console.log('2', err);
+  }
+}
+
+export async function getHistory() {
+  try{
+    const ref = await getDocRef();
+    const doc = getDoc(ref);
+    const data: DocumentData  = (await doc).data();
+    const movimientos = {
+      debito:data.tarjetaDebito.movimientos,
+      credito:data.tarjetaCredito.movimientos
+    };
+   return movimientos;
+  }catch(err){
+    console.log(err)
   }
 }

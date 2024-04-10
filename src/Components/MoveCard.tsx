@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
-function formatDate(fecha) {
+export function formatDate(fecha) {
   const partesFecha = fecha.split('-');
   const año = partesFecha[0];
   const mes = parseInt(partesFecha[1]);

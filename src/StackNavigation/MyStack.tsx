@@ -16,6 +16,7 @@ import AddContact from '../Screens/AddContact';
 import Config from '../Screens/Config';
 import Retirar from '../Screens/Retirar';
 import RetiroDetalles from '../Screens/RetiroDetalles';
+import History from '../Screens/History';
 
 const Stack = createNativeStackNavigator();
 
@@ -136,6 +137,15 @@ export default function MyStack() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="History"
+        component={History}
+        options={{
+          title: 'Historial',
+          headerShown: false,
+          
+        }}
+      />
     </Stack.Navigator>
   );
 }
@@ -148,5 +158,5 @@ const styles = StyleSheet.create({
   },
   background: {
     backgroundColor: '#4A52FF',
-  },
+  }
 });

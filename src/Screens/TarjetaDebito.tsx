@@ -17,7 +17,18 @@ export default function TarjetaDebito() {
   return (
     
     <View style={styles.container}>
+
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <TouchableOpacity
+          style={{paddingLeft: 20}}
+          onPress={() => {
+            navigation.navigate('Home');
+          }}>
+          <Icon name="back" size={45} color={'#4A52FF'} />
+        </TouchableOpacity>
+
       <View style={styles.containerdos}>
+
         <Text style={styles.tarjetas}>Mis Tarjetas</Text>
           <TouchableOpacity
               style={{paddingRight: 20}}
