@@ -5,9 +5,7 @@ import InputDestinatario from '../Components/InputDestinatario';
 import FormButton from '../Components/Button';
 import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
-import {transferToCard } from '../Firebase/db';
-import {minusTransfer, transferToCard} from '../Firebase/db';
-
+import {transferToCard} from '../Firebase/db';
 
 export default function Transferir({route}: any) {
   const {userInfo} = useContext(UserContext);
@@ -19,9 +17,7 @@ export default function Transferir({route}: any) {
   const [clickedSend, setClickedSend] = useState<boolean>(false);
 
   const handleClick = () => {
-
     transferToCard(amount, card_number, concept);
-
 
     if (!amount || !concept) {
       Alert.alert('Error', 'Por favor, complete todos los campos.');
@@ -34,7 +30,7 @@ export default function Transferir({route}: any) {
     }
 
     console.log(amount, concept);
-    transferToCard(amount,card_number)
+    transferToCard(amount, card_number);
 
     navigation.navigate('Home');
     Alert.alert(`Has transferido con exito a: ${transferTo}`);
@@ -60,24 +56,27 @@ export default function Transferir({route}: any) {
         imagen={userInfo.photo ? userInfo.photo : ''}
       />
       <View style={styles.containerdos}>
-      <InputDestinatario
+        <InputDestinatario
           placeholder="Importe"
           icono="money-bill-wave"
-          onChange={(text) => setAmount(Number(text))}
+          onChange={text => setAmount(Number(text))}
           modo="numero"
           showError={clickedSend && !amount}
         />
         <InputDestinatario
           placeholder="Concepto"
           icono="comment"
-          onChange={(text) => setConcept(text)}
+          onChange={text => setConcept(text)}
           modo="texto"
           maxLength={15}
           showError={clickedSend && !concept}
         />
-         <FormButton 
-          text="Enviar" 
-          fn={() => {setClickedSend(true); handleClick();}} 
+        <FormButton
+          text="Enviar"
+          fn={() => {
+            setClickedSend(true);
+            handleClick();
+          }}
           disabled={areFieldsEmpty} // Deshabilitar el botón si los campos están vacíos
         />
       </View>

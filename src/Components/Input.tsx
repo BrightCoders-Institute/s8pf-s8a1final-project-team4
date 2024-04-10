@@ -5,19 +5,28 @@ interface FormInput {
   text: string;
   iconName: string;
   msgError: string;
-  viewPass?: () => void
+  viewPass?: () => void;
   secureTextEntry?: boolean;
 
   onInputChange: (value: string) => void;
 }
-export default function FormInput({text, iconName, msgError ,onInputChange, viewPass, secureTextEntry}: FormInput) {
+export default function FormInput({
+  text,
+  iconName,
+  msgError,
+  onInputChange,
+  viewPass,
+  secureTextEntry,
+}: FormInput) {
   return (
     <View style={{alignItems: 'center'}}>
       <View style={styles.inputView}>
         <TextInput
           placeholder={text}
+          placeholderTextColor="grey"
           secureTextEntry={secureTextEntry}
           onChangeText={onInputChange}
+          style={styles.textColor}
         />
         <Icon
           name={iconName}
@@ -28,7 +37,6 @@ export default function FormInput({text, iconName, msgError ,onInputChange, view
       </View>
       <Text style={styles.msgError}>{msgError}</Text>
     </View>
-    
   );
 }
 const styles = StyleSheet.create({
@@ -48,5 +56,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 5,
   },
-  
+  textColor: {
+    color: 'black',
+    fontSize: 15,
+  },
 });

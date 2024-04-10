@@ -5,43 +5,33 @@ import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
 import {useContext} from 'react';
 
-export default function TarjetaDebito() {
+export default function MisTarjetas() {
   const navigation = useNavigation();
   const {userInfo} = useContext(UserContext);
   const cardNumber = userInfo.tarjetaDebito.number.replace(
     /\d{4}(?=.)/g,
     '$& ',
   );
-  const cvv = userInfo.tarjetaDebito.cvv;
+  const creditNumber = userInfo.tarjetaCredito.number.replace(
+    /\d{4}(?=.)/g,
+    '$& ',
+  );
 
   return (
-    
     <View style={styles.container}>
-
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View style={styles.containerdos}>
+        <Text style={styles.tarjetas}>Mis Tarjetas</Text>
         <TouchableOpacity
-          style={{paddingLeft: 20}}
+          style={{paddingRight: 20}}
           onPress={() => {
             navigation.navigate('Home');
           }}>
-          <Icon name="back" size={45} color={'#4A52FF'} />
+          <Icon name="close-outline" size={45} color={'white'} />
         </TouchableOpacity>
-
-      <View style={styles.containerdos}>
-
-        <Text style={styles.tarjetas}>Mis Tarjetas</Text>
-          <TouchableOpacity
-              style={{paddingRight: 20}}
-              onPress={() => {
-                navigation.navigate('Home');
-              }}>
-            <Icon name="close-outline" size={45} color={'white'} />
-          </TouchableOpacity>
       </View>
       <View style={styles.header}>
-      <View style={{flexDirection: 'row', alignItems: 'center', gap: 40}}>
-          <Text style={styles.titlecards}>Debito</Text>
-      </View>
+        <Text style={styles.titlecards}>Debito</Text>
+
         <View style={styles.cardContainer}>
           <TouchableOpacity
             style={styles.card}
@@ -54,56 +44,74 @@ export default function TarjetaDebito() {
                 justifyContent: 'space-between',
                 flexDirection: 'row',
               }}>
-              <View style={{flexDirection: 'row', gap: 20, alignItems: 'center'}}>
-                <Icon name="card-outline" size={45} color={'#4A52FF'} />
-                <View style={{gap: 20}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  gap: 40,
+                  alignItems: 'center',
+                  flex: 1,
+                }}>
+                <Icon name="card-outline" size={65} color={'#4A52FF'} />
+                <View style={{gap: 10, alignItems: 'center'}}>
                   <Text style={styles.cardTitle}>Debito</Text>
                   <Text style={styles.cardNumber}>
-                    **** **** **** {cardNumber.split(' ')[3]}
+                    ● {cardNumber.split(' ')[3]}
                   </Text>
                 </View>
               </View>
-              <Icon name="chevron-forward-outline" size={45} color={'#4A52FF'} />
+              <Icon
+                name="chevron-forward-outline"
+                size={45}
+                color={'#4A52FF'}
+              />
             </View>
           </TouchableOpacity>
         </View>
-        
-      <Text style={styles.titlecards}>Credito</Text>
+
+        <Text style={styles.titlecards}>Credito</Text>
         <View style={styles.cardContainer}>
-        <TouchableOpacity
-          style={styles.card}
-          onPress={() => {
-            navigation.navigate('CuentaCreditoFisica');
-          }}>
-          <Text style={styles.cardTitle}>Fisica</Text>
-          <View
-            style={{
-              justifyContent: 'space-between',
-              flexDirection: 'row',
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => {
+              navigation.navigate('CuentaCreditoFisica');
             }}>
-            <View style={{flexDirection: 'row', gap: 20, alignItems: 'center'}}>
-              <Icon name="card-outline" size={45} color={'#4A52FF'} />
-              <View style={{gap: 20}}>
-                <Text style={styles.cardTitle}>Credito</Text>
-                <Text style={styles.cardNumber}>
-                  **** **** **** {cardNumber.split(' ')[3]}
-                </Text>
+            <Text style={styles.cardTitle}>Fisica</Text>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  gap: 40,
+                  alignItems: 'center',
+                  flex: 1,
+                }}>
+                <Icon name="card-outline" size={65} color={'#4A52FF'} />
+                <View style={{gap: 10, alignItems: 'center'}}>
+                  <Text style={styles.cardTitle}>Credito</Text>
+                  <Text style={styles.cardNumber}>
+                    ● {creditNumber.split(' ')[3]}
+                  </Text>
+                </View>
               </View>
+              <Icon
+                name="chevron-forward-outline"
+                size={45}
+                color={'#4A52FF'}
+              />
             </View>
-            <Icon name="chevron-forward-outline" size={45} color={'#4A52FF'} />
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
-
-    
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: '"F4F4F4"',
     flex: 1,
   },
   containerdos: {
@@ -111,21 +119,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#021B9E',
-    borderRadius: 0,
     padding: 15,
     shadowColor: 'black',
-    shadowOffset: {width: 0, height: 100},
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 10,
+    elevation: 60,
   },
-    header: {
-      backgroundColor: '#00079A',
-      padding: 0,
-      gap: 50,
-      height: '80%',
-      borderBottomRightRadius: 150,
-      // paddingBottom: 20,
+  header: {
+    backgroundColor: '#00079A',
+    gap: 40,
+    height: '80%',
+    borderBottomRightRadius: 150,
   },
   tarjetas: {
     color: 'white',
@@ -138,7 +140,7 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     fontSize: 26,
     paddingLeft: 50,
-    marginTop: 25,
+    marginTop: 35,
   },
   debitTitle: {
     backgroundColor: '#4A52FF',
@@ -166,26 +168,30 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   cardContainer: {
-    paddingHorizontal: 40,
-    paddingVertical: 10,
+    marginLeft: 37,
+    marginRight: 25,
+    backgroundColor: '#4A52FF',
+    borderRadius: 10,
+    elevation: 60,
   },
   card: {
+    transform: [{translateX: -12}, {translateY: -12}],
     backgroundColor: 'white',
-    borderRadius: 3,
+    borderRadius: 10,
     padding: 20,
-    shadowColor: 'black',
-    shadowOffset: {width: 0, height: 100},
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 12,
+    gap: 12,
+    elevation: 60,
+    shadowColor: 'white',
   },
   cardTitle: {
     color: '#4A52FF',
     fontWeight: '900',
-    fontSize: 19,
+    fontSize: 22,
   },
   cardNumber: {
-    color: 'black',
+    color: '#00079A',
     fontWeight: '900',
+    fontSize: 20,
+    letterSpacing: 1,
   },
 });

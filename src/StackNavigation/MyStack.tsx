@@ -2,14 +2,12 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {StyleSheet} from 'react-native';
 
-import LogInFingerprint from '../Screens/LogInFingerprint';
 import LogIn from '../Screens/LogIn';
 import SignUp from '../Screens/SignUp';
 import Home from '../Screens/Home';
 import DebitCardDetails from '../Screens/DebitCardDetails';
 import CreditCardDetails from '../Screens/CreditCardDetails';
-import TarjetaDebito from '../Screens/TarjetaDebito';
-import TarjetaCredito from '../Screens/TarjetaCredito';
+import MisTarjetas from '../Screens/MisTarjetas';
 import SelectContact from '../Screens/SelectContact';
 import Transferir from '../Screens/Transferir';
 import AddContact from '../Screens/AddContact';
@@ -22,14 +20,7 @@ const Stack = createNativeStackNavigator();
 
 export default function MyStack() {
   return (
-    <Stack.Navigator initialRouteName="LogInFingerprint">
-      <Stack.Screen
-        name="LogInFingerprint"
-        component={LogInFingerprint}
-        options={{
-          headerShown: false,
-        }}
-      />
+    <Stack.Navigator initialRouteName="LogIn">
       <Stack.Screen
         name="LogIn"
         component={LogIn}
@@ -70,18 +61,10 @@ export default function MyStack() {
         }}
       />
       <Stack.Screen
-        name="TarjetaDebito"
-        component={TarjetaDebito}
+        name="MisTarjetas"
+        component={MisTarjetas}
         options={{
           title: 'Cuenta',
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="TarjetaCredito"
-        component={TarjetaCredito}
-        options={{
-          title: 'TarjetaCredito',
           headerShown: false,
         }}
       />
@@ -143,7 +126,6 @@ export default function MyStack() {
         options={{
           title: 'Historial',
           headerShown: false,
-          
         }}
       />
     </Stack.Navigator>
@@ -158,5 +140,5 @@ const styles = StyleSheet.create({
   },
   background: {
     backgroundColor: '#4A52FF',
-  }
+  },
 });
