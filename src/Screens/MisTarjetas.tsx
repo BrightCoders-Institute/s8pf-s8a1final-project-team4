@@ -5,14 +5,17 @@ import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
 import {useContext} from 'react';
 
-export default function TarjetaDebito() {
+export default function MisTarjetas() {
   const navigation = useNavigation();
   const {userInfo} = useContext(UserContext);
   const cardNumber = userInfo.tarjetaDebito.number.replace(
     /\d{4}(?=.)/g,
     '$& ',
   );
-  const cvv = userInfo.tarjetaDebito.cvv;
+  const creditNumber = userInfo.tarjetaCredito.number.replace(
+    /\d{4}(?=.)/g,
+    '$& ',
+  );
 
   return (
     <View style={styles.container}>
@@ -30,6 +33,7 @@ export default function TarjetaDebito() {
         <View style={{flexDirection: 'row', alignItems: 'center', gap: 40}}>
           <Text style={styles.titlecards}>Debito</Text>
         </View>
+
         <View style={styles.cardContainer}>
           <TouchableOpacity
             style={styles.card}
@@ -43,12 +47,17 @@ export default function TarjetaDebito() {
                 flexDirection: 'row',
               }}>
               <View
-                style={{flexDirection: 'row', gap: 20, alignItems: 'center'}}>
-                <Icon name="card-outline" size={45} color={'#4A52FF'} />
-                <View style={{gap: 20}}>
+                style={{
+                  flexDirection: 'row',
+                  gap: 40,
+                  alignItems: 'center',
+                  flex: 1,
+                }}>
+                <Icon name="card-outline" size={65} color={'#4A52FF'} />
+                <View style={{gap: 10, alignItems: 'center'}}>
                   <Text style={styles.cardTitle}>Debito</Text>
                   <Text style={styles.cardNumber}>
-                    **** **** **** {cardNumber.split(' ')[3]}
+                    ● {cardNumber.split(' ')[3]}
                   </Text>
                 </View>
               </View>
@@ -75,12 +84,17 @@ export default function TarjetaDebito() {
                 flexDirection: 'row',
               }}>
               <View
-                style={{flexDirection: 'row', gap: 20, alignItems: 'center'}}>
-                <Icon name="card-outline" size={45} color={'#4A52FF'} />
-                <View style={{gap: 20}}>
+                style={{
+                  flexDirection: 'row',
+                  gap: 40,
+                  alignItems: 'center',
+                  flex: 1,
+                }}>
+                <Icon name="card-outline" size={65} color={'#4A52FF'} />
+                <View style={{gap: 10, alignItems: 'center'}}>
                   <Text style={styles.cardTitle}>Credito</Text>
                   <Text style={styles.cardNumber}>
-                    **** **** **** {cardNumber.split(' ')[3]}
+                    ● {creditNumber.split(' ')[3]}
                   </Text>
                 </View>
               </View>
@@ -109,11 +123,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#021B9E',
     borderRadius: 0,
     padding: 15,
-    shadowColor: 'black',
-    shadowOffset: {width: 0, height: 100},
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 10,
+    // shadowColor: 'white',
+    // // shadowOffset: {width: 0, height: 100},
+    // shadowOpacity: 0.9,
+    // shadowRadius: 10,
+    // elevation: 10,
   },
   header: {
     backgroundColor: '#00079A',
@@ -121,7 +135,6 @@ const styles = StyleSheet.create({
     gap: 50,
     height: '80%',
     borderBottomRightRadius: 150,
-    // paddingBottom: 20,
   },
   tarjetas: {
     color: 'white',
@@ -162,26 +175,27 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   cardContainer: {
-    paddingHorizontal: 40,
-    paddingVertical: 10,
+    marginLeft: 37,
+    marginRight: 25,
+    backgroundColor: '#4A52FF',
+    borderRadius: 10,
   },
   card: {
+    transform: [{translateX: -12}, {translateY: -12}],
     backgroundColor: 'white',
-    borderRadius: 3,
+    borderRadius: 10,
     padding: 20,
-    shadowColor: 'black',
-    shadowOffset: {width: 0, height: 100},
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 12,
+    gap: 12,
   },
   cardTitle: {
     color: '#4A52FF',
     fontWeight: '900',
-    fontSize: 19,
+    fontSize: 22,
   },
   cardNumber: {
-    color: 'black',
+    color: '#00079A',
     fontWeight: '900',
+    fontSize: 20,
+    letterSpacing: 1,
   },
 });

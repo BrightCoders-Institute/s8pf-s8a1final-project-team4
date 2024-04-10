@@ -54,21 +54,22 @@ export default function Home() {
           )}
           <Text style={styles.headerText}>Hola, {userInfo?.name}</Text>
         </View>
+        <TouchableOpacity
+          style={styles.accountContainer}
+          onPress={() => {
+            navigation.navigate('CuentaDebitoFisica');
+          }}>
+          <View style={{gap: 20}}>
+            <Text style={styles.accountTitle}>Cuenta</Text>
+            <Icon name="card-outline" size={60} color={'#4A52FF'} />
+          </View>
+          <Text style={styles.accountNum}>● {cardNumber?.split(' ')[3]}</Text>
+          <Text style={styles.accountBalance}>
+            ${userInfo?.tarjetaDebito.saldo.toLocaleString('es-ES')}
+          </Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        style={styles.accountContainer}
-        onPress={() => {
-          navigation.navigate('CuentaDebitoFisica');
-        }}>
-        <View style={{gap: 20}}>
-          <Text style={styles.accountTitle}>Cuenta</Text>
-          <Icon name="card-outline" size={60} color={'#4A52FF'} />
-        </View>
-        <Text style={styles.accountNum}>● {cardNumber?.split(' ')[3]}</Text>
-        <Text style={styles.accountBalance}>
-          ${userInfo?.tarjetaDebito.saldo.toLocaleString('es-ES')}
-        </Text>
-      </TouchableOpacity>
+
       <View style={styles.secondContainer}>
         <View style={styles.card}>
           <View style={{flexDirection: 'row', gap: 15, alignItems: 'center'}}>
@@ -120,7 +121,6 @@ export default function Home() {
             style={styles.optionTouchable}
             onPress={() => {
               navigation.navigate('History');
-              //navigate to Historial
             }}>
             <Icon name="timer-outline" size={45} color={'white'} />
             <Text style={styles.optionText}>Historial</Text>
@@ -129,7 +129,7 @@ export default function Home() {
           <TouchableOpacity
             style={styles.optionTouchable}
             onPress={() => {
-              navigation.navigate('TarjetaDebito');
+              navigation.navigate('MisTarjetas');
             }}>
             <Icon name="card-outline" size={45} color={'white'} />
             <Text style={styles.optionText}>Mis Tarjetas</Text>
@@ -145,25 +145,25 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F2F2F2',
     flex: 1,
-    // gap: 40,
   },
   header: {
     backgroundColor: '#021B9E',
-    alignItems: 'center',
     gap: 8,
-    paddingVertical: 20,
-    paddingBottom: 60,
+    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 40,
   },
   headerIcons: {
     alignSelf: 'flex-end',
     flexDirection: 'row',
     gap: 20,
     paddingHorizontal: 22,
+    paddingTop: 20,
   },
   headerName: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
+    paddingBottom: 22,
     gap: 20,
   },
   headerImg: {
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 12,
-    transform: [{translateX: 0}, {translateY: -30}],
+    // transform: [{translateX: 0}, {translateY: -30}],
     borderBottomColor: '#021B9E',
     borderBottomWidth: 2,
   },
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     // alignSelf: 'flex-start',
   },
   secondContainer: {
-    paddingTop: 10,
+    paddingTop: 30,
     gap: 30,
   },
   line: {
