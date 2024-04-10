@@ -51,7 +51,7 @@ export default function SignUp() {
 
   useEffect(() => {
     (async () => {
-      await AsyncStorage.removeItem('userID');
+      await AsyncStorage.removeItem('userUID');
     })();
   }, []);
 

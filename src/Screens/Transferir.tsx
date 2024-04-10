@@ -5,7 +5,7 @@ import InputDestinatario from '../Components/InputDestinatario';
 import FormButton from '../Components/Button';
 import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
-import { minusTransfer, transferToCard } from '../Firebase/db';
+import {transferToCard } from '../Firebase/db';
 
 export default function Transferir({route}: any) {
   const {userInfo} = useContext(UserContext);

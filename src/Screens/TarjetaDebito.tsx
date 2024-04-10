@@ -22,7 +22,7 @@ export default function TarjetaDebito() {
           onPress={() => {
             navigation.navigate('Home');
           }}>
-          <Icon name="close-outline" size={45} color={'#4A52FF'} />
+          <Icon name="back" size={45} color={'#4A52FF'} />
         </TouchableOpacity>
         <Text style={styles.tarjetas}>Mis Tarjetas</Text>
       </View>

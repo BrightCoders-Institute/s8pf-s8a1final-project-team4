@@ -1,36 +1,50 @@
-import React, {useState, useContext} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import React, { useState, useContext, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import NewIcon from 'react-native-vector-icons/FontAwesome5';
-import {useNavigation} from '@react-navigation/native';
-import {UserContext} from '../../App';
+import { useNavigation } from '@react-navigation/native';
+import { UserContext } from '../../App';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Home() {
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
-  const {userInfo} = useContext(UserContext);
-  const cardNumber = userInfo.tarjetaDebito.number.replace(
+
+  const { userInfo } = useContext(UserContext);
+  
+  const getData = async () =>{
+    const id = await AsyncStorage.getItem('userUID')
+    console.log("id",id)
+    console.log("userinfo", userInfo)
+    }
+
+  useEffect(()=>{
+    getData()
+  },[])
+ 
+  const cardNumber = userInfo?.tarjetaDebito.number.toString().replace(
     /\d{4}(?=.)/g,
     '$& ',
   );
-
+  
   return (
     <View style={styles.container}>
+
       <View style={styles.header}>
-        {userInfo.photo ? (
+        {userInfo?.photo ? (
           <Image
             style={styles.headerImg}
             source={{
-              uri: userInfo.photo,
+              uri: userInfo?.photo,
             }}
           />
         ) : (
           <View style={styles.headerImgTextCont}>
-            <Text style={styles.headerImgText}>{userInfo.name[0]}</Text>
+            <Text style={styles.headerImgText}>{userInfo?.name[0]}</Text>
           </View>
         )}
 
-        <Text style={styles.headerText}>Hola, {userInfo.name}</Text>
+        <Text style={styles.headerText}>Hola, {userInfo?.name}</Text>
         <TouchableOpacity
           style={styles.congifIconContainer}
           onPress={() => {
@@ -46,13 +60,13 @@ export default function Home() {
         }}>
         <View>
           <Text style={styles.accountTitle}>Cuentas</Text>
-          <Text style={styles.accountNum}>● {cardNumber.split(' ')[3]}</Text>
+          <Text style={styles.accountNum}>● {cardNumber?.split(' ')[3]}</Text>
         </View>
         <Text style={styles.accountBalance}>
-          ${userInfo.tarjetaDebito.saldo.toLocaleString('es-ES')}
+          ${userInfo?.tarjetaDebito.saldo.toLocaleString('es-ES')}
         </Text>
       </TouchableOpacity>
-      <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
         <TouchableOpacity
           style={styles.optionTouchable}
           onPress={() => {
@@ -76,7 +90,7 @@ export default function Home() {
         <TouchableOpacity
           style={styles.optionTouchable}
           onPress={() => {
-            // navigation.navigate('CuentaDebitoFisica');
+            navigation.navigate('History');
             //navigate to Historial
           }}>
           <View style={styles.optionView}>
@@ -91,7 +105,7 @@ export default function Home() {
           onPress={() => {
             navigation.navigate('CuentaDebitoFisica');
           }}>
-          <View style={{flexDirection: 'row', gap: 15, alignItems: 'center'}}>
+          <View style={{ flexDirection: 'row', gap: 15, alignItems: 'center' }}>
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
               <Icon
                 name={showPassword ? 'eye-outline' : 'eye-off-outline'}
@@ -121,7 +135,13 @@ export default function Home() {
         <Text style={styles.buttonText}>Mis Tarjetas</Text>
       </TouchableOpacity>
     </View>
-  );
+
+
+
+
+
+
+  )
 }
 
 const styles = StyleSheet.create({
@@ -177,7 +197,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     shadowColor: 'black',
-    shadowOffset: {width: 0, height: 100},
+    shadowOffset: { width: 0, height: 100 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 12,
@@ -231,7 +251,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 35,
     shadowColor: 'black',
-    shadowOffset: {width: 0, height: 100},
+    shadowOffset: { width: 0, height: 100 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 5,
@@ -258,7 +278,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 3,
     shadowColor: 'black',
-    shadowOffset: {width: 0, height: 100},
+    shadowOffset: { width: 0, height: 100 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 5,
