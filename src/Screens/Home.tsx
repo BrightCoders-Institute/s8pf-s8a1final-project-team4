@@ -60,43 +60,39 @@ export default function Home() {
         onPress={() => {
           navigation.navigate('CuentaDebitoFisica');
         }}>
-        <View>
-          <Text style={styles.accountTitle}>Cuentas</Text>
-          <Text style={styles.accountNum}>● {cardNumber?.split(' ')[3]}</Text>
+        <View style={{gap: 20}}>
+          <Text style={styles.accountTitle}>Cuenta</Text>
+          <Icon name="card-outline" size={60} color={'blue'} />
         </View>
+        <Text style={styles.accountNum}>● {cardNumber?.split(' ')[3]}</Text>
         <Text style={styles.accountBalance}>
           ${userInfo?.tarjetaDebito.saldo.toLocaleString('es-ES')}
         </Text>
       </TouchableOpacity>
       <View style={styles.secondContainer}>
-        <View style={styles.cardView}>
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => {
-              navigation.navigate('CuentaDebitoFisica');
-            }}>
-            <View style={{flexDirection: 'row', gap: 15, alignItems: 'center'}}>
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                <Icon
-                  name={showPassword ? 'eye-outline' : 'eye-off-outline'}
-                  size={30}
-                  color={'white'}
-                />
-              </TouchableOpacity>
-              <Text style={styles.cardNumber}>
-                {showPassword
-                  ? cardNumber
-                  : '**** **** **** ' + cardNumber.split(' ')[3]}
-              </Text>
-            </View>
-            <NewIcon
-              name="cc-visa"
-              size={35}
-              color={'white'}
-              style={styles.visaIcon}
-            />
-          </TouchableOpacity>
+        <View style={styles.card}>
+          <View style={{flexDirection: 'row', gap: 15, alignItems: 'center'}}>
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+              <Icon
+                name={showPassword ? 'eye-outline' : 'eye-off-outline'}
+                size={30}
+                color={'white'}
+              />
+            </TouchableOpacity>
+            <Text style={styles.cardNumber}>
+              {showPassword
+                ? cardNumber
+                : '**** **** **** ' + cardNumber.split(' ')[3]}
+            </Text>
+          </View>
+          <NewIcon
+            name="cc-visa"
+            size={35}
+            color={'white'}
+            style={styles.visaIcon}
+          />
         </View>
+
         <View style={styles.line} />
 
         <View style={styles.optionContainer}>
@@ -202,16 +198,18 @@ const styles = StyleSheet.create({
   },
   accountContainer: {
     backgroundColor: 'white',
-    borderRadius: 24,
+    borderRadius: 30,
     flexDirection: 'row',
-    padding: 20,
+    padding: 30,
     alignItems: 'center',
     justifyContent: 'space-between',
     shadowColor: 'black',
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 12,
-    transform: [{translateX: 0}, {translateY: -20}],
+    transform: [{translateX: 0}, {translateY: -30}],
+    borderBottomColor: '#021B9E',
+    borderBottomWidth: 2,
   },
   accountTitle: {
     color: '#686868',
@@ -219,18 +217,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   accountNum: {
-    color: 'black',
-    fontSize: 19,
+    color: '#00079A',
+    fontSize: 22,
     paddingVertical: 30,
     fontWeight: '900',
+    alignSelf: 'flex-end',
   },
   accountBalance: {
-    color: 'black',
-    fontSize: 28,
+    color: '#00079A',
+    fontSize: 33,
+    // fontWeight: '500',
+    letterSpacing: 1,
+    // paddingBottom: 15,
+    // alignSelf: 'flex-start',
   },
   secondContainer: {
     paddingTop: 10,
-    gap: 20,
+    gap: 30,
   },
   line: {
     borderBottomColor: '#4A52FF',
@@ -244,9 +247,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 10,
     gap: 10,
-    // height: 80,
+    height: 80,
     width: '45%',
-    // justifyContent: 'center',
   },
   optionIcon: {
     height: 10,
@@ -262,24 +264,26 @@ const styles = StyleSheet.create({
   },
   cardView: {
     borderLeftColor: '#4A52FF',
-    borderLeftWidth: 3,
-    paddingVertical: 10,
-    paddingLeft: 8,
+    paddingVertical: 5,
+    marginVertical: 5,
     marginHorizontal: 25,
+    paddingLeft: 8,
+    borderRadius: 7,
+    borderLeftWidth: 4,
   },
   card: {
     backgroundColor: '#00079A',
-    borderRadius: 2,
+    borderRadius: 10,
     padding: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 35,
     shadowColor: 'black',
-    shadowOffset: {width: 0, height: 100},
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 5,
+    marginHorizontal: 15,
   },
   cardIcon: {
     height: 25,
