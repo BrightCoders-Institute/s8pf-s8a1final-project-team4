@@ -76,7 +76,7 @@ export default function Home() {
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
               <Icon
                 name={showPassword ? 'eye-outline' : 'eye-off-outline'}
-                size={30}
+                size={35}
                 color={'white'}
               />
             </TouchableOpacity>
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#00079A',
     borderRadius: 10,
-    padding: 15,
+    paddingHorizontal: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
