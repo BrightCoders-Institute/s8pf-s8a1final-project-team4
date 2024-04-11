@@ -178,7 +178,8 @@ export default function LogIn() {
       <View style={styles.logoView}>
         <Text style={styles.logoText}>SnapPay</Text>
       </View>
-      <Icon2 name="user" size={80} color={'#4A52FF'} style={styles.align} />
+      <Icon2 name="user" size={70} color={'#4A52FF'} style={styles.align} />
+      <Text style={styles.text}>Por favor Ingresa o Crea una Cuenta</Text>
       <View style={styles.inputView}>
         <FormInput
           text="Correo"
@@ -194,30 +195,40 @@ export default function LogIn() {
           msgError={passwordError}
           onInputChange={setPassword}
         />
-      </View>
-      <View style={styles.buttonView}>
         <FormButton
-          text={'Log in'}
+          text={'Continuar'}
           fn={() => {
             handleLogInWithFirebase();
           }}
         />
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          width: '80%',
+          alignSelf: 'center',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          gap: 5,
+        }}>
+        <View style={styles.line} />
+        <Text style={styles.text}>O puedes</Text>
+        <View style={styles.line} />
+      </View>
+      <View style={styles.buttonView}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('SignUp');
+          }}
+          style={styles.buttons}>
+          <Text style={styles.btnText}>Crear una Cuenta</Text>
+        </TouchableOpacity>
         <FormButton
-          text={'Log in with google'}
+          text={'Continua con Google'}
           fn={() => {
             handleLogInWithGoogle();
           }}
         />
-        <View style={styles.textView}>
-          <Text style={styles.text}>If you don't have an account,</Text>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('SignUp');
-            }}>
-            <Text style={styles.register}>register</Text>
-          </TouchableOpacity>
-          <Text style={styles.text}>now</Text>
-        </View>
       </View>
     </View>
   );
@@ -226,7 +237,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F2F2F2',
     flex: 1,
-    gap: 50,
+    gap: 30,
   },
   logoView: {
     backgroundColor: '#00079A',
@@ -259,13 +270,40 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   text: {
-    color: 'black',
+    color: '#4A52FF',
     fontSize: 15,
+    fontWeight: '900',
+    alignSelf: 'center',
   },
   register: {
     color: '#041CF0',
     textDecorationLine: 'underline',
     fontWeight: '900',
     fontSize: 18,
+  },
+  line: {
+    borderBottomColor: '#4A52FF',
+    borderBottomWidth: 3,
+    flex: 1,
+  },
+  buttons: {
+    backgroundColor: 'white',
+    width: '60%',
+    alignItems: 'center',
+    shadowOffset: {width: 0, height: 100},
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 5,
+    borderRadius: 5,
+    paddingHorizontal: 20,
+    paddingVertical: 13,
+    alignSelf: 'center',
+    borderWidth: 1,
+    borderColor: '#4A52FF',
+  },
+  btnText: {
+    color: '#4A52FF',
+    fontSize: 20,
+    fontWeight: '900',
   },
 });
