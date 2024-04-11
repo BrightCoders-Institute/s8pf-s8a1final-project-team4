@@ -16,7 +16,8 @@ export default function Retirar() {
   const [concepto, setConcepto] = useState('');
   const navigation = useNavigation();
   const {userInfo} = useContext(UserContext);
-  const cardNum = userInfo.tarjetaDebito.number.replace(/\d{4}(?=.)/g, '$& ');
+  const saldo:number = Number(userInfo.tarjetaDebito.saldo)
+  const cardNum:string = userInfo.tarjetaDebito.number.replace(/\d{4}(?=.)/g, '$& ');
 
   return (
     <View style={styles.container}>
@@ -41,7 +42,7 @@ export default function Retirar() {
         <Text style={styles.inputTitle}>IMPORTE</Text>
         <InputDestinatario
           placeholder="$"
-          tipo="numeric"
+          modo="numero"
           onChange={val => {
             if (parseInt(val, 10) < 50 || parseInt(val, 10) % 50 !== 0) {
               setShowError('Solo multiplos de 50');
@@ -64,8 +65,13 @@ export default function Retirar() {
         text="Continuar"
         fn={() => {
           if (importe !== '') {
-            setModalVisible(true);
-          } else {
+            if(saldo - Number(importe) < 0){
+              setShowError('Saldo insuficiente');
+            } else {
+              setModalVisible(true);
+            }
+          }
+          else {
             setShowError('Ingresa una cantidad');
           }
         }}

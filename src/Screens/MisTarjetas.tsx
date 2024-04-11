@@ -106,8 +106,11 @@ export default function MisTarjetas() {
         </View>
       </View>
     </View>
-  );
+ )
+
 }
+ 
+
 
 const styles = StyleSheet.create({
   container: {
@@ -195,3 +198,4 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
 });
+
