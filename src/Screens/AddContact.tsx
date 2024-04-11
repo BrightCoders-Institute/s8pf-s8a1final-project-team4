@@ -1,9 +1,9 @@
-import { View, StyleSheet } from 'react-native';
-import React, { useState, useSyncExternalStore } from 'react';
+import {View, StyleSheet} from 'react-native';
+import React, {useState, useSyncExternalStore} from 'react';
 import InputDestinatario from '../Components/InputDestinatario';
 import FormButton from '../Components/Button';
-import { useNavigation } from '@react-navigation/native';
-import { AddContactDoc } from '../Firebase/db';
+import {useNavigation} from '@react-navigation/native';
+import {AddContactDoc} from '../Firebase/db';
 
 export default function AddContact() {
   const navigation = useNavigation();
@@ -15,7 +15,7 @@ export default function AddContact() {
   const handleAddContact = async () => {
     try {
       AddContactDoc(name, number);
-      navigation.navigate('Transferir', { name: name, card_number: number });
+      navigation.navigate('Transferir', {name: name, card_number: number});
     } catch (err) {
       console.log(err);
     }
@@ -27,28 +27,35 @@ export default function AddContact() {
         <InputDestinatario
           placeholder="Nombre Completo"
           icono="user"
-          onChange={(text) => setName(text)}
+          onChange={text => setName(text)}
           modo="texto"
           showError={clickedAdd && !name}
         />
         <InputDestinatario
-          onChange={(text) => setNickname(text)}
+          onChange={text => setNickname(text)}
           placeholder="Alias"
           maxLength={5}
           modo="texto"
-          icono=''
+          icono=""
           showError={clickedAdd && !nickname}
         />
         <InputDestinatario
           placeholder="Numero de Cuenta"
           icono="wallet"
-          onChange={(text) => setNumber(Number(text))}
+          onChange={text => setNumber(Number(text))}
           maxLength={16}
           modo="numero"
           showError={clickedAdd && !number}
         />
         <View style={styles.Inputbt}>
-          <FormButton text="Agregar" fn={() => { setClickedAdd(true); handleAddContact(); }} disabled={!name || !number || !nickname} />
+          <FormButton
+            text="Agregar"
+            fn={() => {
+              setClickedAdd(true);
+              handleAddContact();
+            }}
+            disabled={!name || !number || !nickname}
+          />
         </View>
       </View>
     </View>
@@ -59,15 +66,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#EEEAEA',
     alignItems: 'center',
+    paddingTop: 80,
   },
   campos: {
-    flex: 1,
+    // flex: 1,
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   Inputbt: {
     marginTop: 50,
-    width: '100%'
+    width: '100%',
   },
 });

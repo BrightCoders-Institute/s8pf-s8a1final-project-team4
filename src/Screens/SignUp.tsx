@@ -51,7 +51,7 @@ export default function SignUp() {
 
   useEffect(() => {
     (async () => {
-      await AsyncStorage.removeItem('userID');
+      await AsyncStorage.removeItem('userUID');
     })();
   }, []);
 
@@ -174,77 +174,15 @@ export default function SignUp() {
     }
   };
 
-  const handleSignUpWithGoogle = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const {idToken} = await GoogleSignin.signIn();
-      const googleCredential = GoogleAuthProvider.credential(idToken);
-      const result = await signInWithCredential(auth, googleCredential);
-      const uid = result.user.uid;
-      await AsyncStorage.setItem('userUID', uid);
-      const userDocRef = doc(db, 'users', uid); // Crear documento en Firestore en la colección "users"
-      const docSnap = await getDoc(userDocRef);
-      if (!docSnap.exists()) {
-        const userData = {
-          name: result.user.displayName,
-          email: result.user.email,
-          photo: result.user.photoURL,
-          tarjetaDebito: {
-            number: getRandomCardNumber(),
-            saldo: 10000,
-            cvv: getRandomCvv(),
-            movimientos: [
-              {
-                fecha: getCurrentDate(),
-                monto: 10000,
-                descripcion: 'Apertura de cuenta',
-                tipo: 'Transferencia bancaria',
-              },
-            ],
-          },
-          tarjetaCredito: {
-            number: getRandomCardNumber(),
-            saldo: 10000,
-            cvv: getRandomCvv(),
-            movimientos: [
-              {
-                fecha: getCurrentDate(),
-                monto: 10000,
-                descripcion: 'Apertura de cuenta',
-                tipo: 'Transferencia bancaria',
-              },
-            ],
-          },
-          contactos: [],
-        };
-        handleUserActive(userData);
-        await setDoc(userDocRef, userData);
-      } else {
-        const userData = docSnap.data();
-        handleUserActive(userData);
-      }
-      // Suscribirse a cambios en los datos del usuario
-      const unsubscribe = onSnapshot(userDocRef, doc => {
-        if (doc.exists()) {
-          const userData = doc.data();
-          handleUserActive(userData);
-        }
-      });
-      navigation.navigate('Home');
-      // Retornar la función de limpieza para cancelar la suscripción
-      return () => unsubscribe();
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Ocurrio un error al registrarse');
-    }
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.logoView}>
         <Text style={styles.logoText}>SnapPay</Text>
       </View>
-      <Icon2 name="user" size={80} color={'#4A52FF'} style={styles.align} />
+      <Icon2 name="user" size={70} color={'#4A52FF'} style={styles.align} />
+      <Text style={styles.text}>
+        Para crear tu cuenta llena todos los campos
+      </Text>
       <View style={styles.inputView}>
         <FormInput
           text="Nombre completo"
@@ -269,27 +207,11 @@ export default function SignUp() {
       </View>
       <View style={styles.buttonView}>
         <FormButton
-          text={'Sign up'}
+          text={'Crear Cuenta'}
           fn={() => {
             handleSignUpFirebase();
           }}
         />
-        <FormButton
-          text={'Sign up with google'}
-          fn={() => {
-            handleSignUpWithGoogle();
-          }}
-        />
-        <View style={styles.textView}>
-          <Text style={styles.text}>Already an account?</Text>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('LogIn');
-            }}>
-            <Text style={styles.register}>Log in</Text>
-          </TouchableOpacity>
-          <Text style={styles.text}>now</Text>
-        </View>
       </View>
     </View>
   );
@@ -299,7 +221,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F2F2F2',
     flex: 1,
-    gap: 40,
+    gap: 30,
   },
   logoView: {
     backgroundColor: '#00079A',
@@ -307,6 +229,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 35,
     borderBottomRightRadius: 8,
+    marginBottom: 20,
   },
   logoText: {
     color: 'white',
@@ -332,8 +255,10 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   text: {
-    color: 'black',
+    color: '#4A52FF',
     fontSize: 15,
+    fontWeight: '900',
+    alignSelf: 'center',
   },
   register: {
     color: '#041CF0',

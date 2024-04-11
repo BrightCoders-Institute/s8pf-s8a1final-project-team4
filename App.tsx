@@ -19,7 +19,7 @@ const UserContext = createContext({
 function App() {
   const [userInfo, setUserInfo] = useState({});
 
-  function handleUserActive(user) {
+  function handleUserActive(user:any) {
     setUserInfo(user);
   }
 
