@@ -17,8 +17,7 @@ export default function Retirar() {
   const navigation = useNavigation();
   const {userInfo} = useContext(UserContext);
   const saldo:number = Number(userInfo.tarjetaDebito.saldo)
-  console.log("saldo",saldo)
-  const cardNum = userInfo.tarjetaDebito.number.replace(/\d{4}(?=.)/g, '$& ');
+  const cardNum:string = userInfo.tarjetaDebito.number.replace(/\d{4}(?=.)/g, '$& ');
 
   return (
     <View style={styles.container}>
