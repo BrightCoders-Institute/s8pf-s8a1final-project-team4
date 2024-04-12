@@ -13,8 +13,10 @@ import {
   setDoc,
   runTransaction,
 } from 'firebase/firestore';
-import {db} from './firebaseconfig';
+import {db, auth} from './firebaseconfig';
+import {Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 function getCurrentDate() {
   const currentDate = new Date();
@@ -86,13 +88,16 @@ async function minusTransfer(amount: number, concepto: string) {
 
 export async function transferToCard(
   amount: number,
-  destination: number,
+  destination: string,
   concept: string,
+  myBalance: number,
+  transferTo: string,
 ) {
   try {
     const q = query(
       collection(db, 'users'),
       where('tarjetaDebito.number', '==', destination.toString()),
+
     );
 
     const querySnapshot = await getDocs(q);
@@ -102,18 +107,25 @@ export async function transferToCard(
         querySnapshot.forEach(async document => {
           const destinyRef = doc(db, 'users', document.id);
           const destinyData = document.data();
-          console.log(destinyData);
-          destinyData.tarjetaDebito.saldo += parseInt(amount);
-          destinyData.tarjetaDebito.movimientos.push({
-            fecha: getCurrentDate(),
-            monto: amount,
-            descripcion: concept,
-            tipo: 'Transferencia bancaria',
-          });
-          transaction.set(destinyRef, destinyData);
+
+          if (myBalance < amount) {
+            Alert.alert("No tienes suficiente saldo")
+            return false;
+
+          }else {
+            destinyData.tarjetaDebito.saldo += parseInt(amount);
+            destinyData.tarjetaDebito.movimientos.push({
+              fecha: getCurrentDate(),
+              monto: amount,
+              descripcion: concept,
+              tipo: 'Transferencia bancaria',
+            });
+            transaction.set(destinyRef, destinyData);
+            await minusTransfer(amount, concept); //descontar del usuario activo
+            Alert.alert(`Has transferido con exito a: ${transferTo}`);
+          }
         });
       });
-      await minusTransfer(amount, concept); //descontar del usuario activo
     } else {
       console.log('No se encontró ningún usuario con esta tarjeta');
     }

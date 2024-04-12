@@ -17,9 +17,16 @@ export default function Transferir({route}: any) {
   const [amount, setAmount] = useState<number>(0);
   const [concept, setConcept] = useState<string>('');
   const [clickedSend, setClickedSend] = useState<boolean>(false);
+  const [borderAlert, setBorderAler] = useState<boolean>(false);
 
   const handleClick = () => {
-    transferToCard(amount, card_number, concept);
+
+
+    console.log("Numero adentro: " + card_number)
+    transferToCard(amount, card_number, concept, userInfo.tarjetaDebito.saldo, transferTo).then(() => {
+      navigation.navigate('Home');
+    });
+
 
     if (!amount || !concept) {
       Alert.alert('Error', 'Por favor, complete todos los campos.');
@@ -31,17 +38,21 @@ export default function Transferir({route}: any) {
       return;
     }
 
+
+    
+
     console.log(amount, concept);
     transferToCard(amount, card_number);
 
     navigation.navigate('Home');
     Alert.alert(`Has transferido con exito a: ${transferTo}`);
+
     //modal message
   };
 
   // Verificar si los campos de importe y concepto están vacíos
   const areFieldsEmpty = !amount || !concept;
-
+  
   return (
     <View style={styles.container}>
       <Text style={styles.Text}>Estas Transfiriendo a: </Text>

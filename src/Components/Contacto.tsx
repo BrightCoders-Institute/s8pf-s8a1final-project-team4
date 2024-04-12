@@ -17,6 +17,7 @@ export default function Contacto({nombre, numero, icono, imagen}: Props) {
     <TouchableOpacity
       style={styles.container}
       onPress={() => {
+        console.log("Este es mi numero gookkuuuu ahhh: " + numero);
         navigation.navigate('Transferir', {name: nombre, card_number: numero});
       }}>
       {imagen ? (

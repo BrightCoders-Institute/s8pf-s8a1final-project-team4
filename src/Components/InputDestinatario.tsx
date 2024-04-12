@@ -10,6 +10,7 @@ type Props = {
   onChange: (value: string) => void;
   maxLength?: number;
   showError: boolean;
+  borderAlert: boolean;
 };
 
 export default function InputDestinatario({
@@ -20,6 +21,7 @@ export default function InputDestinatario({
   maxLength,
   modo,
   showError,
+  borderAlert,
 }: Props) {
   const [isValidLength, setIsValidLength] = useState<boolean>(true);
 
@@ -47,6 +49,7 @@ export default function InputDestinatario({
           style,
           !isValidLength && styles.invalid,
         ]}>
+
         <TextInput
           style={styles.InputSty}
           placeholder={placeholder}
