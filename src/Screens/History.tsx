@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import { getHistory } from '../Firebase/db';
-import Movement from '../Components/Movement';
+import {Movement, MovementFilterByRecived,MovementFilterBySent} from '../Components/Movement';
 import { formatDate } from '../Components/MoveCard';
 export default function History() {
   const navigation = useNavigation()
@@ -12,9 +12,46 @@ export default function History() {
   const [data, setData] = useState<object>({})
   
   const handlePress = (name: string) => {
-    setHover(name)
+     setHover(name)
+     filter(name)
+    
   }
-  
+  async function filter(type:string){
+  try{
+    const data = await getHistory()
+    if(type == 'btn2'){
+      const grupedByArrivals = data.debito.reduce((acc: any, movement: object) => {
+        const date = movement.fecha;
+        if (!acc[date] && movement.monto > 0) {
+          acc[date] = []
+        }
+        if(movement.monto > 0){
+          acc[date].push(movement);
+        }
+        return acc;
+      }, {});
+      setData(grupedByArrivals)
+    } else if(type == 'btn3'){
+      const grupedBySent = data.debito.reduce((acc: any, movement: object) => {
+        const date = movement.fecha;
+        if (!acc[date] && Number(movement.monto) < 0) {
+          acc[date] = []
+        }
+        if(Number(movement.monto) < 0){
+          acc[date].push(movement);
+        }
+        return acc;
+      }, {});
+      setData(grupedBySent)
+    } else if(type == 'btn1'){
+      getData()
+    }
+    
+    
+  }catch(err){
+    console.log(err)
+  }
+ }
   const getData = async () => {
     const data = await getHistory()
     console.log(data)
@@ -26,6 +63,7 @@ export default function History() {
       acc[date].push(movement);
       return acc;
     }, {});
+    console.log(grupedByDate)
      setData(grupedByDate)
   }
 
@@ -61,34 +99,47 @@ export default function History() {
         </View>
       </View>
       <View style={styles.mainHistory}>
-        {/* Esto deberia ir en un componente externo para reutilizarse */}
+      
         <FlatList
           data={Object.entries(data)}
           keyExtractor={(item) => item[0]}
           renderItem={({ item }) => (
             <View>
-              <Text style={styles.date}>
+                <Text style={styles.date}>
                 {formatDate(item[0])}
               </Text>
-              <FlatList
+   <FlatList
                 data={item[1]}
-                renderItem={({ item: movimiento }) => (
+                renderItem={({ item: movimiento  }) => (
 
+               
+         
                   <View style={styles.main}>
                     <View style={styles.card}>
-                    {
-                            Number(movimiento.monto) > 0 ? 
+                      
+
+                       {
+                         
+                           Number(movimiento.monto) > 0  ? 
                             <View style={{ width: 30, height: 30, backgroundColor: "#54AB5F", borderRadius: 20 }} />
                             : 
                             <View style={{ width: 30, height: 30, backgroundColor: "red", borderRadius: 20 }} />
+                            
                           }
+                          
+                         
+
+
                         <View style={styles.texts}>
                           <View style={{alignSelf:"flex-end"}} >
                             <Text style={styles.transferName}>{movimiento.descripcion}</Text>
                             <Text style={styles.transferType}>{movimiento.tipo}</Text>
                           </View>
+                        
+                        
+                        
                           {
-                            Number(movimiento.monto) > 0 ? 
+                            Number(movimiento.monto) > 0  ? 
                             <Text style={styles.number}>${movimiento.monto}</Text> 
                             : 
                             <Text style={[styles.number,{color:"red"}]}>${movimiento.monto}</Text>
