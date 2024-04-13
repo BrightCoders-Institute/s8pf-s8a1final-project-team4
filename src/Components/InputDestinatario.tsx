@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
   ErrorText: {
     color: 'red',
     fontSize: 12,
-    marginTop: 5,
   },
   invalid: {
     borderColor: 'red',

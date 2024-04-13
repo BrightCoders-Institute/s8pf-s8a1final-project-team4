@@ -141,3 +141,36 @@ export async function userWithdraw(quantity: any, concepto: any) {
     console.log('2', err);
   }
 }
+<<<<<<< Updated upstream
+=======
+
+export async function getHistory() {
+  try{
+    const ref = await getDocRef();
+    const doc = getDoc(ref);
+    const data: DocumentData  = (await doc).data();
+    const movimientos = {
+      debito:data.tarjetaDebito.movimientos,
+      credito:data.tarjetaCredito.movimientos
+    };
+   return movimientos;
+  }catch(err){
+    console.log(err)
+  }
+}
+
+export async function checkIfAccountExists(accountNumber: string): Promise<boolean> {
+  try {
+    const q = query(
+      collection(db, 'users'),
+      where('tarjetaDebito.number', '==', accountNumber)
+    );
+
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty;
+  } catch (error) {
+    console.error('Error checking account existence:', error);
+    return false;
+  }
+}
+>>>>>>> Stashed changes

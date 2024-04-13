@@ -1,46 +1,62 @@
-import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {
-  nombre: string;
+  nombre: string | number; // Permitir que nombre sea un número también
   numero: number;
   icono: string;
   imagen?: string;
 };
 
-export default function Contacto({nombre, numero, icono, imagen}: Props) {
+export default function Contacto({ nombre, numero, icono, imagen }: Props) {
   const navigation = useNavigation();
-  console.log('nombre', nombre);
+
+  const handleContactPress = () => {
+    console.log("Este es mi número: " + numero);
+    navigation.navigate('Transferir', { name: nombre, card_number: numero });
+  };
+
+  // Verificar si nombre es una cadena de texto y convertirlo a texto si es un número
+  const nombreTexto = typeof nombre === 'number' ? nombre.toString() : nombre;
+
   return (
     <TouchableOpacity
       style={styles.container}
+<<<<<<< Updated upstream
       onPress={() => {
         navigation.navigate('Transferir', {name: nombre, card_number: numero});
       }}>
+=======
+      onPress={handleContactPress}>
+>>>>>>> Stashed changes
       {imagen ? (
         <Image
-          style={styles.Img}
+          style={styles.img}
           source={{
             uri: imagen,
           }}
         />
       ) : (
         <View style={styles.headerImgTextCont}>
-          <Text style={styles.headerImgText}>{nombre[0].toUpperCase()}</Text>
+          {/* Verificar si nombreTexto es una cadena de texto antes de usar toUpperCase */}
+          {typeof nombreTexto === 'string' && nombreTexto.length > 0 && (
+            <Text style={styles.headerImgText}>{nombreTexto[0].toUpperCase()}</Text>
+          )}
         </View>
       )}
       <View style={styles.containerInfo}>
-        <Text style={styles.Text}>{nombre}</Text>
-        <View style={styles.containerdos}>
-          <Text style={styles.Text}>{'● ' + numero?.toString().slice(-4)}</Text>
+        <Text style={styles.text}>{nombreTexto}</Text>
+        <View style={styles.infoContainer}>
+          <Text style={styles.text}>{'● ' + numero?.toString().slice(-4)}</Text>
           <Icon name={icono} size={30} color="white" />
         </View>
       </View>
     </TouchableOpacity>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -48,7 +64,7 @@ const styles = StyleSheet.create({
     gap: 15,
     marginTop: 20,
   },
-  Img: {
+  img: {
     height: 70,
     width: 70,
     borderRadius: 100,
@@ -74,12 +90,12 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 4,
   },
-  Text: {
+  text: {
     fontSize: 18,
     fontWeight: '900',
     color: '#fff',
   },
-  containerdos: {
+  infoContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
