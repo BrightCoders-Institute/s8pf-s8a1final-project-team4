@@ -59,6 +59,26 @@ export default function DebitCardDetails() {
         </View>
 
         <View style={styles.movesView}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+            <TouchableOpacity
+              style={styles.optionTouchable}
+              onPress={() => {
+                navigation.navigate('TransferirA');
+              }}>
+              <Icon name="swap-horizontal-outline" size={35} color={'white'} />
+              <Text style={styles.optionText}>Transferir</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.optionTouchable}
+              onPress={() => {
+                navigation.navigate('Retirar');
+              }}>
+              <View style={styles.optionView}>
+                <Icon name="cash-outline" size={35} color={'white'} />
+              </View>
+              <Text style={styles.optionText}>Retirar</Text>
+            </TouchableOpacity>
+          </View>
           <View>
             <Text style={styles.lastMove}>Ultimos Movimientos:</Text>
           </View>
@@ -180,12 +200,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingTop: 30,
     paddingBottom: 20,
-    gap: 35,
+    gap: 20,
+  },
+  optionTouchable: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#4A52FF',
+    borderRadius: 20,
+    flexDirection: 'row',
+    padding: 14,
+    width: '45%',
+  },
+  optionText: {
+    color: 'white',
+    fontSize: 16,
   },
   lastMove: {
     color: '#4A52FF',
     fontWeight: '900',
-    fontSize: 19,
-    letterSpacing: 1,
+    fontSize: 22,
+    paddingLeft: 10,
+    paddingTop: 10,
   },
 });
