@@ -14,23 +14,29 @@ export default function SelectContact() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.Titledestino}>Destinatario</Text>
+      <View style={styles.header}>
+
+        <View style={styles.containertitleee}>
+      <Text style={styles.Titledestino}>¿A quién le quieres transferir?</Text>
+      </View>
 
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('AddContact');
         }}>
         <View style={styles.ContainerBottn}>
-          <Icon name="add-circle" size={60} color="#4A52FF" />
-          <Text style={styles.TextNuevo}>Nuevo</Text>
+          <Icon name="add-circle" size={60} color="#ffffff"/>
+          <Text style={styles.TextNuevo}>Agregar Contacto</Text>
         </View>
       </TouchableOpacity>
-      <Text style={styles.Titleguardado}>Guardados</Text>
-
+      </View>
+      <View style={styles.containerdos}>
+      <Text style={styles.Titleguardado}>Tus contactos:</Text>
+      
       <FlatList
         data={contacts}
         renderItem={item => (
-          <Contacto
+          <Contacto 
             nombre={item.item.nombre}
             numero={item.item.numero}
             icono="cc-mastercard"
@@ -38,24 +44,43 @@ export default function SelectContact() {
         )}
       />
     </View>
+    </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  containertitleee: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10,
+  },
+  containerdos: {
+    backgroundColor: '#fff',
     padding: 20,
+  },
+  header: {
+    backgroundColor: '#00079A',
+    padding: 20,
+    gap: 50,
+    borderBottomRightRadius: 150,
+    // paddingBottom: 20,
   },
   Titledestino: {
     fontSize: 20,
+    color: '#ffffff',
     fontWeight: 'bold',
   },
   TextNuevo: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#4A52FF',
+    color: '#ffffff',
   },
   ContainerBottn: {
+    
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 20,
@@ -63,7 +88,6 @@ const styles = StyleSheet.create({
   },
   Titleguardado: {
     fontSize: 20,
-    fontWeight: 'bold',
     marginTop: 20,
   },
 });

@@ -2,6 +2,7 @@ import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useNavigation} from '@react-navigation/native';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 type Props = {
   nombre: string;
@@ -14,6 +15,8 @@ export default function Contacto({nombre, numero, icono, imagen}: Props) {
   const navigation = useNavigation();
   console.log('nombre', nombre);
   return (
+    <View style={styles.containerInfo}>
+     
     <TouchableOpacity
       style={styles.container}
       onPress={() => {
@@ -32,14 +35,21 @@ export default function Contacto({nombre, numero, icono, imagen}: Props) {
           <Text style={styles.headerImgText}>{nombre[0].toUpperCase()}</Text>
         </View>
       )}
-      <View style={styles.containerInfo}>
+      <View>
         <Text style={styles.Text}>{nombre}</Text>
         <View style={styles.containerdos}>
-          <Text style={styles.Text}>{'● ' + numero?.toString().slice(-4)}</Text>
-          <Icon name={icono} size={30} color="white" />
+          <Text style={styles.Textnumber}>{'● ' + numero?.toString().slice(-4)}</Text>
+          <Icon name={icono} size={20} color="#3B44FF" />
         </View>
+          <View style={styles.containertres}>
+            
+          </View>
       </View>
     </TouchableOpacity>
+    <View style={styles.containertrash}>
+        <Icon name="trash-alt" size={30} color="#3B44FF"  />
+      </View>
+    </View>
   );
 }
 const styles = StyleSheet.create({
@@ -47,7 +57,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 15,
+  },
+  containertrash: {
+    flex : 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    gap: 15,
     marginTop: 20,
+    alignSelf: 'center',
+  },
+  containertres: {
+    backgroundColor: 'red',
   },
   Img: {
     height: 70,
@@ -67,24 +88,29 @@ const styles = StyleSheet.create({
     fontSize: 28,
   },
   containerInfo: {
-    flex: 1,
+    flex : 1,
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-    backgroundColor: '#00079A',
+    backgroundColor: '#fff',
+    marginTop: 20,
     padding: 15,
     borderRadius: 4,
+    borderColor: '#3B44FF', // Cambia 'red' al color que desees
+    borderWidth: 2, // Cambia '2' al grosor que desees
   },
   Text: {
     fontSize: 18,
     fontWeight: '900',
-    color: '#fff',
+    color: 'blue',
+  },
+  Textnumber: {
+    fontSize: 18,
+    fontWeight: '900',
+    color: '#3B44FF',
   },
   containerdos: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    backgroundColor: 'white',
     gap: 15,
   },
 });
