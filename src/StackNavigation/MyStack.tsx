@@ -55,8 +55,7 @@ export default function MyStack() {
         component={CreditCardDetails}
         options={{
           title: 'Mi Cuenta',
-          headerTitleStyle: styles.title,
-          headerStyle: styles.background,
+          headerShown: false,
         }}
       />
       <Stack.Screen

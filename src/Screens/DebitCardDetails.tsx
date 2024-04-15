@@ -36,7 +36,7 @@ export default function DebitCardDetails() {
         <View style={styles.accountInfo}>
           <View style={styles.balanceView}>
             <Text style={styles.accountBalance}>
-              ${saldo.toLocaleString('es-ES')}
+              $ {saldo.toLocaleString('es-ES')}
             </Text>
             <Text style={styles.desc}>Saldo Disponible</Text>
           </View>
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   },
   accountInfo: {
     backgroundColor: '#00079A',
-    borderBottomRightRadius: 60,
+    borderBottomRightRadius: 80,
     paddingVertical: 40,
     paddingHorizontal: 28,
     gap: 25,
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   accountBalance: {
     color: 'white',
     fontWeight: '900',
-    fontSize: 35,
+    fontSize: 40,
     alignSelf: 'center',
   },
   desc: {
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingTop: 30,
     paddingBottom: 20,
-    gap: 20,
+    gap: 15,
   },
   optionTouchable: {
     alignItems: 'center',
