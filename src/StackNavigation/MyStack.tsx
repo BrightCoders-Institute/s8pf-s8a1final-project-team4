@@ -47,8 +47,7 @@ export default function MyStack() {
         component={DebitCardDetails}
         options={{
           title: 'Mi Cuenta',
-          headerTitleStyle: styles.title,
-          headerStyle: styles.background,
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -56,8 +55,7 @@ export default function MyStack() {
         component={CreditCardDetails}
         options={{
           title: 'Mi Cuenta',
-          headerTitleStyle: styles.title,
-          headerStyle: styles.background,
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -100,8 +98,7 @@ export default function MyStack() {
         component={Config}
         options={{
           title: 'Configuracion',
-          headerTitleStyle: styles.title,
-          headerStyle: styles.background,
+          headerShown: false,
         }}
       />
       <Stack.Screen
