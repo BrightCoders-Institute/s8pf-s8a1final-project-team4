@@ -16,12 +16,14 @@ export default function History() {
   const [hover, setHover] = useState<string>('btn1')
   const [data, setData] = useState<object>({})
   const [date, setDate] = useState(new Date())
+  const [date2, setDate2] = useState(new Date())
   const [open, setOpen] = useState(false)
+  const [open2, setOpen2] = useState(false)
 
   const handlePress = (name: string) => {
     setHover(name)
     filter(name)
-
+    console.log(date,date2)
   }
   async function filter(type: string) {
     try {
@@ -72,6 +74,20 @@ export default function History() {
     setData(grupedByDate)
   }
 
+  function filterByDate(){
+    try{
+      if(date != null && date2 != null ){
+        console.log("format",date.toString())
+        console.log(date,date2)
+      } else {
+        console.log("selecciona otra fecha ")
+      }
+
+    }catch(err){
+      console.log(err)
+    }
+  }
+
   useEffect(() => {
     getData()
   }, [])
@@ -106,8 +122,17 @@ export default function History() {
       <View style={styles.mainHistory}>
         {
           hover == 'btn4' &&
-          <View>
-            <FormButton text='Elegir fecha' fn={() => setOpen(true)} disabled={false} />
+          
+          <View style = {{display:"flex", flexDirection:"row", justifyContent:"space-around"}}>
+            <TouchableOpacity style={styles.btnBack} onPress={() => setOpen(true)} disabled={false} >
+              <Text style={styles.btnText}>{date != null ? date.toLocaleDateString() : "Fecha inicial"}</Text>
+              <Icon name='calendar' size={30} color={'rgba(74, 82, 255, 1)'}></Icon>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.btnBack} onPress={() => setOpen2(true)} disabled={false} >
+              <Text style={styles.btnText}>{date2 != null ? date2.toLocaleDateString() : "Fecha final"}</Text>
+              <Icon name='calendar' size={30} color={'rgba(74, 82, 255, 1)'}></Icon>
+            </TouchableOpacity>
+           
       <DatePicker
         mode='date'
         modal
@@ -116,9 +141,24 @@ export default function History() {
         onConfirm={(date) => {
           setOpen(false)
           setDate(date)
+          filterByDate()
         }}
         onCancel={() => {
           setOpen(false)
+        }}
+      />
+       <DatePicker
+        mode='date'
+        modal
+        open={open2}
+        date={date2}
+        onConfirm={(date) => {
+          setOpen2(false)
+          setDate2(date)
+          filterByDate()
+        }}
+        onCancel={() => {
+          setOpen2(false)
         }}
       />
           </View>
@@ -195,4 +235,27 @@ const styles = StyleSheet.create({
   date: {
     color: '#00079A', fontSize: 22, fontWeight: "bold", margin: 10
   },
+  btnBack:{
+    backgroundColor: 'white',
+    borderWidth:1,
+    borderColor:"rgba(74, 82, 255, 1)",
+    width: '40%',
+    shadowOffset: {width: 0, height: 100},
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 5,
+    borderRadius: 5,
+    paddingHorizontal: 20,
+    paddingVertical: 13,
+    display:"flex",
+    justifyContent:"space-around",
+    alignItems:"center",
+    flexDirection:"row"
+  },
+  btnText:{
+    color: 'rgba(74, 82, 255, 1)',
+    fontSize: 15,
+    fontWeight: '600'
+  }
+ 
 });
