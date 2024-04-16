@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, Alert} from 'react-native';
+import {View, Text, StyleSheet, Alert, Image} from 'react-native';
 import React, {useContext, useState} from 'react';
 import Contacto from '../Components/Contacto';
 import InputDestinatario from '../Components/InputDestinatario';
@@ -6,6 +6,8 @@ import FormButton from '../Components/Button';
 import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
 import {transferToCard } from '../Firebase/db';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
 
 
 
@@ -52,22 +54,38 @@ export default function Transferir({route}: any) {
 
   // Verificar si los campos de importe y concepto están vacíos
   const areFieldsEmpty = !amount || !concept;
-  
+  console.log(userInfo.photo)
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
       <Text style={styles.Text}>Estas Transfiriendo a: </Text>
-      <Contacto
-        nombre={transferTo}
-        numero={card_number}
-        icono="cc-mastercard"
-      />
+          <View style={styles.containerInfo}>
+            <View style={styles.containert}>
+                <View style={styles.headerImgTextCont}>
+                  <Text style={styles.headerImgText}>{transferTo[0].toUpperCase()}</Text>
+                </View>
+              <Text style={styles.Text}>{transferTo}</Text>
+              <Text style={styles.Text}>● {card_number?.toString().slice(-4)}</Text>
+              <View style={styles.Icons}>
+              <Icon name="cc-mastercard" size={20} color="white" />
+              </View>
+              </View>
+          </View>
       <Text style={styles.Text}>Desde tu cuenta: </Text>
-      <Contacto
-        nombre={userInfo.name.split(' ')[0]}
-        numero={userInfo.tarjetaDebito.number}
-        icono="cc-visa"
-        imagen={userInfo.photo ? userInfo.photo : ''}
-      />
+          <View style={styles.containerInfo}>
+            <View style={styles.containert}>
+              <View style={styles.headerImgTextCont}>
+                <Text style={styles.headerImgText}>{userInfo.name[0].toUpperCase()}</Text>
+              </View>
+                <Text style={styles.Text}>{userInfo.name.split(' ') [0]}</Text>
+                <Text style={styles.Text}>● {userInfo.tarjetaDebito.number.toString().slice(-4)}</Text>
+                <View style={styles.Icons}>
+                <Icon name="cc-visa" size={20} color="white" />
+                </View>
+              </View>
+            </View>
+          </View>
+          
       <View style={styles.containerdos}>
         <InputDestinatario
           placeholder="Importe"
@@ -99,17 +117,57 @@ export default function Transferir({route}: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EEEAEA',
+    backgroundColor: 'white', 
+  },
+  Icons: {
+      flex : 1,
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      right: 25,
+  },
+  containert: {
+    flex : 1,
+    gap: 10,
+    alignContent: 'center',
+    alignItems: 'center',
+
+    flexDirection: 'row',
+  },
+headerImgTextCont: {
+  height: 70,
+  width: 70,
+  borderRadius: 100,
+  backgroundColor: '#4A52FF',
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+headerImgText: {
+  color: 'white',
+  fontSize: 28,
+},
+  Img: {
+    height: 70,
+    width: 70,
+    borderRadius: 100,
+  },
+  containerInfo: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  header: {
+    backgroundColor: '#00079A',
     padding: 20,
+    gap: 50,
+    borderBottomRightRadius: 150,
+    // paddingBottom: 20,
   },
   Text: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginTop: 50,
-    color: 'darkgrey',
+    color: 'white',
   },
-  containerdos: {
-    marginTop: 50,
+  containerdos: { 
     alignItems: 'center',
   },
 });
