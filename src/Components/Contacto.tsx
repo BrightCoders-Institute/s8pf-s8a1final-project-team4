@@ -49,7 +49,7 @@ export default function Contacto({nombre, numero, icono, onDelete}: Props) {
       </TouchableOpacity>
       <ConfirmationModal
         visible={showModal}
-        message="¿Deseas borrar este contacto?"
+        message={`¿Estas seguro de borrar a ${nombre} de tus contactos?`}
         onConfirm={() => {
           //delete contact
         }}
