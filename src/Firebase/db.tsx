@@ -57,11 +57,9 @@ export async function DeleteContact(name: string, number: number) {
     const ref = await getDocRef();
     const doc = getDoc(ref);
     const data: DocumentData = (await doc).data();
-    console.log('filter start');
     data.contactos = data.contactos.filter(
       contact => contact.nombre !== name && contact.numero !== number,
     );
-    console.log(data);
     setDoc(ref, data);
   } catch (err) {
     console.log('delete contact function error', err);
