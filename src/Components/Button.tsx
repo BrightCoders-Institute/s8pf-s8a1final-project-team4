@@ -8,9 +8,12 @@ interface buttonInterface {
   disabled: boolean;
   //   iconName?: string;
 }
-export default function FormButton({text, fn,disabled}: buttonInterface) {
+export default function FormButton({text, fn, disabled}: buttonInterface) {
   return (
-    <TouchableOpacity onPress={fn} style={[styles.buttons, disabled && styles.disabledButton]} disabled={disabled}>
+    <TouchableOpacity
+      onPress={fn}
+      style={disabled ? styles.disabledButton : styles.buttons}
+      disabled={disabled}>
       <Text style={styles.btnText}>{text}</Text>
     </TouchableOpacity>
   );
@@ -35,6 +38,16 @@ const styles = StyleSheet.create({
     fontWeight: '900',
   },
   disabledButton: {
-    backgroundColor: 'rgba(74, 82, 255, 0.5)',
+    backgroundColor: '#58629C',
+    width: '60%',
+    alignItems: 'center',
+    shadowOffset: {width: 0, height: 100},
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 5,
+    borderRadius: 5,
+    paddingHorizontal: 20,
+    paddingVertical: 13,
+    alignSelf: 'center',
   },
 });

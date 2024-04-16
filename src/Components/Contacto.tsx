@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useNavigation} from '@react-navigation/native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import ConfirmationModal from '../Components/ConfirmationModal';
+import {DeleteContact} from '../Firebase/db';
 
 type Props = {
   nombre: string;
@@ -45,13 +46,15 @@ export default function Contacto({nombre, numero, icono, onDelete}: Props) {
       <TouchableOpacity
         style={styles.containertrash}
         onPress={() => setShowModal(true)}>
-        <Icon name="trash-alt" size={30} color="#3B44FF" />
+        <Icon name="trash-alt" size={26} color="white" />
       </TouchableOpacity>
       <ConfirmationModal
         visible={showModal}
         message={`¿Estas seguro de borrar a ${nombre} de tus contactos?`}
-        onConfirm={() => {
+        onConfirm={async () => {
           //delete contact
+          await DeleteContact(nombre, numero);
+          setShowModal(false);
         }}
         onCancel={() => setShowModal(false)}
       />
@@ -64,20 +67,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    backgroundColor: 'white',
+    backgroundColor: '#021B9E',
     marginTop: 20,
-    padding: 15,
     borderRadius: 10,
-    borderColor: '#3B44FF', // Cambia 'red' al color que desees
-    borderWidth: 2, // Cambia '2' al grosor que desees
-    // alignItems: 'center',
+    borderColor: 'blue',
+    borderWidth: 1,
   },
   touchableContainer: {
+    backgroundColor: 'white',
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
     flex: 1,
     justifyContent: 'space-between',
+    borderRadius: 10,
+    padding: 10,
   },
   Img: {
     height: 70,
@@ -96,15 +100,15 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 28,
   },
-  containertres: {
-    backgroundColor: 'red',
-  },
+  // containertres: {
+  //   backgroundColor: 'red',
+  // },
   Text: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: '900',
     color: 'blue',
-    alignSelf: 'center',
-    paddingBottom: 10,
+    alignSelf: 'flex-start',
+    // paddingBottom: 5,
   },
   Textnumber: {
     fontSize: 18,
@@ -121,8 +125,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   containertrash: {
-    paddingVertical: 15,
-    paddingLeft: 15,
+    padding: 10,
     // flex: 1,
+    // backgroundColor: 'blue',
   },
 });

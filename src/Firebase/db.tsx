@@ -17,7 +17,6 @@ import {db, auth} from './firebaseconfig';
 import {Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
 function getCurrentDate() {
   const currentDate = new Date();
   const year = currentDate.getFullYear();
@@ -50,6 +49,22 @@ export async function AddContactDoc(name: string, number: number) {
     setDoc(ref, data);
   } catch (err) {
     console.log('2', err);
+  }
+}
+
+export async function DeleteContact(name: string, number: number) {
+  try {
+    const ref = await getDocRef();
+    const doc = getDoc(ref);
+    const data: DocumentData = (await doc).data();
+    console.log('filter start');
+    data.contactos = data.contactos.filter(
+      contact => contact.nombre !== name && contact.numero !== number,
+    );
+    console.log(data);
+    setDoc(ref, data);
+  } catch (err) {
+    console.log('delete contact function error', err);
   }
 }
 
@@ -97,7 +112,6 @@ export async function transferToCard(
     const q = query(
       collection(db, 'users'),
       where('tarjetaDebito.number', '==', destination.toString()),
-
     );
 
     const querySnapshot = await getDocs(q);
@@ -109,10 +123,9 @@ export async function transferToCard(
           const destinyData = document.data();
 
           if (myBalance < amount) {
-            Alert.alert("No tienes suficiente saldo")
+            Alert.alert('No tienes suficiente saldo');
             return false;
-
-          }else {
+          } else {
             destinyData.tarjetaDebito.saldo += parseInt(amount);
             destinyData.tarjetaDebito.movimientos.push({
               fecha: getCurrentDate(),
@@ -155,16 +168,16 @@ export async function userWithdraw(quantity: any, concepto: any) {
 }
 
 export async function getHistory() {
-  try{
+  try {
     const ref = await getDocRef();
     const doc = getDoc(ref);
-    const data: DocumentData  = (await doc).data();
+    const data: DocumentData = (await doc).data();
     const movimientos = {
-      debito:data.tarjetaDebito.movimientos,
-      credito:data.tarjetaCredito.movimientos
+      debito: data.tarjetaDebito.movimientos,
+      credito: data.tarjetaCredito.movimientos,
     };
-   return movimientos;
-  }catch(err){
-    console.log(err)
+    return movimientos;
+  } catch (err) {
+    console.log(err);
   }
 }
