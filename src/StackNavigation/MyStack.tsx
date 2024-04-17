@@ -71,8 +71,7 @@ export default function MyStack() {
         component={SelectContact}
         options={{
           title: 'Transferir a:',
-          headerTitleStyle: styles.title,
-          headerStyle: styles.background,
+          headerShown: false,
         }}
       />
       <Stack.Screen
