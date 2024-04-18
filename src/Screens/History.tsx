@@ -74,11 +74,29 @@ export default function History() {
     setData(grupedByDate)
   }
 
-  function filterByDate(){
+  async function filterByDate(){
     try{
       if(date != null && date2 != null ){
-        console.log("format",date.toString())
-        console.log(date,date2)
+        const data = await getHistory()
+        const grupedByDate = data.debito.reduce((acc: any, movement: object) => {
+          const Localdate = movement.fecha;
+          let fecha = new Date(movement.fecha);
+         if(fecha >= date && fecha <= date2 ){
+          console.log("date",fecha.toLocaleDateString())
+              if (!acc[Localdate]) {
+               
+                  acc[Localdate] = []
+                
+              }
+              acc[Localdate].push(movement);
+              return acc;
+          }
+          return acc;
+            
+        }, {})
+       setData(grupedByDate)
+        console.log("fechas",grupedByDate)
+       
       } else {
         console.log("selecciona otra fecha ")
       }
@@ -122,7 +140,7 @@ export default function History() {
       <View style={styles.mainHistory}>
         {
           hover == 'btn4' &&
-          
+          <View>
           <View style = {{display:"flex", flexDirection:"row", justifyContent:"space-around"}}>
             <TouchableOpacity style={styles.btnBack} onPress={() => setOpen(true)} disabled={false} >
               <Text style={styles.btnText}>{date != null ? date.toLocaleDateString() : "Fecha inicial"}</Text>
@@ -132,6 +150,8 @@ export default function History() {
               <Text style={styles.btnText}>{date2 != null ? date2.toLocaleDateString() : "Fecha final"}</Text>
               <Icon name='calendar' size={30} color={'rgba(74, 82, 255, 1)'}></Icon>
             </TouchableOpacity>
+
+          
            
       <DatePicker
         mode='date'
@@ -141,7 +161,7 @@ export default function History() {
         onConfirm={(date) => {
           setOpen(false)
           setDate(date)
-          filterByDate()
+         
         }}
         onCancel={() => {
           setOpen(false)
@@ -155,14 +175,23 @@ export default function History() {
         onConfirm={(date) => {
           setOpen2(false)
           setDate2(date)
-          filterByDate()
+          
         }}
         onCancel={() => {
           setOpen2(false)
         }}
       />
           </View>
+          <View style={{width:"95%", display:"flex", justifyContent:"center", alignItems:"center", marginTop:10}}>
+          <TouchableOpacity style={[styles.btnBack,{backgroundColor:'rgba(74, 82, 255, 1)'}]} onPress={() => filterByDate()}>
+                <Text style={[styles.btnText,{color:"white"}]}>Filtrar</Text>
+              </TouchableOpacity>
+          </View>
+          </View>
         }
+        
+        
+         
         <FlatList
           data={Object.entries(data)}
           keyExtractor={(item) => item[0]}
