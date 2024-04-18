@@ -1,20 +1,64 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, TextInput,Button } from 'react-native'
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import { getHistory } from '../Firebase/db';
-import Movement from '../Components/Movement';
+import { Movement} from '../Components/Movement';
 import { formatDate } from '../Components/MoveCard';
+import FormInput from '../Components/Input';
+import FormButton from '../Components/Button';
+import DatePicker from 'react-native-date-picker'
+
+
 export default function History() {
   const navigation = useNavigation()
   const [hover, setHover] = useState<string>('btn1')
   const [data, setData] = useState<object>({})
-  
+  const [date, setDate] = useState(new Date())
+  const [date2, setDate2] = useState(new Date())
+  const [open, setOpen] = useState(false)
+  const [open2, setOpen2] = useState(false)
+
   const handlePress = (name: string) => {
     setHover(name)
+    filter(name)
+    console.log(date,date2)
   }
-  
+  async function filter(type: string) {
+    try {
+      const data = await getHistory()
+      if (type == 'btn2') {
+        const grupedByArrivals = data.debito.reduce((acc: any, movement: object) => {
+          const date = movement.fecha;
+          if (!acc[date] && movement.monto > 0) {
+            acc[date] = []
+          }
+          if (movement.monto > 0) {
+            acc[date].push(movement);
+          }
+          return acc;
+        }, {});
+        setData(grupedByArrivals)
+      } else if (type == 'btn3') {
+        const grupedBySent = data.debito.reduce((acc: any, movement: object) => {
+          const date = movement.fecha;
+          if (!acc[date] && Number(movement.monto) < 0) {
+            acc[date] = []
+          }
+          if (Number(movement.monto) < 0) {
+            acc[date].push(movement);
+          }
+          return acc;
+        }, {});
+        setData(grupedBySent)
+      } else if (type == 'btn1') {
+        getData()
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
   const getData = async () => {
     const data = await getHistory()
     console.log(data)
@@ -26,7 +70,40 @@ export default function History() {
       acc[date].push(movement);
       return acc;
     }, {});
-     setData(grupedByDate)
+    console.log(grupedByDate)
+    setData(grupedByDate)
+  }
+
+  async function filterByDate(){
+    try{
+      if(date != null && date2 != null ){
+        const data = await getHistory()
+        const grupedByDate = data.debito.reduce((acc: any, movement: object) => {
+          const Localdate = movement.fecha;
+          let fecha = new Date(movement.fecha);
+         if(fecha >= date && fecha <= date2 ){
+          console.log("date",fecha.toLocaleDateString())
+              if (!acc[Localdate]) {
+               
+                  acc[Localdate] = []
+                
+              }
+              acc[Localdate].push(movement);
+              return acc;
+          }
+          return acc;
+            
+        }, {})
+       setData(grupedByDate)
+        console.log("fechas",grupedByDate)
+       
+      } else {
+        console.log("selecciona otra fecha ")
+      }
+
+    }catch(err){
+      console.log(err)
+    }
   }
 
   useEffect(() => {
@@ -61,7 +138,60 @@ export default function History() {
         </View>
       </View>
       <View style={styles.mainHistory}>
-        {/* Esto deberia ir en un componente externo para reutilizarse */}
+        {
+          hover == 'btn4' &&
+          <View>
+          <View style = {{display:"flex", flexDirection:"row", justifyContent:"space-around"}}>
+            <TouchableOpacity style={styles.btnBack} onPress={() => setOpen(true)} disabled={false} >
+              <Text style={styles.btnText}>{date != null ? date.toLocaleDateString() : "Fecha inicial"}</Text>
+              <Icon name='calendar' size={30} color={'rgba(74, 82, 255, 1)'}></Icon>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.btnBack} onPress={() => setOpen2(true)} disabled={false} >
+              <Text style={styles.btnText}>{date2 != null ? date2.toLocaleDateString() : "Fecha final"}</Text>
+              <Icon name='calendar' size={30} color={'rgba(74, 82, 255, 1)'}></Icon>
+            </TouchableOpacity>
+
+          
+           
+      <DatePicker
+        mode='date'
+        modal
+        open={open}
+        date={date}
+        onConfirm={(date) => {
+          setOpen(false)
+          setDate(date)
+         
+        }}
+        onCancel={() => {
+          setOpen(false)
+        }}
+      />
+       <DatePicker
+        mode='date'
+        modal
+        open={open2}
+        date={date2}
+        onConfirm={(date) => {
+          setOpen2(false)
+          setDate2(date)
+          
+        }}
+        onCancel={() => {
+          setOpen2(false)
+        }}
+      />
+          </View>
+          <View style={{width:"95%", display:"flex", justifyContent:"center", alignItems:"center", marginTop:10}}>
+          <TouchableOpacity style={[styles.btnBack,{backgroundColor:'rgba(74, 82, 255, 1)'}]} onPress={() => filterByDate()}>
+                <Text style={[styles.btnText,{color:"white"}]}>Filtrar</Text>
+              </TouchableOpacity>
+          </View>
+          </View>
+        }
+        
+        
+         
         <FlatList
           data={Object.entries(data)}
           keyExtractor={(item) => item[0]}
@@ -73,31 +203,7 @@ export default function History() {
               <FlatList
                 data={item[1]}
                 renderItem={({ item: movimiento }) => (
-
-                  <View style={styles.main}>
-                    <View style={styles.card}>
-                    {
-                            Number(movimiento.monto) > 0 ? 
-                            <View style={{ width: 30, height: 30, backgroundColor: "#54AB5F", borderRadius: 20 }} />
-                            : 
-                            <View style={{ width: 30, height: 30, backgroundColor: "red", borderRadius: 20 }} />
-                          }
-                        <View style={styles.texts}>
-                          <View style={{alignSelf:"flex-end"}} >
-                            <Text style={styles.transferName}>{movimiento.descripcion}</Text>
-                            <Text style={styles.transferType}>{movimiento.tipo}</Text>
-                          </View>
-                          {
-                            Number(movimiento.monto) > 0 ? 
-                            <Text style={styles.number}>${movimiento.monto}</Text> 
-                            : 
-                            <Text style={[styles.number,{color:"red"}]}>${movimiento.monto}</Text>
-                          }
-                       
-                        </View>
-                    </View>
-                  </View>
-
+                  <Movement item={movimiento} />
                 )}
               />
             </View>
@@ -155,37 +261,30 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  main: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  card: {
-    flexDirection: "row",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "90%",
-    },
   date: {
-    color: '#00079A', fontSize: 22, fontWeight: "bold",margin:10
+    color: '#00079A', fontSize: 22, fontWeight: "bold", margin: 10
   },
-  transferName: {
-    color: "black", fontSize: 20
-  }, transferType: {
-    fontSize: 15
-  },
-  number: {
-    color: "#54AB5F",
-    fontSize: 22,
-    alignSelf:"flex-start"
-  },
-  texts:{
+  btnBack:{
+    backgroundColor: 'white',
+    borderWidth:1,
+    borderColor:"rgba(74, 82, 255, 1)",
+    width: '40%',
+    shadowOffset: {width: 0, height: 100},
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 5,
+    borderRadius: 5,
+    paddingHorizontal: 20,
+    paddingVertical: 13,
     display:"flex",
-    flexDirection:"row",
-   
-    width:300,
-    justifyContent:"space-between"
-
+    justifyContent:"space-around",
+    alignItems:"center",
+    flexDirection:"row"
+  },
+  btnText:{
+    color: 'rgba(74, 82, 255, 1)',
+    fontSize: 15,
+    fontWeight: '600'
   }
-})
+ 
+});
