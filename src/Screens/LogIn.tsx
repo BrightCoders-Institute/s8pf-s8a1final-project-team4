@@ -14,6 +14,8 @@ import {useNavigation} from '@react-navigation/native';
 import {doc, setDoc, getDoc, onSnapshot, signOut} from 'firebase/firestore';
 import {auth, db} from '../Firebase/firebaseconfig';
 import {UserContext} from '../../App';
+//Importacion Para las notificaciones con FireBase
+import PushNotification from 'react-native-push-notification';
 
 function getRandomCardNumber() {
   const cardNum = [];
@@ -65,7 +67,7 @@ export default function LogIn() {
       }
     };
   }, []);
-
+  
   const handleEmailChange = (value: string) => {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (regex.test(value) || value === '') {
@@ -75,6 +77,14 @@ export default function LogIn() {
       setUserError('El correo electrónico no es válido');
     }
   };
+
+    // Función para mostrar una notificación local de inicio de sesión exitoso
+    const showLoginSuccessNotification = () => {
+      PushNotification.localNotification({
+        title: 'Inicio de sesión exitoso',
+        message: '¡Has iniciado sesión correctamente!',
+      });
+    };
 
   const handleLogInWithFirebase = async () => {
     try {
@@ -93,6 +103,8 @@ export default function LogIn() {
         }
       });
       navigation.navigate('Home');
+      // Mostrar notificación después del inicio de sesión exitoso
+      showLoginSuccessNotification();
       // Retornar la función de limpieza para cancelar la suscripción
       return () => unsubscribe();
     } catch (error) {
@@ -165,6 +177,8 @@ export default function LogIn() {
         }
       });
       navigation.navigate('Home');
+      // Mostrar notificación después del inicio de sesión exitoso
+      showLoginSuccessNotification()
       // Retornar la función de limpieza para cancelar la suscripción
       return () => unsubscribe();
     } catch (error) {
