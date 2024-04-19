@@ -9,6 +9,8 @@ import { formatDate } from '../Components/MoveCard';
 import FormInput from '../Components/Input';
 import FormButton from '../Components/Button';
 import DatePicker from 'react-native-date-picker'
+import Mapsview from '../Components/MapView';
+
 
 
 export default function History() {
@@ -137,6 +139,7 @@ export default function History() {
           </View>
         </View>
       </View>
+      
       <View style={styles.mainHistory}>
         {
           hover == 'btn4' &&
@@ -150,9 +153,6 @@ export default function History() {
               <Text style={styles.btnText}>{date2 != null ? date2.toLocaleDateString() : "Fecha final"}</Text>
               <Icon name='calendar' size={30} color={'rgba(74, 82, 255, 1)'}></Icon>
             </TouchableOpacity>
-
-          
-           
       <DatePicker
         mode='date'
         modal
