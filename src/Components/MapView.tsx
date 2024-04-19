@@ -1,20 +1,30 @@
-import React from 'react'
+import React,{useEffect, useState} from 'react'
 import { StyleSheet, View } from 'react-native'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-
+import GetLocation, { Location } from 'react-native-get-location'
 export default function Mapsview() {
+  const [location,setLocation] = useState<Location | undefined>()
+
+  const getCurrentLocation = async () =>{
+    try{
+      const currenlocation = await GetLocation.getCurrentPosition({
+        enableHighAccuracy: true,
+    timeout: 60000,
+      })
+      setLocation(currenlocation)
+    }catch(err){
+    }
+  }
+  useEffect(()=>{
+    getCurrentLocation()
+      },[])
+
     return (
         <View style={style.container}>
             <MapView
                 provider={PROVIDER_GOOGLE}
                 style={style.map}
-                initialRegion={{
-
-                    latitude: 37.78825,
-                    longitude: -122.4324,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                }}
+                initialRegion={location}
                 customMapStyle={mapStyle}
             />
         </View>
