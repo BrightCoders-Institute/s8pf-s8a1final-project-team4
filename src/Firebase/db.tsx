@@ -141,8 +141,6 @@ export async function userWithdraw(quantity: any, concepto: any) {
     console.log('2', err);
   }
 }
-<<<<<<< Updated upstream
-=======
 
 export async function getHistory() {
   try{
@@ -173,4 +171,4 @@ export async function checkIfAccountExists(accountNumber: string): Promise<boole
     return false;
   }
 }
->>>>>>> Stashed changes
+
