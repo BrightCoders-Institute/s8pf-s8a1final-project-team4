@@ -179,3 +179,18 @@ export async function getHistory() {
     console.log(err);
   }
 }
+
+export async function checkIfAccountExists(accountNumber: string): Promise<boolean> {
+  try {
+    const q = query(
+      collection(db, 'users'),
+      where('tarjetaDebito.number', '==', accountNumber)
+    );
+
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty;
+  } catch (error) {
+    console.error('Error checking account existence:', error);
+    return false;
+  }
+}
