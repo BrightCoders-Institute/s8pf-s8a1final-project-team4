@@ -1,53 +1,86 @@
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useNavigation} from '@react-navigation/native';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import ConfirmationModal from '../Components/ConfirmationModal';
+import {DeleteContact} from '../Firebase/db';
 
 type Props = {
   nombre: string;
   numero: number;
   icono: string;
-  imagen?: string;
+  onDelete: () => {};
 };
 
-export default function Contacto({nombre, numero, icono, imagen}: Props) {
+export default function Contacto({nombre, numero, icono, onDelete}: Props) {
+  const [showModal, setShowModal] = useState(false);
+
   const navigation = useNavigation();
   console.log('nombre', nombre);
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() => {
-        console.log("Este es mi numero gookkuuuu ahhh: " + numero);
-        navigation.navigate('Transferir', {name: nombre, card_number: numero});
-      }}>
-      {imagen ? (
-        <Image
-          style={styles.Img}
-          source={{
-            uri: imagen,
-          }}
-        />
-      ) : (
+    <View style={styles.card}>
+      <TouchableOpacity
+        style={styles.touchableContainer}
+        onPress={() => {
+          navigation.navigate('Transferir', {
+            name: nombre,
+            card_number: numero,
+          });
+        }}>
         <View style={styles.headerImgTextCont}>
           <Text style={styles.headerImgText}>{nombre[0].toUpperCase()}</Text>
         </View>
-      )}
-      <View style={styles.containerInfo}>
-        <Text style={styles.Text}>{nombre}</Text>
-        <View style={styles.containerdos}>
-          <Text style={styles.Text}>{'● ' + numero?.toString().slice(-4)}</Text>
-          <Icon name={icono} size={30} color="white" />
+
+        <View style={{flex: 1}}>
+          <Text style={styles.Text}>{nombre}</Text>
+          <View style={styles.containerdos}>
+            <Text style={styles.Textnumber}>
+              {'● ' + numero?.toString().slice(-4)}
+            </Text>
+            <Icon name={icono} size={28} color="#3B44FF" />
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.containertrash}
+        onPress={() => setShowModal(true)}>
+        <Icon name="trash-alt" size={26} color="white" />
+      </TouchableOpacity>
+      <ConfirmationModal
+        visible={showModal}
+        message={`¿Estas seguro de borrar a ${nombre} de tus contactos?`}
+        onConfirm={async () => {
+          //delete contact
+          await DeleteContact(nombre, numero);
+          setShowModal(false);
+        }}
+        onCancel={() => setShowModal(false)}
+      />
+    </View>
   );
 }
 const styles = StyleSheet.create({
-  container: {
+  card: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    backgroundColor: '#021B9E',
+    marginTop: 20,
+    borderRadius: 10,
+    borderColor: 'blue',
+    borderWidth: 1,
+  },
+  touchableContainer: {
+    backgroundColor: 'white',
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 15,
-    marginTop: 20,
+    gap: 10,
+    flex: 1,
+    justifyContent: 'space-between',
+    borderRadius: 10,
+    padding: 10,
   },
   Img: {
     height: 70,
@@ -58,7 +91,7 @@ const styles = StyleSheet.create({
     height: 70,
     width: 70,
     borderRadius: 100,
-    backgroundColor: '#4A52FF',
+    backgroundColor: '#021B9E',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -66,25 +99,33 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 28,
   },
-  containerInfo: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-    backgroundColor: '#00079A',
-    padding: 15,
-    borderRadius: 4,
-  },
+  // containertres: {
+  //   backgroundColor: 'red',
+  // },
   Text: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '900',
-    color: '#fff',
+    color: 'blue',
+    alignSelf: 'flex-start',
+    // paddingBottom: 5,
+  },
+  Textnumber: {
+    fontSize: 18,
+    letterSpacing: 2,
+    fontStyle: 'italic',
+    fontWeight: '900',
+    color: '#3B44FF',
   },
   containerdos: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    gap: 15,
+    backgroundColor: 'white',
+    gap: 25,
+    alignSelf: 'center',
+  },
+  containertrash: {
+    padding: 10,
+    // flex: 1,
+    // backgroundColor: 'blue',
   },
 });

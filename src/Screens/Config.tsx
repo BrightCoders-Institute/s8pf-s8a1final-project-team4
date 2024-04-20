@@ -16,6 +16,15 @@ export default function Config() {
 
   return (
     <View style={style.mainContainer}>
+      <View style={style.header}>
+        <Text style={style.headerTitle}>Configuración</Text>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Home');
+          }}>
+          <IconC name="close-outline" size={45} color={'white'} />
+        </TouchableOpacity>
+      </View>
       <View style={style.ContentContainer}>
         {userInfo.photo ? (
           <Image
@@ -29,40 +38,38 @@ export default function Config() {
             <Text style={style.headerImgText}>{userInfo.name[0]}</Text>
           </View>
         )}
-        <Text style={style.TextNombre}> {userInfo.name}</Text>
+        <View style={style.nameView}>
+          <Text style={style.TextNombre}> {userInfo.name}</Text>
+          <Text style={style.TextEmail}>{userInfo.email}</Text>
+        </View>
       </View>
 
       <View style={style.ViewsContainer}>
-        <TouchableOpacity>
-          <View style={style.Viewcontainer}>
-            <Icon name="user" size={45} color="blue" />
-            <Text style={style.TextView}> Configurar datos personales</Text>
-          </View>
+        <TouchableOpacity style={style.buttonTouchable}>
+          <Icon name="user" size={45} color="blue" />
+          <Text style={style.TextView}> Datos personales</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity>
-          <View style={style.Viewcontainer}>
-            <IconS name="shield-checkmark-outline" size={45} color="blue" />
-            <Text style={style.TextView}> Seguridad</Text>
-          </View>
+        <TouchableOpacity style={style.buttonTouchable}>
+          <IconS name="shield-checkmark-outline" size={45} color="blue" />
+          <Text style={style.TextView}> Seguridad</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
+          style={style.buttonTouchable}
           onPress={async () => {
             try {
               //CERRAR SESION
               await signOut(auth);
               AsyncStorage.removeItem('userUID');
-              navigation.navigate('LogInFingerprint');
+              navigation.navigate('LogIn');
               handleUserActive(null);
             } catch (error) {
               console.log(error);
             }
           }}>
-          <View style={style.Viewcontainer}>
-            <IconC name="return-down-back" size={45} color="blue" />
-            <Text style={style.TextView}>Cerrar sesion</Text>
-          </View>
+          <IconC name="return-down-back" size={45} color="blue" />
+          <Text style={style.TextView}>Cerrar sesion</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -72,28 +79,67 @@ export default function Config() {
 const style = StyleSheet.create({
   mainContainer: {
     flex: 1,
+    // backgroundColor: '',
   },
-  ContentContainer: {
-    paddingTop: 20,
+  header: {
+    backgroundColor: '#343DFF',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 30,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    elevation: 20,
+    alignItems: 'center',
+  },
+  headerTitle: {
+    fontSize: 22,
+    color: 'white',
+  },
+  ContentContainer: {
+    paddingTop: 35,
+    paddingBottom: 60,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 25,
+    backgroundColor: '#3B44FF',
+    borderBottomRightRadius: 50,
+    borderBottomLeftRadius: 50,
+  },
+  nameView: {
+    justifyContent: 'flex-end',
+    gap: 30,
+    alignItems: 'center',
+  },
+  TextNombre: {
+    fontSize: 25,
+    fontWeight: '900',
+    textAlignVertical: 'center',
+    color: 'white',
+  },
+  TextEmail: {
+    color: 'white',
+    fontSize: 15,
   },
   ViewsContainer: {
     flex: 1,
     marginTop: 20,
   },
-  Viewcontainer: {
-    marginTop: 25,
+  buttonTouchable: {
+    marginTop: 30,
     marginHorizontal: 30,
     backgroundColor: 'white',
+    borderRadius: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderBottomColor: 'blue',
+    borderBottomWidth: 3,
+    // elevation: 50,
     flexDirection: 'row',
-    height: 50,
     alignItems: 'center',
+    elevation: 6,
   },
   Img: {
-    height: 100,
-    width: 100,
+    height: 90,
+    width: 90,
     borderRadius: 100,
   },
   headerImgTextCont: {
@@ -108,14 +154,12 @@ const style = StyleSheet.create({
     color: 'white',
     fontSize: 28,
   },
-  TextNombre: {
-    fontSize: 25,
-    fontWeight: '900',
-    textAlignVertical: 'center',
-    color: '#00079A',
-  },
+
   TextView: {
     fontSize: 20,
+    fontWeight: '900',
     color: 'blue',
+    flex: 1,
+    textAlign: 'center',
   },
 });

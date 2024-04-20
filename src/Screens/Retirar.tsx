@@ -8,6 +8,7 @@ import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
 import {useContext, useState} from 'react';
 import {userWithdraw} from '../Firebase/db';
+import Mapsview from '../Components/MapView';
 
 export default function Retirar() {
   const [modalVisible, setModalVisible] = useState(false);
