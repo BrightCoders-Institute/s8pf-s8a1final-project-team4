@@ -123,7 +123,9 @@ export default function MyStack() {
         component={History}
         options={{
           title: 'Historial',
-          headerShown: false,
+          headerTitleStyle: styles.title,
+          headerStyle: styles.background,
+          headerTintColor: 'white',
         }}
       />
     </Stack.Navigator>
