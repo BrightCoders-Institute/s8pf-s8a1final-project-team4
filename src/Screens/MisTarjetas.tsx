@@ -19,13 +19,9 @@ export default function MisTarjetas() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.containerdos}>
-        <Text style={styles.tarjetas}>Mis Tarjetas</Text>
-        <TouchableOpacity
-          style={{paddingRight: 20}}
-          onPress={() => {
-            navigation.navigate('Home');
-          }}>
+      <View style={styles.headerScreen}>
+        <Text style={styles.headerTitle}>Mis Tarjetas</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
           <Icon name="close-outline" size={45} color={'white'} />
         </TouchableOpacity>
       </View>
@@ -106,16 +102,25 @@ export default function MisTarjetas() {
         </View>
       </View>
     </View>
- )
-
+  );
 }
- 
-
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '"F4F4F4"',
     flex: 1,
+  },
+  headerScreen: {
+    backgroundColor: '#021B9E',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 25,
+    paddingVertical: 15,
+  },
+  headerTitle: {
+    color: 'white',
+    fontSize: 22,
   },
   containerdos: {
     flexDirection: 'row',
@@ -198,4 +203,3 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
 });
-

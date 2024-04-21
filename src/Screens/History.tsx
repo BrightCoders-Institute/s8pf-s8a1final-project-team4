@@ -228,7 +228,6 @@ export default function History() {
             </View>
             <View
               style={{
-                // width: '95%',
                 justifyContent: 'center',
                 alignItems: 'center',
                 margin: 15,
