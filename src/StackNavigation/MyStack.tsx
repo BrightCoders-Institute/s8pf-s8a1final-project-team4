@@ -81,6 +81,7 @@ export default function MyStack() {
           title: 'Agregar contacto',
           headerTitleStyle: styles.title,
           headerStyle: styles.background,
+          headerTintColor: 'white',
         }}
       />
       <Stack.Screen
@@ -90,6 +91,7 @@ export default function MyStack() {
           title: 'Transferir',
           headerTitleStyle: styles.title,
           headerStyle: styles.background,
+          headerTintColor: 'white',
         }}
       />
       <Stack.Screen
@@ -131,10 +133,11 @@ export default function MyStack() {
 const styles = StyleSheet.create({
   title: {
     color: 'white',
-    fontWeight: '900',
-    fontSize: 25,
+    // fontWeight: '100',
+    fontSize: 24,
   },
   background: {
-    backgroundColor: '#4A52FF',
+    backgroundColor: '#021B9E',
+    padding: 20,
   },
 });

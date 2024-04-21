@@ -48,18 +48,11 @@ export default function SelectContact() {
             <Contacto
               nombre={item.item.nombre}
               numero={item.item.numero}
-              icono="cc-mastercard"
-              // onDelete={() => setShowModal(true)}
+              icono="cc-visa"
             />
           )}
         />
       </View>
-      {/* <ConfirmationModal
-        visible={showModal}
-        message="¿Deseas borrar este contacto?"
-        onConfirm={() => {}}
-        onCancel={() => setShowModal(false)}
-      /> */}
     </View>
   );
 }
