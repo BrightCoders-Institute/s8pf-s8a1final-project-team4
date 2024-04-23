@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 25,
-    paddingVertical: 15,
+    paddingVertical: 5,
   },
   headerTitle: {
     color: 'white',
