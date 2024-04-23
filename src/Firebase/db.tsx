@@ -87,7 +87,7 @@ async function minusTransfer(amount: number, concepto: string) {
     const data: DocumentData = (await doc).data();
     data.tarjetaDebito.saldo -= amount;
     //generar movimiento de transferencia
-    data.tarjetaDebito.movimientos.push({
+    data.tarjetaDebito.movimientos.unshift({
       fecha: getCurrentDate(),
       monto: -amount,
       descripcion: concepto,
@@ -125,7 +125,7 @@ export async function transferToCard(
             return false;
           } else {
             destinyData.tarjetaDebito.saldo += parseInt(amount);
-            destinyData.tarjetaDebito.movimientos.push({
+            destinyData.tarjetaDebito.movimientos.unshift({
               fecha: getCurrentDate(),
               monto: amount,
               descripcion: concept,
@@ -153,7 +153,7 @@ export async function userWithdraw(quantity: any, concepto: any) {
     const data: DocumentData = (await doc).data();
     data.tarjetaDebito.saldo -= quantity;
     //generar movimiento del retiro
-    data.tarjetaDebito.movimientos.push({
+    data.tarjetaDebito.movimientos.unshift({
       fecha: getCurrentDate(),
       monto: -quantity,
       descripcion: concepto,
@@ -180,11 +180,13 @@ export async function getHistory() {
   }
 }
 
-export async function checkIfAccountExists(accountNumber: string): Promise<boolean> {
+export async function checkIfAccountExists(
+  accountNumber: string,
+): Promise<boolean> {
   try {
     const q = query(
       collection(db, 'users'),
-      where('tarjetaDebito.number', '==', accountNumber)
+      where('tarjetaDebito.number', '==', accountNumber),
     );
 
     const querySnapshot = await getDocs(q);
