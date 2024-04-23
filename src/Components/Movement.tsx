@@ -35,9 +35,13 @@ export const Movement = ({item}: any) => {
             <Text style={styles.transferType}>{item.tipo}</Text>
           </View>
           {Number(item.monto) > 0 ? (
-            <Text style={styles.number}>${item.monto}</Text>
+            <Text style={styles.number}>
+              ${item.monto.toLocaleString('es-ES')}
+            </Text>
           ) : (
-            <Text style={[styles.number, {color: 'red'}]}>${item.monto}</Text>
+            <Text style={[styles.number, {color: 'red'}]}>
+              ${item.monto.toLocaleString('es-ES')}
+            </Text>
           )}
         </View>
       </View>

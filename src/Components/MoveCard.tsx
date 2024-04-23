@@ -33,7 +33,7 @@ export default function MoveCard({desc, tipo, monto}) {
           <Text style={styles.payName}>{desc}</Text>
           <Text style={styles.payDesc}>{tipo}</Text>
         </View>
-        <Text style={styles.payNum}>${monto}</Text>
+        <Text style={styles.payNum}>${monto.toLocaleString('es-ES')}</Text>
       </View>
     </View>
   );
