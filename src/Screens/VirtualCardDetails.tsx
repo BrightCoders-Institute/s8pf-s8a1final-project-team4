@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Switch,
 } from 'react-native';
 import NewIcon from 'react-native-vector-icons/FontAwesome5';
 import {UserContext} from '../../App';
@@ -13,18 +14,30 @@ import MoveCard from '../Components/MoveCard';
 import {formatDate} from '../Components/MoveCard';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
+import InfoModal from '../Components/InfoModal';
 // import {object} from 'yup';
+
+function getRandomCvv() {
+  const cvv = [];
+  for (let i = 0; i < 3; i++) {
+    const randomNum = Math.floor(Math.random() * 10);
+    cvv.push(randomNum);
+  }
+  return cvv.join('');
+}
 
 export default function VirtualCardDetails() {
   const [showCvv, setShowCvv] = useState(false);
+  const [message, setMessage] = useState('');
+  const [showModal, setShowModal] = useState(false);
   const {userInfo} = useContext(UserContext);
+  const [turnOnCard, setTurnOnCard] = useState(false);
   const navigation = useNavigation();
   const cardNumber = userInfo.tarjetaCredito.number.replace(
     /\d{4}(?=.)/g,
     '$& ',
   );
   const saldo = userInfo.tarjetaCredito.saldo;
-  const cvv = userInfo.tarjetaCredito.cvv;
 
   const grouped = userInfo.tarjetaCredito.movimientos.reduce(
     (acc: any, movement: object) => {
@@ -66,13 +79,13 @@ export default function VirtualCardDetails() {
               {showCvv ? 'CVV' : 'Crear CVV'} dinamico
             </Text>
             <View style={styles.cvvView}>
-              <Text style={styles.cvv}>{showCvv ? cvv : 'cvv'}</Text>
+              <Text style={styles.cvv}>{showCvv ? getRandomCvv() : 'cvv'}</Text>
               <TouchableOpacity onPress={() => setShowCvv(!showCvv)}>
                 <Icon
                   name={
                     showCvv
                       ? 'checkmark-circle-outline'
-                      : 'close-circle-outline'
+                      : 'ellipsis-horizontal-circle-outline'
                   }
                   size={32}
                   color={'white'}
@@ -82,17 +95,24 @@ export default function VirtualCardDetails() {
           </View>
           {showCvv && (
             <>
-              <View>
-                <Text>5:00</Text>
+              <View style={styles.timer}>
+                <Text style={styles.textTimer}>5:00</Text>
               </View>
-              <Text>
+              <Text style={{color: 'white'}}>
                 Tu codigo de seguridad (cvv) tiene una validez de 5 minutos
               </Text>
             </>
           )}
-          <View>
-            <Text>Apagar mi tarjeta virtual</Text>
-            <Text>Input</Text>
+          <View style={styles.turnOnCard}>
+            <Text style={styles.cvvDinamico}>
+              {turnOnCard ? 'Apagar' : 'Encender'} mi tarjeta virtual
+            </Text>
+            <Switch
+              trackColor={{false: '#00079A', true: 'white'}}
+              thumbColor={turnOnCard ? '#59A2FF' : 'white'}
+              onValueChange={setTurnOnCard}
+              value={turnOnCard}
+            />
           </View>
         </View>
 
@@ -128,7 +148,8 @@ export default function VirtualCardDetails() {
                 <TouchableOpacity
                   style={styles.optionTouchableDisabled}
                   onPress={() => {
-                    //show modal
+                    setMessage('Enciende tu tarjeta y crea tu CVV dinamico');
+                    setShowModal(true);
                   }}>
                   <Icon
                     name="swap-horizontal-outline"
@@ -170,6 +191,11 @@ export default function VirtualCardDetails() {
           </View>
         </View>
       </ScrollView>
+      <InfoModal
+        message={message}
+        onCancel={() => setShowModal(false)}
+        visible={showModal}
+      />
     </View>
   );
 }
@@ -275,6 +301,26 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     width: 70,
     textAlign: 'center',
+  },
+  timer: {
+    backgroundColor: 'white',
+    borderRadius: 100,
+    width: 75,
+    height: 75,
+    alignSelf: 'center',
+    padding: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textTimer: {
+    color: 'blue',
+    fontSize: 20,
+    fontWeight: '900',
+  },
+  turnOnCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
   },
   movesView: {
     paddingHorizontal: 30,

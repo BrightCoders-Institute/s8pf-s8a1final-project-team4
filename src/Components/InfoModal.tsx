@@ -1,13 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text, Modal, StyleSheet, TouchableOpacity} from 'react-native';
-import Button from './Button';
 
-export default function ConfirmationModal({
-  visible,
-  message,
-  onCancel,
-  onConfirm,
-}) {
+export default function InfoModal({visible, message, onCancel}) {
   return (
     <Modal
       visible={visible}
@@ -18,7 +12,6 @@ export default function ConfirmationModal({
         <View style={styles.container}>
           <Text style={styles.message}>{message}</Text>
           <View style={styles.buttonView}>
-            <Button text="Confirmar" fn={onConfirm} />
             <TouchableOpacity style={styles.buttons} onPress={onCancel}>
               <Text style={styles.btnText}>Cancelar</Text>
             </TouchableOpacity>
