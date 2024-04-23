@@ -15,7 +15,7 @@ import {formatDate} from '../Components/MoveCard';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import InfoModal from '../Components/InfoModal';
-// import {object} from 'yup';
+import {ChangeCardState} from '../Firebase/db';
 
 function getRandomCvv() {
   const cvv = [];
@@ -33,7 +33,7 @@ export default function VirtualCardDetails() {
   const [cvv, setCvv] = useState('');
   const [showModal, setShowModal] = useState(false);
   const {userInfo} = useContext(UserContext);
-  const [turnOnCard, setTurnOnCard] = useState(false);
+  const [turnOnCard, setTurnOnCard] = useState(userInfo.tarjetaCredito.turnOn);
   const navigation = useNavigation();
   const cardNumber = userInfo.tarjetaCredito.number.replace(
     /\d{4}(?=.)/g,
@@ -56,7 +56,7 @@ export default function VirtualCardDetails() {
   console.log(groupedByDate);
 
   function startTimer() {
-    setSeconds(5);
+    setSeconds(300);
     const interval = setInterval(() => {
       setSeconds(prevSeconds => {
         if (prevSeconds === 0) {
@@ -142,8 +142,9 @@ export default function VirtualCardDetails() {
               trackColor={{false: '#00079A', true: 'white'}}
               thumbColor={turnOnCard ? '#59A2FF' : 'white'}
               value={turnOnCard}
-              onValueChange={() => {
+              onValueChange={async () => {
                 setTurnOnCard(prevState => !prevState);
+                await ChangeCardState();
                 if (turnOnCard) {
                   setShowCvv(false);
                   setSeconds(0);
@@ -254,7 +255,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 25,
-    paddingVertical: 15,
+    paddingVertical: 8,
   },
   headerTitle: {
     color: 'white',
