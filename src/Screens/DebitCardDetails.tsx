@@ -5,13 +5,16 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  FlatList,
 } from 'react-native';
 import NewIcon from 'react-native-vector-icons/FontAwesome5';
 import {UserContext} from '../../App';
 import {useContext, useState} from 'react';
 import MoveCard from '../Components/MoveCard';
+import {formatDate} from '../Components/MoveCard';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
+// import {object} from 'yup';
 
 export default function DebitCardDetails() {
   const [showCvv, setShowCvv] = useState(false);
@@ -24,15 +27,29 @@ export default function DebitCardDetails() {
   const saldo = userInfo.tarjetaDebito.saldo;
   const cvv = userInfo.tarjetaDebito.cvv;
 
+  const grouped = userInfo.tarjetaDebito.movimientos.reduce(
+    (acc: any, movement: object) => {
+      const date = movement.fecha;
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(movement);
+      return acc;
+    },
+    {},
+  );
+  const groupedByDate = Object.entries(grouped);
+  console.log(groupedByDate);
+
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Debito Fisica</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-            <Icon name="close-outline" size={45} color={'white'} />
-          </TouchableOpacity>
-        </View>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Debito Fisica</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <Icon name="close-outline" size={45} color={'white'} />
+        </TouchableOpacity>
+      </View>
+      <ScrollView>
         <View style={styles.accountInfo}>
           <View style={styles.balanceView}>
             <Text style={styles.accountBalance}>
@@ -83,19 +100,23 @@ export default function DebitCardDetails() {
             <Text style={styles.lastMove}>Ultimos Movimientos:</Text>
           </View>
           <View>
-            {userInfo.tarjetaDebito.movimientos.map((move, index) => (
-              <MoveCard
-                key={index}
-                date={move.fecha}
-                desc={move.descripcion}
-                monto={move.monto}
-                tipo={move.tipo}
-              />
+            {groupedByDate.map(([fecha, movimientos]) => (
+              <View key={fecha}>
+                <Text style={styles.date}>{formatDate(fecha)}</Text>
+                {movimientos.map((move, index) => (
+                  <MoveCard
+                    key={index}
+                    desc={move.descripcion}
+                    monto={move.monto}
+                    tipo={move.tipo}
+                  />
+                ))}
+              </View>
             ))}
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 
@@ -221,5 +242,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     paddingLeft: 10,
     paddingTop: 10,
+  },
+  date: {
+    color: 'black',
+    fontWeight: '900',
+    fontStyle: 'italic',
+    fontSize: 18,
+    paddingBottom: 12,
   },
 });

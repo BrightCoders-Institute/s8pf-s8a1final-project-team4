@@ -80,6 +80,7 @@ export default function LogIn() {
 
   // Función para mostrar una notificación local de inicio de sesión exitoso
   const showLoginSuccessNotification = () => {
+
     PushNotification.createChannel(
       {
         channelId: "channel-id", // (required)
@@ -97,6 +98,7 @@ export default function LogIn() {
         channelId:"channel-id",
       });
     };
+
 
     const handleLogInWithFirebase = async () => {
       try {
@@ -142,62 +144,65 @@ export default function LogIn() {
         const userDocRef = doc(db, 'users', uid); // Crear documento en Firestore en la colección "users"
         const docSnap = await getDoc(userDocRef);
 
-        if (!docSnap.exists()) {
-          const userData = {
-            name: result.user.displayName,
-            email: result.user.email,
-            photo: result.user.photoURL,
-            tarjetaDebito: {
-              number: getRandomCardNumber(),
-              saldo: 10000,
-              cvv: getRandomCvv(),
-              movimientos: [
-                {
-                  fecha: getCurrentDate(),
-                  monto: 10000,
-                  descripcion: 'Apertura de cuenta',
-                  tipo: 'Transferencia bancaria',
-                },
-              ],
-            },
-            tarjetaCredito: {
-              number: getRandomCardNumber(),
-              saldo: 10000,
-              cvv: getRandomCvv(),
-              movimientos: [
-                {
-                  fecha: getCurrentDate(),
-                  monto: 10000,
-                  descripcion: 'Apertura de cuenta',
-                  tipo: 'Transferencia bancaria',
-                },
-              ],
-            },
-            contactos: [],
-          };
-          handleUserActive(userData);
-          await setDoc(userDocRef, userData);
-        } else {
-          const userData = docSnap.data();
+
+      if (!docSnap.exists()) {
+        //edit credit card part
+        const userData = {
+          name: result.user.displayName,
+          email: result.user.email,
+          photo: result.user.photoURL,
+          tarjetaDebito: {
+            number: getRandomCardNumber(),
+            saldo: 10000,
+            cvv: getRandomCvv(),
+            movimientos: [
+              {
+                fecha: getCurrentDate(),
+                monto: 10000,
+                descripcion: 'Apertura de cuenta',
+                tipo: 'Transferencia bancaria',
+              },
+            ],
+          },
+          tarjetaCredito: {
+            number: getRandomCardNumber(),
+            saldo: 10000,
+            cvv: getRandomCvv(),
+            movimientos: [
+              {
+                fecha: getCurrentDate(),
+                monto: 10000,
+                descripcion: 'Apertura de cuenta',
+                tipo: 'Limite de credito',
+              },
+            ],
+          },
+          contactos: [],
+        };
+        handleUserActive(userData);
+        await setDoc(userDocRef, userData);
+      } else {
+        const userData = docSnap.data();
+        handleUserActive(userData);
+      }
+      // Suscribirse a cambios en los datos del usuario
+      const unsubscribe = onSnapshot(userDocRef, doc => {
+        if (doc.exists()) {
+          const userData = doc.data();
           handleUserActive(userData);
         }
-        // Suscribirse a cambios en los datos del usuario
-        const unsubscribe = onSnapshot(userDocRef, doc => {
-          if (doc.exists()) {
-            const userData = doc.data();
-            handleUserActive(userData);
-          }
-        });
-        navigation.navigate('Home');
-        // Mostrar notificación después del inicio de sesión exitoso
-        showLoginSuccessNotification()
-        // Retornar la función de limpieza para cancelar la suscripción
-        return () => unsubscribe();
-      } catch (error) {
-        console.error(error);
-        Alert.alert('Ocurrio un error al registrarse');
-      }
-    };
+      });
+      navigation.navigate('Home');
+      // Mostrar notificación después del inicio de sesión exitoso
+      showLoginSuccessNotification();
+      // Retornar la función de limpieza para cancelar la suscripción
+      return () => unsubscribe();
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Ocurrio un error al registrarse');
+    }
+  };
+
 
     return (
       <View style={styles.container}>
