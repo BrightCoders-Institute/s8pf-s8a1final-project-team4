@@ -135,14 +135,15 @@ export default function SignUp() {
             },
             tarjetaCredito: {
               number: getRandomCardNumber(),
-              saldo: 10000,
+              turnOn: false,
+              saldo: 5000,
               cvv: getRandomCvv(),
               movimientos: [
                 {
                   fecha: getCurrentDate(),
-                  monto: 10000,
-                  descripcion: 'Apertura de cuenta',
-                  tipo: 'Transferencia bancaria',
+                  monto: 5000,
+                  descripcion: 'Apertura cuenta virtual',
+                  tipo: 'Transferencia tarjeta virtual',
                 },
               ],
             },
