@@ -225,12 +225,12 @@ const styles = StyleSheet.create({
   },
   optionTouchable: {
     alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#4A52FF',
+    justifyContent: 'space-evenly',
+    backgroundColor: '#003E8D',
     borderRadius: 20,
     flexDirection: 'row',
-    padding: 14,
-    width: '45%',
+    padding: 10,
+    width: '46%',
   },
   optionText: {
     color: 'white',

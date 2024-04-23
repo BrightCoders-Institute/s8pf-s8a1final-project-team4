@@ -61,39 +61,94 @@ export default function VirtualCardDetails() {
             <Text style={styles.cardNumber}>{cardNumber}</Text>
             <NewIcon name="cc-visa" size={35} color={'white'} />
           </View>
-
-          <View style={styles.cvvView}>
-            <Text style={styles.cvv}>{showCvv ? cvv : 'cvv'}</Text>
-            <TouchableOpacity onPress={() => setShowCvv(!showCvv)}>
-              <Icon
-                name={showCvv ? 'eye-outline' : 'eye-off-outline'}
-                size={32}
-                color={'white'}
-              />
-            </TouchableOpacity>
+          <View>
+            <Text style={styles.cvvDinamico}>
+              {showCvv ? 'CVV' : 'Crear CVV'} dinamico
+            </Text>
+            <View style={styles.cvvView}>
+              <Text style={styles.cvv}>{showCvv ? cvv : 'cvv'}</Text>
+              <TouchableOpacity onPress={() => setShowCvv(!showCvv)}>
+                <Icon
+                  name={
+                    showCvv
+                      ? 'checkmark-circle-outline'
+                      : 'close-circle-outline'
+                  }
+                  size={32}
+                  color={'white'}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+          {showCvv && (
+            <>
+              <View>
+                <Text>5:00</Text>
+              </View>
+              <Text>
+                Tu codigo de seguridad (cvv) tiene una validez de 5 minutos
+              </Text>
+            </>
+          )}
+          <View>
+            <Text>Apagar mi tarjeta virtual</Text>
+            <Text>Input</Text>
           </View>
         </View>
 
         <View style={styles.movesView}>
           <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-            <TouchableOpacity
-              style={styles.optionTouchable}
-              onPress={() => {
-                navigation.navigate('TransferirA');
-              }}>
-              <Icon name="swap-horizontal-outline" size={35} color={'white'} />
-              <Text style={styles.optionText}>Transferir</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.optionTouchable}
-              onPress={() => {
-                navigation.navigate('Retirar');
-              }}>
-              <View style={styles.optionView}>
-                <Icon name="cash-outline" size={35} color={'white'} />
-              </View>
-              <Text style={styles.optionText}>Retirar</Text>
-            </TouchableOpacity>
+            {showCvv ? (
+              <>
+                <TouchableOpacity
+                  style={styles.optionTouchable}
+                  onPress={() => {
+                    navigation.navigate('TransferirA');
+                  }}>
+                  <Icon
+                    name="swap-horizontal-outline"
+                    size={35}
+                    color={'white'}
+                  />
+                  <Text style={styles.optionText}>Transferir</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.optionTouchable}
+                  onPress={() => {
+                    navigation.navigate('Retirar');
+                  }}>
+                  <View style={styles.optionView}>
+                    <Icon name="cash-outline" size={35} color={'white'} />
+                  </View>
+                  <Text style={styles.optionText}>Retirar</Text>
+                </TouchableOpacity>
+              </>
+            ) : (
+              <>
+                <TouchableOpacity
+                  style={styles.optionTouchableDisabled}
+                  onPress={() => {
+                    //show modal
+                  }}>
+                  <Icon
+                    name="swap-horizontal-outline"
+                    size={35}
+                    color={'white'}
+                  />
+                  <Text style={styles.optionText}>Transferir</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.optionTouchableDisabled}
+                  onPress={() => {
+                    //show modal
+                  }}>
+                  <View style={styles.optionView}>
+                    <Icon name="cash-outline" size={35} color={'white'} />
+                  </View>
+                  <Text style={styles.optionText}>Retirar</Text>
+                </TouchableOpacity>
+              </>
+            )}
           </View>
           <View>
             <Text style={styles.lastMove}>Ultimos Movimientos:</Text>
@@ -124,7 +179,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: '#021B9E',
+    backgroundColor: '#004FBB',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -136,7 +191,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
   },
   accountInfo: {
-    backgroundColor: '#00079A',
+    backgroundColor: '#0054C6',
     borderBottomRightRadius: 80,
     paddingVertical: 40,
     paddingHorizontal: 28,
@@ -195,17 +250,22 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     fontStyle: 'italic',
   },
+  cvvDinamico: {
+    color: 'white',
+    fontSize: 17,
+    paddingBottom: 8,
+  },
   cvvView: {
     alignSelf: 'flex-start',
     gap: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(60, 105, 255, .5)',
+    backgroundColor: 'rgba(60, 125, 255, .5)',
     paddingRight: 5,
     borderRadius: 5,
   },
   cvv: {
-    backgroundColor: 'rgba(60, 105, 255, .7)',
+    backgroundColor: 'rgba(60, 125, 255, 1)',
     borderRadius: 5,
     padding: 8,
     fontSize: 22,
@@ -224,19 +284,28 @@ const styles = StyleSheet.create({
   },
   optionTouchable: {
     alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#4A52FF',
+    justifyContent: 'space-evenly',
+    backgroundColor: '#003D91',
     borderRadius: 20,
     flexDirection: 'row',
-    padding: 14,
-    width: '45%',
+    padding: 10,
+    width: '46%',
+  },
+  optionTouchableDisabled: {
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    backgroundColor: 'rgba(38, 64, 97,.3)',
+    borderRadius: 20,
+    flexDirection: 'row',
+    padding: 10,
+    width: '46%',
   },
   optionText: {
     color: 'white',
     fontSize: 16,
   },
   lastMove: {
-    color: '#4A52FF',
+    color: '#0064EB',
     fontWeight: '900',
     fontSize: 22,
     paddingLeft: 10,
