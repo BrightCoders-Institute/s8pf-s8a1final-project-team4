@@ -1,4 +1,5 @@
 import React from 'react';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {View, Text, Modal, StyleSheet, TouchableOpacity} from 'react-native';
 
 export default function InfoModal({visible, message, onCancel}) {
@@ -10,12 +11,10 @@ export default function InfoModal({visible, message, onCancel}) {
       onRequestClose={onCancel}>
       <View style={styles.background}>
         <View style={styles.container}>
+          <TouchableOpacity style={styles.close} onPress={onCancel}>
+            <Icon name="close-outline" size={35} color={'#007CFF'} />
+          </TouchableOpacity>
           <Text style={styles.message}>{message}</Text>
-          <View style={styles.buttonView}>
-            <TouchableOpacity style={styles.buttons} onPress={onCancel}>
-              <Text style={styles.btnText}>Cancelar</Text>
-            </TouchableOpacity>
-          </View>
         </View>
       </View>
     </Modal>
@@ -27,14 +26,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(138, 138, 138 ,0.8)',
+    backgroundColor: 'rgba(138, 138, 138 ,0.5)',
   },
   container: {
     backgroundColor: '#021B9E',
-    // height: 220,
     margin: 20,
-    padding: 20,
     borderRadius: 15,
+    paddingTop: 50,
     alignItems: 'center',
     gap: 10,
     borderColor: '#00079A',
@@ -42,27 +40,21 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   message: {
+    paddingHorizontal: 15,
+    paddingBottom: 30,
     color: 'white',
     fontSize: 22,
-    fontWeight: '900',
+    // fontFamily: 'arial',
   },
-  buttonView: {marginTop: 20, gap: 30},
-  buttons: {
-    backgroundColor: '#FF5252',
-    width: '60%',
-    alignItems: 'center',
-    shadowOffset: {width: 0, height: 100},
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 5,
-    borderRadius: 5,
-    paddingHorizontal: 20,
-    paddingVertical: 13,
-    alignSelf: 'center',
-  },
-  btnText: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: '900',
+  close: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
+    backgroundColor: 'white',
+    elevation: 15,
+    borderRadius: 100,
+    alignSelf: 'flex-end',
+    borderWidth: 2,
+    borderColor: '#007CFF',
   },
 });

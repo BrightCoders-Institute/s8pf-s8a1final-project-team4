@@ -29,6 +29,8 @@ function getRandomCvv() {
 export default function VirtualCardDetails() {
   const [showCvv, setShowCvv] = useState(false);
   const [message, setMessage] = useState('');
+  const [seconds, setSeconds] = useState(60);
+  const [cvv, setCvv] = useState('');
   const [showModal, setShowModal] = useState(false);
   const {userInfo} = useContext(UserContext);
   const [turnOnCard, setTurnOnCard] = useState(false);
@@ -52,6 +54,21 @@ export default function VirtualCardDetails() {
   );
   const groupedByDate = Object.entries(grouped);
   console.log(groupedByDate);
+
+  function startTimer() {
+    setSeconds(5);
+    const interval = setInterval(() => {
+      setSeconds(prevSeconds => {
+        if (prevSeconds === 0) {
+          clearInterval(interval);
+          setShowCvv(false);
+        }
+        return prevSeconds - 1;
+      });
+    }, 1000);
+  }
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
 
   return (
     <View style={styles.container}>
@@ -79,8 +96,18 @@ export default function VirtualCardDetails() {
               {showCvv ? 'CVV' : 'Crear CVV'} dinamico
             </Text>
             <View style={styles.cvvView}>
-              <Text style={styles.cvv}>{showCvv ? getRandomCvv() : 'cvv'}</Text>
-              <TouchableOpacity onPress={() => setShowCvv(!showCvv)}>
+              <Text style={styles.cvv}>{showCvv ? cvv : 'cvv'}</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  if (turnOnCard && !showCvv) {
+                    setCvv(getRandomCvv());
+                    setShowCvv(true);
+                    startTimer();
+                  } else if (!turnOnCard) {
+                    setMessage('Enciende tu tarjeta virtual');
+                    setShowModal(true);
+                  }
+                }}>
                 <Icon
                   name={
                     showCvv
@@ -96,7 +123,11 @@ export default function VirtualCardDetails() {
           {showCvv && (
             <>
               <View style={styles.timer}>
-                <Text style={styles.textTimer}>5:00</Text>
+                <Text style={styles.textTimer}>{`${minutes
+                  .toString()
+                  .padStart(2, '0')}:${remainingSeconds
+                  .toString()
+                  .padStart(2, '0')}`}</Text>
               </View>
               <Text style={{color: 'white'}}>
                 Tu codigo de seguridad (cvv) tiene una validez de 5 minutos
@@ -110,8 +141,14 @@ export default function VirtualCardDetails() {
             <Switch
               trackColor={{false: '#00079A', true: 'white'}}
               thumbColor={turnOnCard ? '#59A2FF' : 'white'}
-              onValueChange={setTurnOnCard}
               value={turnOnCard}
+              onValueChange={() => {
+                setTurnOnCard(prevState => !prevState);
+                if (turnOnCard) {
+                  setShowCvv(false);
+                  setSeconds(0);
+                }
+              }}
             />
           </View>
         </View>
@@ -148,7 +185,11 @@ export default function VirtualCardDetails() {
                 <TouchableOpacity
                   style={styles.optionTouchableDisabled}
                   onPress={() => {
-                    setMessage('Enciende tu tarjeta y crea tu CVV dinamico');
+                    if (!turnOnCard && !showCvv) {
+                      setMessage('Enciende tu tarjeta y crea tu CVV dinamico');
+                    } else if (turnOnCard && !showCvv) {
+                      setMessage('Crea tu CVV dinamico');
+                    }
                     setShowModal(true);
                   }}>
                   <Icon
@@ -161,11 +202,14 @@ export default function VirtualCardDetails() {
                 <TouchableOpacity
                   style={styles.optionTouchableDisabled}
                   onPress={() => {
-                    //show modal
+                    if (!turnOnCard && !showCvv) {
+                      setMessage('Enciende tu tarjeta y crea tu CVV dinamico');
+                    } else if (turnOnCard && !showCvv) {
+                      setMessage('Crea tu CVV dinamico');
+                    }
+                    setShowModal(true);
                   }}>
-                  <View style={styles.optionView}>
-                    <Icon name="cash-outline" size={35} color={'white'} />
-                  </View>
+                  <Icon name="cash-outline" size={35} color={'white'} />
                   <Text style={styles.optionText}>Retirar</Text>
                 </TouchableOpacity>
               </>
@@ -278,7 +322,8 @@ const styles = StyleSheet.create({
   },
   cvvDinamico: {
     color: 'white',
-    fontSize: 17,
+    fontSize: 18,
+    fontWeight: '900',
     paddingBottom: 8,
   },
   cvvView: {
@@ -305,10 +350,10 @@ const styles = StyleSheet.create({
   timer: {
     backgroundColor: 'white',
     borderRadius: 100,
-    width: 75,
-    height: 75,
+    width: 70,
+    height: 70,
     alignSelf: 'center',
-    padding: 15,
+    // padding: 15,
     justifyContent: 'center',
     alignItems: 'center',
   },
