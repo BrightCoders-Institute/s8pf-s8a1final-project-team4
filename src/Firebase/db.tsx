@@ -103,8 +103,6 @@ export async function transferToCard(
   amount: number,
   destination: string,
   concept: string,
-  myBalance: number,
-  transferTo: string,
 ) {
   try {
     const q = query(
@@ -119,22 +117,15 @@ export async function transferToCard(
         querySnapshot.forEach(async document => {
           const destinyRef = doc(db, 'users', document.id);
           const destinyData = document.data();
-
-          if (myBalance < amount) {
-            Alert.alert('No tienes suficiente saldo');
-            return false;
-          } else {
-            destinyData.tarjetaDebito.saldo += parseInt(amount);
-            destinyData.tarjetaDebito.movimientos.unshift({
-              fecha: getCurrentDate(),
-              monto: amount,
-              descripcion: concept,
-              tipo: 'Transferencia bancaria',
-            });
-            transaction.set(destinyRef, destinyData);
-            await minusTransfer(amount, concept); //descontar del usuario activo
-            Alert.alert(`Has transferido con exito a: ${transferTo}`);
-          }
+          destinyData.tarjetaDebito.saldo += parseInt(amount);
+          destinyData.tarjetaDebito.movimientos.unshift({
+            fecha: getCurrentDate(),
+            monto: amount,
+            descripcion: concept,
+            tipo: 'Transferencia bancaria',
+          });
+          transaction.set(destinyRef, destinyData);
+          await minusTransfer(amount, concept);
         });
       });
     } else {
