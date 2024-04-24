@@ -5,6 +5,7 @@ import IconC from 'react-native-vector-icons/Ionicons';
 import IconS from 'react-native-vector-icons/Ionicons';
 import {UserContext} from '../../App';
 import {useContext} from 'react';
+import { useState } from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {signOut} from 'firebase/auth';
 import {auth} from '../Firebase/firebaseconfig';
@@ -20,8 +21,12 @@ export default function PasswordRe() {
   const [nameError, setNameError] = React.useState<string>('');
   const [email, setEmail] = React.useState<string>('');
   const [emailError, setEmailError] = React.useState<string>('');
+  const [passwordVisible, setPasswordVisible] = useState(false); // Visibilidad de la primera contraseña
+  const [password2Visible, setPassword2Visible] = useState(false); // Visibilidad de la segunda contraseña
   const [password, setPassword] = React.useState<string>('');
+  const [password2, setPassword2] = React.useState(''); // Nuevo estado para la segunda contraseña
   const [passwordError, setPasswordError] = React.useState<string>('');
+  const [password2Error, setPassword2Error] = React.useState(''); // Nuevo estado para el error de la segunda contraseña
   const [rePasswordVisible, setRePasswordVisible] = React.useState(true);
   const {userInfo, handleUserActive} = useContext(UserContext);
   const navigation = useNavigation();
@@ -32,11 +37,26 @@ export default function PasswordRe() {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
     if (regex.test(value) || value === '') {
       setPassword(value);
-      setPasswordError(''); // Limpiar el mensaje de error
+      setPasswordError(''); // Limpia el error cuando la contraseña es válida
+      validatePasswords(value, password2);
     } else {
       setPasswordError(
         'La contraseña debe tener al menos 8 caracteres, incluir al menos una letra mayúscula, una letra minúscula y un número',
       );
+    }
+  };
+  
+  const handlePassword2Change = (value: string) => {
+    setPassword2(value);
+    setPassword2Error(''); // Limpia el error cuando la segunda contraseña es válida
+    validatePasswords(password, value);
+  };
+  
+  const validatePasswords = (password1: string, password2: string) => {
+    if (password1 !== password2 && password2 !== '') {
+      setPassword2Error('Las contraseñas no coinciden');
+    } else {
+      setPassword2Error('');
     }
   };
 
@@ -86,28 +106,30 @@ export default function PasswordRe() {
       </View>
 
       <View style={style.ViewsContainer}>
-        <FormInput
-         text="Contraseña"
-         secureTextEntry={rePasswordVisible}
-         iconName={rePasswordVisible ? 'eye-off' : 'eye'}
-         viewPass={() => setRePasswordVisible(!rePasswordVisible)}
-         msgError={passwordError}
-         onInputChange={handlePasswordChange}
+      <FormInput
+          text="Contraseña"
+          secureTextEntry={!passwordVisible} // Usa passwordVisible aquí
+          iconName={passwordVisible ? 'eye' : 'eye-off'}
+          viewPass={() => setPasswordVisible(!passwordVisible)} // Cambia passwordVisible aquí
+          msgError={passwordError}
+          onInputChange={handlePasswordChange}
         />
         <FormInput
-         text="Repetir Contraseña"
-         secureTextEntry={rePasswordVisible}
-         iconName={rePasswordVisible ? 'eye-off' : 'eye'}
-         viewPass={() => setRePasswordVisible(!rePasswordVisible)}
-         msgError={passwordError}
-         onInputChange={handlePasswordChange}
+          text="Repetir Contraseña"
+          secureTextEntry={!password2Visible} // Usa password2Visible aquí
+          iconName={password2Visible ? 'eye' : 'eye-off'}
+          viewPass={() => setPassword2Visible(!password2Visible)} // Cambia password2Visible aquí
+          msgError={password2Error}
+          onInputChange={handlePassword2Change}
         />
        <View style={style.buttonView}>
        <TouchableOpacity
-            style={style.buttonTouchable}
-            onPress={() => handlePasswordUpdate(password)}>
-            <Text style={style.TextView}>Guardar Cambios</Text>
-          </TouchableOpacity>
+          style={style.buttonTouchable}
+          onPress={() => handlePasswordUpdate(password)}
+          disabled={!password || !password2 || password !== password2} // El botón estará deshabilitado si alguna contraseña está vacía o si las contraseñas no son iguales
+          >
+          <Text style={style.TextView}>Guardar Cambios</Text>
+        </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -159,7 +181,8 @@ const style = StyleSheet.create({
   },
   ViewsContainer: {
     flex: 1,
-    marginTop: 20,
+    gap: 40,
+    marginTop: 40,
   },
   buttonTouchable: {
     marginTop: 30,
