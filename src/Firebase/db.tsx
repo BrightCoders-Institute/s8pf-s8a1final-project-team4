@@ -196,3 +196,14 @@ export async function checkIfAccountExists(
     return false;
   }
 }
+export async function ChangeCardState() {
+  try {
+    const ref = await getDocRef();
+    const doc = getDoc(ref);
+    const data: DocumentData = (await doc).data();
+    data.tarjetaCredito.turnOn = !data.tarjetaCredito.turnOn;
+    setDoc(ref, data);
+  } catch (err) {
+    console.log('No se ha cambiado el estado de la tarjeta virtual', err);
+  }
+}

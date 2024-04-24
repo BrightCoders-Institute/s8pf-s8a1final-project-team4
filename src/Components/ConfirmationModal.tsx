@@ -12,7 +12,7 @@ export default function ConfirmationModal({
     <Modal
       visible={visible}
       transparent
-      animationType="slide"
+      animationType="fade"
       onRequestClose={onCancel}>
       <View style={styles.background}>
         <View style={styles.container}>

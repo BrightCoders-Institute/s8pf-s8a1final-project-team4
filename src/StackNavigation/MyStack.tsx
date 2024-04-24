@@ -6,7 +6,7 @@ import LogIn from '../Screens/LogIn';
 import SignUp from '../Screens/SignUp';
 import Home from '../Screens/Home';
 import DebitCardDetails from '../Screens/DebitCardDetails';
-import CreditCardDetails from '../Screens/CreditCardDetails';
+import VirtualCardDetails from '../Screens/VirtualCardDetails';
 import MisTarjetas from '../Screens/MisTarjetas';
 import SelectContact from '../Screens/SelectContact';
 import Transferir from '../Screens/Transferir';
@@ -51,8 +51,8 @@ export default function MyStack() {
         }}
       />
       <Stack.Screen
-        name="CuentaCreditoFisica"
-        component={CreditCardDetails}
+        name="CuentaDebitoVirtual"
+        component={VirtualCardDetails}
         options={{
           title: 'Mi Cuenta',
           headerShown: false,
@@ -107,7 +107,9 @@ export default function MyStack() {
         component={Retirar}
         options={{
           title: 'Retiro sin tarjeta',
-          headerShown: false,
+          headerTitleStyle: styles.title,
+          headerStyle: styles.background,
+          headerTintColor: 'white',
         }}
       />
       <Stack.Screen
