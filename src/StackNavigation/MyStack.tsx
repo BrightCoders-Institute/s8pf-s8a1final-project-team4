@@ -15,8 +15,10 @@ import Config from '../Screens/Config';
 import Retirar from '../Screens/Retirar';
 import RetiroDetalles from '../Screens/RetiroDetalles';
 import History from '../Screens/History';
+import Mapsview from '../Components/MapView';
 import DatosPersonales from '../Screens/DatosPersonales';
 import PasswordRe from '../Screens/PasswordRe';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -145,6 +147,14 @@ export default function MyStack() {
           headerTitleStyle: styles.title,
           headerStyle: styles.background,
           headerTintColor: 'white',
+        }}
+      />
+      <Stack.Screen
+        name="Mapas"
+        component={Mapsview}
+        options={{
+          title: 'Mapas',
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

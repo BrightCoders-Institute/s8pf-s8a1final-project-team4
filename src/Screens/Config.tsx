@@ -58,6 +58,13 @@ export default function Config() {
           <Text style={style.TextView}> Seguridad</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity style={style.buttonTouchable} onPress={() =>{
+          navigation.navigate("Mapas")
+        }}>
+          <IconS name="map" size={45} color="blue" />
+          <Text style={style.TextView}> Sucursales</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity
           style={style.buttonTouchable}
           onPress={async () => {

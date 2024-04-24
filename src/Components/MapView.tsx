@@ -1,10 +1,12 @@
 import React,{useEffect, useState} from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import GetLocation, { Location } from 'react-native-get-location'
+import Icon from 'react-native-vector-icons/AntDesign';
+import { useNavigation } from '@react-navigation/native';
 export default function Mapsview() {
   const [location,setLocation] = useState<Location | undefined>()
-
+  const navigation = useNavigation()
   const getCurrentLocation = async () =>{
     try{
       const currenlocation = await GetLocation.getCurrentPosition({
@@ -19,27 +21,67 @@ export default function Mapsview() {
     getCurrentLocation()
       },[])
 
+      const bankLocations = [
+        { id: 1, name: 'Banco 1', latitude: 19.252855653389062, longitude: -103.72263488678351 },
+        { id: 2, name: 'Banco 2', latitude: 19.255804494890313, longitude: -103.71516437117339 },
+        { id: 3, name: 'Banco 3', latitude: 19.25560790710621, longitude: -103.71565893492458 },
+        { id: 4, name: 'Banco 4', latitude: 19.254158064921818, longitude: -103.71243125570625 },
+        { id: 5, name: 'Banco 5', latitude: 19.25620341639337, longitude: -103.68831555230342 },
+        { id: 6, name: 'Banco 6', latitude: 19.255876117113864, longitude: -103.69482275817568 },
+        { id: 7, name: 'Banco 7', latitude: 19.272385359157852, longitude: -103.73483128571371 },
+        { id: 8, name: 'Banco 8', latitude: 19.27229348146824, longitude: -103.73669536952966 },
+        { id: 9, name: 'Banco 9', latitude: 19.282902317032228, longitude: -103.73194859265031 },
+        { id: 10, name: 'Banco 10', latitude: 19.264043326302332, longitude: -103.73524848715478 },
+      ];
+      
+
     return (
         <View style={style.container}>
+          
             <MapView
                 provider={PROVIDER_GOOGLE}
                 style={style.map}
                 initialRegion={location}
                 customMapStyle={mapStyle}
-            />
+                >
+                  {bankLocations.map((bank) => (
+                    <Marker
+                    key={bank.id}
+                    coordinate={{ latitude: bank.latitude, longitude: bank.longitude }}
+                    title={bank.name}
+                  />
+                  ))}
+                </MapView>
+            <TouchableOpacity style={style.btn} onPress={() => {
+              navigation.goBack()
+            } }>
+            <Icon name='close' size={45} color={"white"} style={style.btn}/>
+            </TouchableOpacity>
+           
+         
+            
         </View>
     )
 }
 const style = StyleSheet.create({
     container: {
         ...StyleSheet.absoluteFillObject,
-        height:400,
-        width:400,
+        height:"100%",
+        width:"100%",
         justifyContent:"flex-end",
         alignItems:"center",
     },
     map:{
         ...StyleSheet.absoluteFillObject
+    },
+    btn:{
+
+      position:"absolute",
+      bottom:"93%",
+      left:"83%",
+      backgroundColor: 'rgba(0,0,0,0.2)',
+      borderRadius:30
+
     }
 });
 const mapStyle = [
