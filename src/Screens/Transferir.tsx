@@ -21,7 +21,12 @@ export default function Transferir({route}: any) {
 
   const handleClick = async () => {
     await transferToCard(amount, card_number, concept).then(() => {
-      navigation.navigate('Home');
+      navigation.navigate('TransferDetalles', {
+        importe: amount,
+        concepto: concept,
+        destinatario: transferTo,
+        cardNum: card_number,
+      });
     });
   };
 
