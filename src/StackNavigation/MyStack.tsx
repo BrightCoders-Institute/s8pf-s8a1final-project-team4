@@ -15,6 +15,8 @@ import Config from '../Screens/Config';
 import Retirar from '../Screens/Retirar';
 import RetiroDetalles from '../Screens/RetiroDetalles';
 import History from '../Screens/History';
+import DatosPersonales from '../Screens/DatosPersonales';
+import PasswordRe from '../Screens/PasswordRe';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +27,21 @@ export default function MyStack() {
         name="LogIn"
         component={LogIn}
         options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="PasswordRe"
+        component={PasswordRe}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="DatosPersonales"
+        component={DatosPersonales}
+        options={{
+          title: 'Datos Personales',
           headerShown: false,
         }}
       />

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import IconC from 'react-native-vector-icons/Ionicons';
 import IconS from 'react-native-vector-icons/Ionicons';
@@ -8,12 +8,52 @@ import {useContext} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {signOut} from 'firebase/auth';
 import {auth} from '../Firebase/firebaseconfig';
-import DatosPersonales from '../Screens/DatosPersonales';
+import FormInput from '../Components/Input';
+import FormButton from '../Components/Button';
+import { updatePassword } from 'firebase/auth';
+import { getAuth, reauthenticateWithCredential, EmailAuthProvider} from 'firebase/auth';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Config() {
+export default function PasswordRe() {
+  const [name, setName] = React.useState<string>('');
+  const [nameError, setNameError] = React.useState<string>('');
+  const [email, setEmail] = React.useState<string>('');
+  const [emailError, setEmailError] = React.useState<string>('');
+  const [password, setPassword] = React.useState<string>('');
+  const [passwordError, setPasswordError] = React.useState<string>('');
+  const [rePasswordVisible, setRePasswordVisible] = React.useState(true);
   const {userInfo, handleUserActive} = useContext(UserContext);
   const navigation = useNavigation();
+
+  
+
+  const handlePasswordChange = (value: string) => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    if (regex.test(value) || value === '') {
+      setPassword(value);
+      setPasswordError(''); // Limpiar el mensaje de error
+    } else {
+      setPasswordError(
+        'La contraseña debe tener al menos 8 caracteres, incluir al menos una letra mayúscula, una letra minúscula y un número',
+      );
+    }
+  };
+
+  const handlePasswordUpdate = async (newPassword: string) => {
+    const user = getAuth().currentUser;
+    if (user) {
+      try {
+        await updatePassword(user, newPassword);
+        Alert.alert('Contraseña actualizada con éxito');
+        navigation.goBack();
+      } catch (error) {
+        Alert.alert('Error al actualizar la contraseña: ', error);
+      }
+    } else {
+      Alert.alert('No hay usuario activo');
+    }
+  };
 
   return (
     <View style={style.mainContainer}>
@@ -46,34 +86,29 @@ export default function Config() {
       </View>
 
       <View style={style.ViewsContainer}>
-        <TouchableOpacity style={style.buttonTouchable}>
-          <Icon name="user" size={45} color="blue" />
-          <Text style={style.TextView}onPress={() => {
-            navigation.navigate('DatosPersonales');
-          }}> Datos personales</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={style.buttonTouchable}>
-          <IconS name="shield-checkmark-outline" size={45} color="blue" />
-          <Text style={style.TextView}> Seguridad</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={style.buttonTouchable}
-          onPress={async () => {
-            try {
-              //CERRAR SESION
-              await signOut(auth);
-              AsyncStorage.removeItem('userUID');
-              navigation.navigate('LogIn');
-              handleUserActive(null);
-            } catch (error) {
-              console.log(error);
-            }
-          }}>
-          <IconC name="return-down-back" size={45} color="blue" />
-          <Text style={style.TextView}>Cerrar sesion</Text>
-        </TouchableOpacity>
+        <FormInput
+         text="Contraseña"
+         secureTextEntry={rePasswordVisible}
+         iconName={rePasswordVisible ? 'eye-off' : 'eye'}
+         viewPass={() => setRePasswordVisible(!rePasswordVisible)}
+         msgError={passwordError}
+         onInputChange={handlePasswordChange}
+        />
+        <FormInput
+         text="Repetir Contraseña"
+         secureTextEntry={rePasswordVisible}
+         iconName={rePasswordVisible ? 'eye-off' : 'eye'}
+         viewPass={() => setRePasswordVisible(!rePasswordVisible)}
+         msgError={passwordError}
+         onInputChange={handlePasswordChange}
+        />
+       <View style={style.buttonView}>
+       <TouchableOpacity
+            style={style.buttonTouchable}
+            onPress={() => handlePasswordUpdate(password)}>
+            <Text style={style.TextView}>Guardar Cambios</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -88,7 +123,7 @@ const style = StyleSheet.create({
     backgroundColor: '#343DFF',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 5,
+    paddingVertical: 15,
     paddingHorizontal: 20,
     elevation: 20,
     alignItems: 'center',
@@ -157,12 +192,15 @@ const style = StyleSheet.create({
     color: 'white',
     fontSize: 28,
   },
-
   TextView: {
     fontSize: 20,
     fontWeight: '900',
     color: 'blue',
     flex: 1,
     textAlign: 'center',
+  },
+  buttonView: {
+    alignItems: 'center',
+    gap: 30,
   },
 });

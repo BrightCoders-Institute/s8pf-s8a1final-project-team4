@@ -8,10 +8,9 @@ import {useContext} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {signOut} from 'firebase/auth';
 import {auth} from '../Firebase/firebaseconfig';
-import DatosPersonales from '../Screens/DatosPersonales';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Config() {
+export default function DatosPersonales() {
   const {userInfo, handleUserActive} = useContext(UserContext);
   const navigation = useNavigation();
 
@@ -50,29 +49,14 @@ export default function Config() {
           <Icon name="user" size={45} color="blue" />
           <Text style={style.TextView}onPress={() => {
             navigation.navigate('DatosPersonales');
-          }}> Datos personales</Text>
+          }}> {userInfo.name}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={style.buttonTouchable}>
-          <IconS name="shield-checkmark-outline" size={45} color="blue" />
-          <Text style={style.TextView}> Seguridad</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={style.buttonTouchable}
-          onPress={async () => {
-            try {
-              //CERRAR SESION
-              await signOut(auth);
-              AsyncStorage.removeItem('userUID');
-              navigation.navigate('LogIn');
-              handleUserActive(null);
-            } catch (error) {
-              console.log(error);
-            }
-          }}>
-          <IconC name="return-down-back" size={45} color="blue" />
-          <Text style={style.TextView}>Cerrar sesion</Text>
+          <IconS name="lock-closed-outline" size={45} color="blue" />
+          <Text style={style.TextView}onPress={() => {
+            navigation.navigate('PasswordRe');
+          }}>Cambiar Contraseña</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -88,7 +72,7 @@ const style = StyleSheet.create({
     backgroundColor: '#343DFF',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 5,
+    paddingVertical: 15,
     paddingHorizontal: 20,
     elevation: 20,
     alignItems: 'center',
@@ -157,7 +141,6 @@ const style = StyleSheet.create({
     color: 'white',
     fontSize: 28,
   },
-
   TextView: {
     fontSize: 20,
     fontWeight: '900',
