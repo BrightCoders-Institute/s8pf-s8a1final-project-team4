@@ -119,7 +119,6 @@ export default function SignUp() {
           const userData = {
             email: email,
             name: name,
-            password: password,
             tarjetaDebito: {
               number: getRandomCardNumber(),
               saldo: 10000,
