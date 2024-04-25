@@ -19,7 +19,7 @@ export default function History() {
   const handlePress = (name: string) => {
     setHover(name);
     filter(name);
-    console.log(date, date2);
+    // console.log(date, date2);
   };
 
   async function filter(type: string) {
@@ -74,7 +74,7 @@ export default function History() {
       acc[date].push(movement);
       return acc;
     }, {});
-    console.log(grupedByDate);
+    // console.log(grupedByDate);
     setData(grupedByDate);
   };
 
@@ -82,12 +82,17 @@ export default function History() {
     try {
       if (date != null && date2 != null) {
         const data = await getHistory();
+        const startDate = new Date(date);
+        startDate.setUTCHours(0, 0, 0, 0);
+        const endDate = new Date(date2);
+        endDate.setUTCHours(0, 0, 0, 0);
+        console.log('end', startDate);
+
         const grupedByDate = data.debito.reduce(
           (acc: any, movement: object) => {
             const Localdate = movement.fecha;
             let fecha = new Date(movement.fecha);
-            if (fecha >= date && fecha <= date2) {
-              console.log('date', fecha.toLocaleDateString());
+            if (fecha >= startDate && fecha <= endDate) {
               if (!acc[Localdate]) {
                 acc[Localdate] = [];
               }
@@ -98,8 +103,9 @@ export default function History() {
           },
           {},
         );
+
+        // console.log(grupedByDate);
         setData(grupedByDate);
-        console.log('fechas', grupedByDate);
       } else {
         console.log('selecciona otra fecha ');
       }
@@ -117,46 +123,62 @@ export default function History() {
       <View style={styles.header}>
         <View style={styles.filters}>
           <TouchableOpacity
-            style={[hover === 'btn1' && styles.selectedFilter]}
+            style={hover === 'btn1' ? styles.selectedFilter : styles.filterView}
             onPress={() => handlePress('btn1')}>
+            <Icon
+              name="checkmark-circle-outline"
+              size={30}
+              color={hover === 'btn1' ? 'rgba(74, 82, 255, 1)' : 'white'}
+            />
             <Text
-              style={[
-                hover === 'btn1' && styles.textFilterHover,
-                hover != 'btn1' && styles.textFilter,
-              ]}>
+              style={
+                hover === 'btn1' ? styles.textFilterHover : styles.textFilter
+              }>
               Todos
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[hover === 'btn2' && styles.selectedFilter]}
+            style={hover === 'btn2' ? styles.selectedFilter : styles.filterView}
             onPress={() => handlePress('btn2')}>
+            <Icon
+              name="trending-up-outline"
+              size={30}
+              color={hover === 'btn2' ? 'rgba(74, 82, 255, 1)' : 'white'}
+            />
             <Text
-              style={[
-                hover === 'btn2' && styles.textFilterHover,
-                hover != 'btn2' && styles.textFilter,
-              ]}>
+              style={
+                hover === 'btn2' ? styles.textFilterHover : styles.textFilter
+              }>
               Entradas
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[hover === 'btn3' && styles.selectedFilter]}
+            style={hover === 'btn3' ? styles.selectedFilter : styles.filterView}
             onPress={() => handlePress('btn3')}>
+            <Icon
+              name="trending-down-outline"
+              size={30}
+              color={hover === 'btn3' ? 'rgba(74, 82, 255, 1)' : 'white'}
+            />
             <Text
-              style={[
-                hover === 'btn3' && styles.textFilterHover,
-                hover != 'btn3' && styles.textFilter,
-              ]}>
+              style={
+                hover === 'btn3' ? styles.textFilterHover : styles.textFilter
+              }>
               Salidas
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[hover === 'btn4' && styles.selectedFilter]}
+            style={hover === 'btn4' ? styles.selectedFilter : styles.filterView}
             onPress={() => handlePress('btn4')}>
+            <Icon
+              name="calendar"
+              size={30}
+              color={hover === 'btn4' ? 'rgba(74, 82, 255, 1)' : 'white'}
+            />
             <Text
-              style={[
-                hover === 'btn4' && styles.textFilterHover,
-                hover != 'btn4' && styles.textFilter,
-              ]}>
+              style={
+                hover === 'btn4' ? styles.textFilterHover : styles.textFilter
+              }>
               Fechas
             </Text>
           </TouchableOpacity>
@@ -243,7 +265,16 @@ export default function History() {
             </View>
           </View>
         )}
-
+        {Object.keys(data).length === 0 && (
+          <Text
+            style={{
+              color: 'rgba(74, 82, 255, 1)',
+              fontSize: 15,
+              alignSelf: 'center',
+            }}>
+            No hay movimientos para mostrar
+          </Text>
+        )}
         <FlatList
           data={Object.entries(data)}
           keyExtractor={item => item[0]}
@@ -279,7 +310,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 40,
   },
   mainHistory: {
-    // flex: 4,
+    flex: 1,
   },
   titleView: {
     flexDirection: 'row',
@@ -302,9 +333,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     padding: 10,
   },
+  filterView: {
+    alignItems: 'center',
+  },
   selectedFilter: {
     backgroundColor: 'white',
     borderRadius: 16,
+    alignItems: 'center',
   },
   head: {
     flexDirection: 'row',
