@@ -14,8 +14,6 @@ export default function Home() {
 
   const getData = async () => {
     const id = await AsyncStorage.getItem('userUID');
-    console.log('id', id);
-    console.log('userinfo', userInfo);
   };
 
   useEffect(() => {

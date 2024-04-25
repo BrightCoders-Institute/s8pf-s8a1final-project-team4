@@ -8,7 +8,7 @@ type Props = {
   placeholder: string;
   icono: string;
   onChange: (value: string) => void;
-  maxLength?: number;
+  errorMessage?: string;
   showError: boolean;
   borderAlert: boolean;
 };
@@ -18,26 +18,18 @@ export default function InputDestinatario({
   icono,
   style,
   onChange,
-  maxLength,
+  errorMessage,
   modo,
   showError,
-  borderAlert,
 }: Props) {
   const [isValidLength, setIsValidLength] = useState<boolean>(true);
 
   const handleChangeText = (text: string) => {
-    if (maxLength && text.length !== maxLength) {
-      setIsValidLength(false);
-    } else {
-      setIsValidLength(true);
-    }
-
     if (modo === 'numero') {
       text = text.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
     } else if (modo === 'texto') {
       text = text.replace(/[^a-zA-Z ]/g, ''); // Eliminar caracteres no alfabéticos
     }
-
     onChange(text);
   };
 
@@ -49,7 +41,6 @@ export default function InputDestinatario({
           style,
           !isValidLength && styles.invalid,
         ]}>
-
         <TextInput
           style={styles.InputSty}
           placeholder={placeholder}
@@ -59,11 +50,7 @@ export default function InputDestinatario({
         />
         <Icon style={styles.IconSty} name={icono} size={25} color="blue" />
       </View>
-      {showError && !isValidLength && (
-        <Text style={styles.ErrorText}>
-          La longitud debe ser {maxLength} caracteres.
-        </Text>
-      )}
+      {showError && <Text style={styles.ErrorText}>{errorMessage}</Text>}
     </View>
   );
 }

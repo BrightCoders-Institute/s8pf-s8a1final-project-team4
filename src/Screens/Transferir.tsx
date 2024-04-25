@@ -1,12 +1,12 @@
-import {View, Text, StyleSheet, Alert, Image} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import React, {useContext, useState} from 'react';
-import Contacto from '../Components/Contacto';
 import InputDestinatario from '../Components/InputDestinatario';
 import FormButton from '../Components/Button';
 import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
 import {transferToCard} from '../Firebase/db';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import ConfirmationModal from '../Components/ConfirmationModal';
 
 export default function Transferir({route}: any) {
   const {userInfo} = useContext(UserContext);
@@ -16,45 +16,28 @@ export default function Transferir({route}: any) {
   const formatedCardNumber = route.params.card_number
     .toString()
     .replace(/\d{4}(?=.)/g, '$& ');
-
+  const myBalance = parseInt(userInfo.tarjetaDebito.saldo);
   const [amount, setAmount] = useState<number>(0);
   const [concept, setConcept] = useState<string>('');
-  const [clickedSend, setClickedSend] = useState<boolean>(false);
-  const [borderAlert, setBorderAler] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState(false);
 
-  const handleClick = () => {
-    transferToCard(
-      amount,
-      card_number,
-      concept,
-      userInfo.tarjetaDebito.saldo,
-      transferTo,
-    ).then(() => {
-      navigation.navigate('Home');
+  const handleTransfer = async () => {
+    await transferToCard(amount, card_number, concept).then(() => {
+      navigation.navigate('TransferDetalles', {
+        importe: amount,
+        concepto: concept,
+        destinatario: transferTo,
+        cardNum: card_number,
+      });
     });
-
-    if (!amount || !concept) {
-      Alert.alert('Error', 'Por favor, complete todos los campos.');
-      return;
-    }
-
-    if (concept.length > 15) {
-      Alert.alert('Error', 'El concepto no puede exceder los 15 caracteres.');
-      return;
-    }
-
-    console.log(amount, concept);
-    transferToCard(amount, card_number);
-
-    navigation.navigate('Home');
-    Alert.alert(`Has transferido con exito a: ${transferTo}`);
-
-    //modal message
   };
 
-  // Verificar si los campos de importe y concepto están vacíos
-  const areFieldsEmpty = !amount || !concept;
-  console.log(userInfo.photo);
+  const areFieldsEmpty =
+    !amount ||
+    !concept ||
+    concept.length > 20 ||
+    (amount === 0 && concept.length > 0);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -97,25 +80,39 @@ export default function Transferir({route}: any) {
           icono="money-bill-wave"
           onChange={text => setAmount(Number(text))}
           modo="numero"
-          showError={clickedSend && !amount}
+          errorMessage="Tu saldo es insuficiente"
+          showError={myBalance < amount}
         />
         <InputDestinatario
           placeholder="Concepto"
           icono="comment"
           onChange={text => setConcept(text)}
           modo="texto"
-          maxLength={15}
-          showError={clickedSend && !concept}
+          errorMessage={'El concepto debe ser menor a 20 caracteres'}
+          showError={concept.length > 20}
         />
+        {amount === 0 && concept.length > 0 && (
+          <Text style={styles.ErrorText}>Rellena todos los campos</Text>
+        )}
         <FormButton
           text="Enviar"
           fn={() => {
-            setClickedSend(true);
-            handleClick();
+            setShowModal(true);
           }}
-          disabled={areFieldsEmpty} // Deshabilitar el botón si los campos están vacíos
+          disabled={areFieldsEmpty}
         />
       </View>
+      <ConfirmationModal
+        visible={showModal}
+        message={`¿Estas seguro de enviar $${amount} a la cuenta ●${card_number.slice(
+          12,
+        )} de ${transferTo}?`}
+        onCancel={() => setShowModal(false)}
+        onConfirm={() => {
+          setShowModal(false);
+          handleTransfer();
+        }}
+      />
     </View>
   );
 }
@@ -180,5 +177,10 @@ const styles = StyleSheet.create({
   containerdos: {
     alignItems: 'center',
     gap: 10,
+  },
+  ErrorText: {
+    color: 'red',
+    fontSize: 12,
+    marginBottom: 10,
   },
 });

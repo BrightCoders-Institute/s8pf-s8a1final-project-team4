@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Button from '../Components/Button';
 import {useNavigation} from '@react-navigation/native';
 
 function getKeyNumber() {
@@ -45,57 +46,80 @@ function getCurrentHour() {
   return `${hora}:${minutos}:${segundos}`;
 }
 
-export default function RetiroDetalles({route}) {
+export default function TransferDetalles({route}) {
   const navigation = useNavigation();
   const key = getKeyNumber();
+  const key2 = getKeyNumber();
   const importe = route.params.importe;
   const concepto = route.params.concepto;
+  const destinatario = route.params.destinatario;
+  const cuentaDest = route.params.cardNum.slice(12);
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.titleView}>
-          <Text style={styles.title}>Retiro sin tarjeta</Text>
+          <Text style={styles.title}>Transferir</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Home')}>
             <Icon name="close-outline" size={45} color={'white'} />
           </TouchableOpacity>
         </View>
         <View style={{alignItems: 'center', gap: 30}}>
-          <Text style={styles.detailsTitle}>Detalles de retiro</Text>
+          <Text style={styles.detailsTitle}>Transferencia exitosa</Text>
           <View style={{gap: 10, alignItems: 'center'}}>
             <Text style={styles.details}>{getCurrentDate()}</Text>
             <Text style={styles.details}>{getCurrentHour()} h</Text>
           </View>
           <View style={{gap: 10, alignItems: 'center'}}>
-            {concepto !== 'Retiro sin tarjeta' && (
-              <Text style={styles.accountConcept}>{concepto}</Text>
-            )}
-            <Text style={styles.accountBalance}>${importe}</Text>
+            <Text style={styles.accountBalance}>
+              ${importe.toLocaleString('es-ES')}
+            </Text>
+            <Text style={{color: 'white'}}>Este retiro no genera comision</Text>
           </View>
-          <Text>Este retiro no genera comision</Text>
-        </View>
-        <View style={{paddingHorizontal: 22, paddingBottom: 20}}>
-          <Text style={styles.detailsTitle}>Clave de retiro</Text>
-          <View style={styles.keyContainer}>
-            <View style={styles.keyView}>
-              <Text style={styles.key}>{key[0]}</Text>
-            </View>
-            <View style={styles.keyView}>
-              <Text style={styles.key}>{key[1]}</Text>
-            </View>
-            <View style={styles.keyView}>
-              <Text style={styles.key}>{key[2]}</Text>
-            </View>
-          </View>
-          <View>
-            <Text style={styles.detailsTitle}>Clave de retiro</Text>
-            <View style={styles.keyContainer}>
-              <View style={styles.keyView}>
-                <Text style={styles.key}>{key[3]}</Text>
-              </View>
-            </View>
+          <View style={{gap: 10, alignItems: 'center'}}>
+            <Text style={{color: 'white', fontSize: 15}}>Concepto</Text>
+            <Text style={styles.accountConcept}>{concepto}</Text>
           </View>
         </View>
+        <View>
+          <Text
+            style={{
+              color: 'white',
+              fontSize: 15,
+              paddingLeft: 50,
+              paddingBottom: 10,
+            }}>
+            Destino
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-evenly',
+              // width: '100%',
+              paddingBottom: 50,
+            }}>
+            <Text style={styles.detailsTitle}>{destinatario}</Text>
+            <Text style={styles.detailsTitle}>● {cuentaDest}</Text>
+          </View>
+        </View>
+      </View>
+      <View style={{alignSelf: 'center'}}>
+        <Text style={styles.clave}>Clave rastreo: {key} </Text>
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          paddingHorizontal: 30,
+        }}>
+        <Text style={styles.clave}>
+          Referencia: {key2[0]}
+          {key[1]}
+        </Text>
+        <Text style={styles.clave}>
+          Folio: {key2[3]}
+          {key2[4]}
+        </Text>
       </View>
       <TouchableOpacity
         style={{
@@ -126,15 +150,16 @@ const styles = StyleSheet.create({
     gap: 30,
   },
   header: {
-    backgroundColor: '#2B1885',
-    // padding: 20,
+    // paddingVertical: 10,
     gap: 50,
+    backgroundColor: '#2B1885',
+    // backgroundColor: '#390096',
     borderBottomRightRadius: 130,
   },
   title: {
     color: 'white',
     fontSize: 22,
-    paddingLeft: 30,
+    paddingLeft: 10,
   },
   titleView: {
     flexDirection: 'row',
@@ -151,12 +176,12 @@ const styles = StyleSheet.create({
   },
   accountBalance: {
     color: 'white',
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: '900',
   },
   accountConcept: {
     color: 'white',
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: '900',
   },
   details: {
@@ -180,6 +205,11 @@ const styles = StyleSheet.create({
   key: {
     color: 'black',
     fontSize: 20,
+    fontWeight: '900',
+  },
+  clave: {
+    color: 'black',
+    fontSize: 15,
     fontWeight: '900',
   },
 });
