@@ -118,6 +118,7 @@ export default function History() {
     getData();
   }, []);
 
+  const today = new Date();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -233,6 +234,10 @@ export default function History() {
                 onCancel={() => {
                   setOpen(false);
                 }}
+                maximumDate={date2}
+                buttonColor="#00079A"
+                dividerColor="blue"
+                title="Seleccionar primer fecha"
               />
               <DatePicker
                 mode="date"
@@ -246,6 +251,11 @@ export default function History() {
                 onCancel={() => {
                   setOpen2(false);
                 }}
+                maximumDate={today}
+                buttonColor="#00079A"
+                dividerColor="blue"
+                title="Seleccionar segunda fecha"
+                minimumDate={date}
               />
             </View>
             <View
