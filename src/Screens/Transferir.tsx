@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, Alert, Image} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import React, {useContext, useState} from 'react';
 import InputDestinatario from '../Components/InputDestinatario';
 import FormButton from '../Components/Button';
@@ -6,6 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
 import {transferToCard} from '../Firebase/db';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import ConfirmationModal from '../Components/ConfirmationModal';
 
 export default function Transferir({route}: any) {
   const {userInfo} = useContext(UserContext);
@@ -18,8 +19,9 @@ export default function Transferir({route}: any) {
   const myBalance = parseInt(userInfo.tarjetaDebito.saldo);
   const [amount, setAmount] = useState<number>(0);
   const [concept, setConcept] = useState<string>('');
+  const [showModal, setShowModal] = useState(false);
 
-  const handleClick = async () => {
+  const handleTransfer = async () => {
     await transferToCard(amount, card_number, concept).then(() => {
       navigation.navigate('TransferDetalles', {
         importe: amount,
@@ -33,7 +35,7 @@ export default function Transferir({route}: any) {
   const areFieldsEmpty =
     !amount ||
     !concept ||
-    concept.length > 15 ||
+    concept.length > 20 ||
     (amount === 0 && concept.length > 0);
 
   return (
@@ -86,8 +88,8 @@ export default function Transferir({route}: any) {
           icono="comment"
           onChange={text => setConcept(text)}
           modo="texto"
-          errorMessage={'El concepto debe ser menor a 15 caracteres'}
-          showError={concept.length > 15}
+          errorMessage={'El concepto debe ser menor a 20 caracteres'}
+          showError={concept.length > 20}
         />
         {amount === 0 && concept.length > 0 && (
           <Text style={styles.ErrorText}>Rellena todos los campos</Text>
@@ -95,11 +97,22 @@ export default function Transferir({route}: any) {
         <FormButton
           text="Enviar"
           fn={() => {
-            handleClick();
+            setShowModal(true);
           }}
           disabled={areFieldsEmpty}
         />
       </View>
+      <ConfirmationModal
+        visible={showModal}
+        message={`¿Estas seguro de enviar $${amount} a la cuenta ●${card_number.slice(
+          12,
+        )} de ${transferTo}?`}
+        onCancel={() => setShowModal(false)}
+        onConfirm={() => {
+          setShowModal(false);
+          handleTransfer();
+        }}
+      />
     </View>
   );
 }
