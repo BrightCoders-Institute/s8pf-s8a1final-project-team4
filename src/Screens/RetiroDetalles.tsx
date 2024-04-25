@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Button from '../Components/Button';
 import {useNavigation} from '@react-navigation/native';
 
 function getKeyNumber() {
@@ -75,7 +74,7 @@ export default function RetiroDetalles({route}) {
           </View>
           <Text>Este retiro no genera comision</Text>
         </View>
-        <View>
+        <View style={{paddingHorizontal: 22, paddingBottom: 20}}>
           <Text style={styles.detailsTitle}>Clave de retiro</Text>
           <View style={styles.keyContainer}>
             <View style={styles.keyView}>
@@ -98,7 +97,26 @@ export default function RetiroDetalles({route}) {
           </View>
         </View>
       </View>
-      <Button text="Salir" fn={() => navigation.navigate('Home')} />
+      <TouchableOpacity
+        style={{
+          borderColor: '#211B91',
+          borderWidth: 1,
+          borderRadius: 8,
+          width: 100,
+          alignItems: 'center',
+          alignSelf: 'center',
+        }}
+        onPress={() => navigation.navigate('Home')}>
+        <Text
+          style={{
+            color: '#2B1885',
+            fontWeight: '900',
+            fontSize: 20,
+            padding: 8,
+          }}>
+          Salir
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -108,10 +126,10 @@ const styles = StyleSheet.create({
     gap: 30,
   },
   header: {
-    backgroundColor: '#00079A',
-    padding: 20,
+    backgroundColor: '#2B1885',
+    // padding: 20,
     gap: 50,
-    borderBottomRightRadius: 150,
+    borderBottomRightRadius: 130,
   },
   title: {
     color: 'white',
@@ -122,6 +140,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    backgroundColor: '#311B95',
   },
   detailsTitle: {
     color: 'white',
