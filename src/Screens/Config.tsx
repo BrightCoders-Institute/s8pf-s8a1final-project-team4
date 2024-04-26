@@ -53,7 +53,10 @@ export default function Config() {
           }}> Datos personales</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={style.buttonTouchable}>
+        <TouchableOpacity style={style.buttonTouchable}          
+         onPress={() => {
+            navigation.navigate('Security');
+          }}>
           <IconS name="shield-checkmark-outline" size={45} color="blue" />
           <Text style={style.TextView}> Seguridad</Text>
         </TouchableOpacity>
