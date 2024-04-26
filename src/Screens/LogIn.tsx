@@ -16,6 +16,7 @@ import {auth, db} from '../Firebase/firebaseconfig';
 import {UserContext} from '../../App';
 //Importacion Para las notificaciones con FireBase
 import PushNotification from 'react-native-push-notification';
+import LoadingModal from '../Components/LoadingModal';
 
 function getRandomCardNumber() {
   const cardNum = [];
@@ -48,6 +49,7 @@ export default function LogIn() {
   const [password, setPassword] = React.useState<string>('');
   const [passwordError, setPasswordError] = React.useState<string>('');
   const [rePasswordVisible, setRePasswordVisible] = React.useState(true);
+  const [loading, setLoading] = React.useState<boolean>(false);
   const navigation = useNavigation();
   const {handleUserActive} = useContext(UserContext);
 
@@ -135,6 +137,8 @@ export default function LogIn() {
     try {
       await GoogleSignin.hasPlayServices();
       const {idToken} = await GoogleSignin.signIn();
+      //loading
+      setLoading(true);
       const googleCredential = GoogleAuthProvider.credential(idToken);
       const result = await signInWithCredential(auth, googleCredential);
       const uid = result.user.uid;
@@ -190,6 +194,7 @@ export default function LogIn() {
           handleUserActive(userData);
         }
       });
+      setLoading(false);
       navigation.navigate('Home');
       // Mostrar notificación después del inicio de sesión exitoso
       showLoginSuccessNotification();
@@ -258,6 +263,7 @@ export default function LogIn() {
           }}
         />
       </View>
+      <LoadingModal visible={loading} />
     </View>
   );
 }
