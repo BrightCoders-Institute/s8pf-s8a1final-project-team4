@@ -103,6 +103,8 @@ export default function LogIn() {
   const handleLogInWithFirebase = async () => {
     try {
       const credential = await signInWithEmailAndPassword(auth, user, password);
+      //loading
+      setLoading(true);
       const userUID = credential.user.uid;
       AsyncStorage.setItem('userUID', userUID);
       const userDocRef = doc(db, 'users', userUID);
@@ -116,6 +118,7 @@ export default function LogIn() {
           handleUserActive(userData);
         }
       });
+      setLoading(false);
       navigation.navigate('Home');
       // Mostrar notificación después del inicio de sesión exitoso
       showLoginSuccessNotification();
