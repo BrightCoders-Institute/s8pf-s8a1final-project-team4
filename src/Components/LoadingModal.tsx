@@ -6,7 +6,7 @@ export default function LoadingModal({visible}) {
     <Modal visible={visible} transparent={true} animationType="fade">
       <View
         style={{
-          backgroundColor: 'rgba(0, 7, 113,.88)',
+          backgroundColor: 'rgba(0, 7, 88,.9)',
           flex: 1,
           justifyContent: 'center',
         }}>

@@ -1,5 +1,5 @@
 import React, {useEffect, useContext} from 'react';
-import {StyleSheet, View, Text, Alert, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import FormButton from '../Components/Button';
 import FormInput from '../Components/Input';
 import Icon2 from 'react-native-vector-icons/Feather';
@@ -17,6 +17,7 @@ import {UserContext} from '../../App';
 //Importacion Para las notificaciones con FireBase
 import PushNotification from 'react-native-push-notification';
 import LoadingModal from '../Components/LoadingModal';
+import InfoModal from '../Components/InfoModal';
 
 function getRandomCardNumber() {
   const cardNum = [];
@@ -50,6 +51,8 @@ export default function LogIn() {
   const [passwordError, setPasswordError] = React.useState<string>('');
   const [rePasswordVisible, setRePasswordVisible] = React.useState(true);
   const [loading, setLoading] = React.useState<boolean>(false);
+  const [showModal, setShowModal] = React.useState<boolean>(false);
+  const [showError, setShowError] = React.useState<string>('');
   const navigation = useNavigation();
   const {handleUserActive} = useContext(UserContext);
 
@@ -80,7 +83,6 @@ export default function LogIn() {
     }
   };
 
-  // Función para mostrar una notificación local de inicio de sesión exitoso
   const showLoginSuccessNotification = () => {
     PushNotification.createChannel(
       {
@@ -103,7 +105,6 @@ export default function LogIn() {
   const handleLogInWithFirebase = async () => {
     try {
       const credential = await signInWithEmailAndPassword(auth, user, password);
-      //loading
       setLoading(true);
       const userUID = credential.user.uid;
       AsyncStorage.setItem('userUID', userUID);
@@ -120,19 +121,20 @@ export default function LogIn() {
       });
       setLoading(false);
       navigation.navigate('Home');
-      // Mostrar notificación después del inicio de sesión exitoso
       showLoginSuccessNotification();
       // Retornar la función de limpieza para cancelar la suscripción
       return () => unsubscribe();
     } catch (error) {
       const errorCode = error.code;
-      const errorMessage = error.message;
-      if (errorMessage === 'auth/user-not-found') {
-        Alert.alert('Este usuario no esta registrado');
-      } else {
-        console.log('error', errorCode, errorMessage);
+      if (errorCode === 'auth/invalid-email') {
+        //setModalTrue
+        setShowError('Este correo no esta registrado');
+        setShowModal(true);
+      } else if (errorCode === 'auth/invalid-credential') {
+        //setModalTrue
+        setShowError('La constraseña es incorrecta');
+        setShowModal(true);
       }
-      setPasswordError('El correo o la Contraseña son incorrectos');
     }
   };
 
@@ -199,13 +201,18 @@ export default function LogIn() {
       });
       setLoading(false);
       navigation.navigate('Home');
-      // Mostrar notificación después del inicio de sesión exitoso
       showLoginSuccessNotification();
       // Retornar la función de limpieza para cancelar la suscripción
       return () => unsubscribe();
     } catch (error) {
-      console.error(error);
-      Alert.alert('Ocurrio un error al registrarse');
+      if (error.message === 'Sign in action cancelled') {
+        console.log(
+          'El usuario canceló la acción de inicio de sesión con Google.',
+        );
+      } else {
+        setShowError('Ha occurrido un error al iniciar sesion');
+        setShowModal(true);
+      }
     }
   };
 
@@ -267,6 +274,11 @@ export default function LogIn() {
         />
       </View>
       <LoadingModal visible={loading} />
+      <InfoModal
+        visible={showModal}
+        message={showError}
+        onCancel={() => setShowModal(false)}
+      />
     </View>
   );
 }
