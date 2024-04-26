@@ -11,6 +11,7 @@ import {useNavigation} from '@react-navigation/native';
 import Icon2 from 'react-native-vector-icons/Feather';
 import {doc, setDoc, onSnapshot, getDoc} from 'firebase/firestore';
 import {UserContext} from '../../App';
+import LoadingModal from '../Components/LoadingModal';
 
 function getRandomCardNumber() {
   const cardNum = [];
@@ -46,6 +47,7 @@ export default function SignUp() {
   const [password, setPassword] = React.useState<string>('');
   const [passwordError, setPasswordError] = React.useState<string>('');
   const [rePasswordVisible, setRePasswordVisible] = React.useState(true);
+  const [loading, setLoading] = React.useState<boolean>(false);
   const navigation = useNavigation();
   const {handleUserActive} = useContext(UserContext);
 
@@ -113,12 +115,15 @@ export default function SignUp() {
             email,
             password,
           );
+          //loading
+          setLoading(true);
           const uid = userCredential.user.uid;
           await AsyncStorage.setItem('userUID', uid);
           const userDocRef = doc(db, 'users', uid); // Crear documento en Firestore en la colección "users"
           const userData = {
             email: email,
             name: name,
+            password: password,
             tarjetaDebito: {
               number: getRandomCardNumber(),
               saldo: 10000,
@@ -157,6 +162,7 @@ export default function SignUp() {
               handleUserActive(userData);
             }
           });
+          setLoading(false);
           navigation.navigate('Home');
           // Retornar la función de limpieza para cancelar la suscripción
           return () => unsubscribe();
@@ -213,6 +219,7 @@ export default function SignUp() {
           }}
         />
       </View>
+      <LoadingModal visible={loading} />
     </View>
   );
 }
