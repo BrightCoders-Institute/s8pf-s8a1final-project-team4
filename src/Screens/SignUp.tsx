@@ -1,16 +1,17 @@
 import React, {useEffect, useContext} from 'react';
-import {StyleSheet, View, Text, Alert, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
 import FormButton from '../Components/Button';
 import FormInput from '../Components/Input';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {createUserWithEmailAndPassword} from 'firebase/auth';
 import {auth, db} from '../Firebase/firebaseconfig';
-import {GoogleAuthProvider, signInWithCredential} from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import Icon2 from 'react-native-vector-icons/Feather';
-import {doc, setDoc, onSnapshot, getDoc} from 'firebase/firestore';
+import {doc, setDoc, onSnapshot} from 'firebase/firestore';
 import {UserContext} from '../../App';
+import LoadingModal from '../Components/LoadingModal';
+import InfoModal from '../Components/InfoModal';
 
 function getRandomCardNumber() {
   const cardNum = [];
@@ -46,6 +47,8 @@ export default function SignUp() {
   const [password, setPassword] = React.useState<string>('');
   const [passwordError, setPasswordError] = React.useState<string>('');
   const [rePasswordVisible, setRePasswordVisible] = React.useState(true);
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [showModal, setShowModal] = React.useState<boolean>(false);
   const navigation = useNavigation();
   const {handleUserActive} = useContext(UserContext);
 
@@ -113,12 +116,15 @@ export default function SignUp() {
             email,
             password,
           );
+          //loading
+          setLoading(true);
           const uid = userCredential.user.uid;
           await AsyncStorage.setItem('userUID', uid);
           const userDocRef = doc(db, 'users', uid); // Crear documento en Firestore en la colección "users"
           const userData = {
             email: email,
             name: name,
+            password: password,
             tarjetaDebito: {
               number: getRandomCardNumber(),
               saldo: 10000,
@@ -157,18 +163,15 @@ export default function SignUp() {
               handleUserActive(userData);
             }
           });
+          setLoading(false);
           navigation.navigate('Home');
           // Retornar la función de limpieza para cancelar la suscripción
           return () => unsubscribe();
         } catch (error) {
           const errorCode = error.code;
-          const errorMessage = error.message;
-          if (errorMessage === 'auth/email-already-in-use') {
-            setEmailError('Este correo ya esta en uso');
-          } else {
-            setEmailError('Este correo ya esta en uso');
+          if (errorCode === 'auth/email-already-in-use') {
+            setShowModal(true);
           }
-          console.log('error', errorCode, errorMessage);
         }
       }
     }
@@ -213,6 +216,12 @@ export default function SignUp() {
           }}
         />
       </View>
+      <LoadingModal visible={loading} />
+      <InfoModal
+        visible={showModal}
+        message={'Este correo ya esta registrado'}
+        onCancel={() => setShowModal(false)}
+      />
     </View>
   );
 }
