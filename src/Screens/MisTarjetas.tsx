@@ -19,13 +19,9 @@ export default function MisTarjetas() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.containerdos}>
-        <Text style={styles.tarjetas}>Mis Tarjetas</Text>
-        <TouchableOpacity
-          style={{paddingRight: 20}}
-          onPress={() => {
-            navigation.navigate('Home');
-          }}>
+      <View style={styles.headerScreen}>
+        <Text style={styles.headerTitle}>Mis Tarjetas</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
           <Icon name="close-outline" size={45} color={'white'} />
         </TouchableOpacity>
       </View>
@@ -53,7 +49,7 @@ export default function MisTarjetas() {
                 }}>
                 <Icon name="card-outline" size={65} color={'#4A52FF'} />
                 <View style={{gap: 10, alignItems: 'center'}}>
-                  <Text style={styles.cardTitle}>Debito</Text>
+                  <Text style={styles.cardDebit}>Debito</Text>
                   <Text style={styles.cardNumber}>
                     ● {cardNumber.split(' ')[3]}
                   </Text>
@@ -68,14 +64,13 @@ export default function MisTarjetas() {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.titlecards}>Credito</Text>
         <View style={styles.cardContainer}>
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate('CuentaCreditoFisica');
+              navigation.navigate('CuentaDebitoVirtual');
             }}>
-            <Text style={styles.cardTitle}>Fisica</Text>
+            <Text style={styles.cardTitle}>Virtual</Text>
             <View
               style={{
                 justifyContent: 'space-between',
@@ -90,7 +85,7 @@ export default function MisTarjetas() {
                 }}>
                 <Icon name="card-outline" size={65} color={'#4A52FF'} />
                 <View style={{gap: 10, alignItems: 'center'}}>
-                  <Text style={styles.cardTitle}>Credito</Text>
+                  <Text style={styles.cardDebit}>Debito</Text>
                   <Text style={styles.cardNumber}>
                     ● {creditNumber.split(' ')[3]}
                   </Text>
@@ -106,16 +101,25 @@ export default function MisTarjetas() {
         </View>
       </View>
     </View>
- )
-
+  );
 }
- 
-
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '"F4F4F4"',
     flex: 1,
+  },
+  headerScreen: {
+    backgroundColor: '#021B9E',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 25,
+    paddingVertical: 5,
+  },
+  headerTitle: {
+    color: 'white',
+    fontSize: 22,
   },
   containerdos: {
     flexDirection: 'row',
@@ -128,7 +132,7 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#00079A',
-    gap: 40,
+    gap: 60,
     height: '80%',
     borderBottomRightRadius: 150,
   },
@@ -142,8 +146,9 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '900',
     fontSize: 26,
+    letterSpacing: 2,
     paddingLeft: 50,
-    marginTop: 35,
+    marginTop: 40,
   },
   debitTitle: {
     backgroundColor: '#4A52FF',
@@ -176,6 +181,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#4A52FF',
     borderRadius: 10,
     elevation: 60,
+    marginBottom: 35,
   },
   card: {
     transform: [{translateX: -12}, {translateY: -12}],
@@ -191,6 +197,11 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     fontSize: 22,
   },
+  cardDebit: {
+    fontStyle: 'italic',
+    color: '#4A52FF',
+    fontSize: 22,
+  },
   cardNumber: {
     color: '#00079A',
     fontWeight: '900',
@@ -198,4 +209,3 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
 });
-

@@ -23,10 +23,11 @@ export function formatDate(fecha) {
   return dia + ' ' + meses[mes - 1] + ' ' + año;
 }
 
-export default function MoveCard({date, desc, tipo, monto}) {
+export default function MoveCard({desc, tipo, monto}) {
   return (
     <View>
-      <Text style={styles.date}>{formatDate(date)}</Text>
+      {/* <Text style={styles.date}>{formatDate(date)}</Text>
+      .toLocaleString('es-ES') */}
       <View style={styles.moveContainer}>
         <View>
           <Text style={styles.payName}>{desc}</Text>
@@ -52,16 +53,16 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
   },
   payName: {
-    color: '#00079A',
+    color: 'blue',
     fontStyle: 'italic',
-    fontSize: 18,
+    fontSize: 19,
   },
   payDesc: {
     color: 'grey',
-    fontSize: 15,
+    fontSize: 17,
   },
   payNum: {
     color: '#4A52FF',
-    fontSize: 20,
+    fontSize: 21,
   },
 });

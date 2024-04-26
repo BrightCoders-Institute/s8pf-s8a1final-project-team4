@@ -1,9 +1,9 @@
-import { View, StyleSheet, Text } from 'react-native';
-import React, { useState } from 'react';
+import {View, StyleSheet, Text} from 'react-native';
+import React, {useState} from 'react';
 import InputDestinatario from '../Components/InputDestinatario';
 import FormButton from '../Components/Button';
-import { useNavigation } from '@react-navigation/native';
-import { AddContactDoc, checkIfAccountExists } from '../Firebase/db';
+import {useNavigation} from '@react-navigation/native';
+import {AddContactDoc, checkIfAccountExists} from '../Firebase/db';
 
 export default function AddContact() {
   const navigation = useNavigation();
@@ -17,14 +17,15 @@ export default function AddContact() {
       // Verificar si el número de cuenta existe antes de agregar el contacto
       const exists = await checkIfAccountExists(number);
       if (!exists) {
-        setError('El número de cuenta no está dado de alta en la base de datos.');
+        setError(
+          'El número de cuenta no está dado de alta en la base de datos.',
+        );
         return;
       }
 
       // Agregar el contacto si el número de cuenta existe
       await AddContactDoc(name, number);
-      navigation.navigate('Transferir', { name, card_number: number });
-
+      navigation.navigate('Transferir', {name, card_number: number});
     } catch (err) {
       console.error('Error adding contact:', err);
       setError('Hubo un error al agregar el contacto.');
@@ -42,26 +43,23 @@ export default function AddContact() {
       <View style={styles.header}>
         <View style={styles.campos}>
           <View style={styles.containerTitle}>
-            <Text style={{ fontSize: 20, color: 'white' }}>
-              Nombre
-            </Text>
+            <Text style={{fontSize: 20, color: 'white'}}>Nombre</Text>
           </View>
           <InputDestinatario
             placeholder="Nombre Completo"
             icono="user"
-            onChange={(text) => setName(text)}
+            onChange={text => setName(text)}
             modo="texto"
             showError={clickedAdd && !name}
           />
+          <View style={{padding: 20}} />
           <View style={styles.containerTitle}>
-            <Text style={{ fontSize: 20, color: 'white' }}>
-              Numero de Cuenta
-            </Text>
+            <Text style={{fontSize: 20, color: 'white'}}>Numero de Cuenta</Text>
           </View>
           <InputDestinatario
             placeholder="Numero de Cuenta"
             icono="wallet"
-            onChange={(text) => setNumber(text)}
+            onChange={text => setNumber(text)}
             maxLength={16}
             modo="numero"
             showError={clickedAdd && !number}

@@ -87,7 +87,7 @@ async function minusTransfer(amount: number, concepto: string) {
     const data: DocumentData = (await doc).data();
     data.tarjetaDebito.saldo -= amount;
     //generar movimiento de transferencia
-    data.tarjetaDebito.movimientos.push({
+    data.tarjetaDebito.movimientos.unshift({
       fecha: getCurrentDate(),
       monto: -amount,
       descripcion: concepto,
@@ -103,8 +103,6 @@ export async function transferToCard(
   amount: number,
   destination: string,
   concept: string,
-  myBalance: number,
-  transferTo: string,
 ) {
   try {
     const q = query(
@@ -119,22 +117,15 @@ export async function transferToCard(
         querySnapshot.forEach(async document => {
           const destinyRef = doc(db, 'users', document.id);
           const destinyData = document.data();
-
-          if (myBalance < amount) {
-            Alert.alert('No tienes suficiente saldo');
-            return false;
-          } else {
-            destinyData.tarjetaDebito.saldo += parseInt(amount);
-            destinyData.tarjetaDebito.movimientos.push({
-              fecha: getCurrentDate(),
-              monto: amount,
-              descripcion: concept,
-              tipo: 'Transferencia bancaria',
-            });
-            transaction.set(destinyRef, destinyData);
-            await minusTransfer(amount, concept); //descontar del usuario activo
-            Alert.alert(`Has transferido con exito a: ${transferTo}`);
-          }
+          destinyData.tarjetaDebito.saldo += parseInt(amount);
+          destinyData.tarjetaDebito.movimientos.unshift({
+            fecha: getCurrentDate(),
+            monto: amount,
+            descripcion: concept,
+            tipo: 'Transferencia bancaria',
+          });
+          transaction.set(destinyRef, destinyData);
+          await minusTransfer(amount, concept);
         });
       });
     } else {
@@ -153,7 +144,7 @@ export async function userWithdraw(quantity: any, concepto: any) {
     const data: DocumentData = (await doc).data();
     data.tarjetaDebito.saldo -= quantity;
     //generar movimiento del retiro
-    data.tarjetaDebito.movimientos.push({
+    data.tarjetaDebito.movimientos.unshift({
       fecha: getCurrentDate(),
       monto: -quantity,
       descripcion: concepto,
@@ -180,11 +171,13 @@ export async function getHistory() {
   }
 }
 
-export async function checkIfAccountExists(accountNumber: string): Promise<boolean> {
+export async function checkIfAccountExists(
+  accountNumber: string,
+): Promise<boolean> {
   try {
     const q = query(
       collection(db, 'users'),
-      where('tarjetaDebito.number', '==', accountNumber)
+      where('tarjetaDebito.number', '==', accountNumber),
     );
 
     const querySnapshot = await getDocs(q);
@@ -192,5 +185,16 @@ export async function checkIfAccountExists(accountNumber: string): Promise<boole
   } catch (error) {
     console.error('Error checking account existence:', error);
     return false;
+  }
+}
+export async function ChangeCardState() {
+  try {
+    const ref = await getDocRef();
+    const doc = getDoc(ref);
+    const data: DocumentData = (await doc).data();
+    data.tarjetaCredito.turnOn = !data.tarjetaCredito.turnOn;
+    setDoc(ref, data);
+  } catch (err) {
+    console.log('No se ha cambiado el estado de la tarjeta virtual', err);
   }
 }

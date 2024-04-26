@@ -14,8 +14,6 @@ export default function Home() {
 
   const getData = async () => {
     const id = await AsyncStorage.getItem('userUID');
-    console.log('id', id);
-    console.log('userinfo', userInfo);
   };
 
   useEffect(() => {
@@ -180,7 +178,7 @@ const styles = StyleSheet.create({
     height: 70,
     width: 70,
     borderRadius: 100,
-    backgroundColor: '#00079A',
+    backgroundColor: '#0054C6',
     alignItems: 'center',
     justifyContent: 'center',
   },

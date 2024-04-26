@@ -17,18 +17,21 @@ export default function Retirar() {
   const [concepto, setConcepto] = useState('');
   const navigation = useNavigation();
   const {userInfo} = useContext(UserContext);
-  const saldo:number = Number(userInfo.tarjetaDebito.saldo)
-  const cardNum:string = userInfo.tarjetaDebito.number.replace(/\d{4}(?=.)/g, '$& ');
+  const saldo: number = Number(userInfo.tarjetaDebito.saldo);
+  const cardNum: string = userInfo.tarjetaDebito.number.replace(
+    /\d{4}(?=.)/g,
+    '$& ',
+  );
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View style={styles.titleView}>
-          <Text style={styles.title}>Retiro sin tarjeta</Text>
+        {/* <View style={styles.headerScreen}>
+          <Text style={styles.headerTitle}>Seleccionar contacto</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Home')}>
             <Icon name="close-outline" size={45} color={'white'} />
           </TouchableOpacity>
-        </View>
+        </View> */}
         <View>
           <Text style={styles.accountTitle}>CUENTA DE RETIRO</Text>
           <View style={styles.accountView}>
@@ -66,13 +69,12 @@ export default function Retirar() {
         text="Continuar"
         fn={() => {
           if (importe !== '') {
-            if(saldo - Number(importe) < 0){
+            if (saldo - Number(importe) < 0) {
               setShowError('Saldo insuficiente');
             } else {
               setModalVisible(true);
             }
-          }
-          else {
+          } else {
             setShowError('Ingresa una cantidad');
           }
         }}
@@ -80,7 +82,7 @@ export default function Retirar() {
 
       <ConfirmationModal
         visible={modalVisible}
-        message={'¿Estas seguro de realizar el retiro?'}
+        message={`Estas por realizar un retiro por la cantidad de $${importe}\n \n        ¿Deseas continuar?`}
         onCancel={() => setModalVisible(false)}
         onConfirm={() => {
           if (concepto === '') {
@@ -107,10 +109,23 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#00079A',
-    padding: 20,
+    paddingHorizontal: 30,
+    paddingVertical: 50,
     gap: 50,
-    borderBottomRightRadius: 150,
+    borderBottomRightRadius: 120,
     // paddingBottom: 20,
+  },
+  headerScreen: {
+    backgroundColor: '#021B9E',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 25,
+    paddingVertical: 5,
+  },
+  headerTitle: {
+    color: 'white',
+    fontSize: 22,
   },
   title: {
     color: 'white',
@@ -134,7 +149,7 @@ const styles = StyleSheet.create({
   },
   accountNum: {
     color: 'white',
-    fontSize: 19,
+    fontSize: 21,
     paddingVertical: 30,
     fontWeight: '900',
   },

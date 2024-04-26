@@ -41,25 +41,28 @@ export default function SelectContact() {
       </View>
       <View style={styles.containerdos}>
         <Text style={styles.Titleguardado}>Tus contactos:</Text>
-
+        {contacts.length === 0 && (
+          <Text
+            style={{
+              color: '#4A52FF',
+              alignSelf: 'center',
+              fontSize: 18,
+              paddingTop: 20,
+            }}>
+            !Aun no tienes ningun contacto!
+          </Text>
+        )}
         <FlatList
           data={contacts}
           renderItem={item => (
             <Contacto
               nombre={item.item.nombre}
               numero={item.item.numero}
-              icono="cc-mastercard"
-              // onDelete={() => setShowModal(true)}
+              icono="cc-visa"
             />
           )}
         />
       </View>
-      {/* <ConfirmationModal
-        visible={showModal}
-        message="¿Deseas borrar este contacto?"
-        onConfirm={() => {}}
-        onCancel={() => setShowModal(false)}
-      /> */}
     </View>
   );
 }
@@ -80,7 +83,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 25,
-    paddingVertical: 15,
+    paddingVertical: 5,
   },
   headerTitle: {
     color: 'white',

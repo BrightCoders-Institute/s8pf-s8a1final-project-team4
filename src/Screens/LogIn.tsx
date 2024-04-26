@@ -1,5 +1,5 @@
 import React, {useEffect, useContext} from 'react';
-import {StyleSheet, View, Text, Alert, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import FormButton from '../Components/Button';
 import FormInput from '../Components/Input';
 import Icon2 from 'react-native-vector-icons/Feather';
@@ -16,6 +16,8 @@ import {auth, db} from '../Firebase/firebaseconfig';
 import {UserContext} from '../../App';
 //Importacion Para las notificaciones con FireBase
 import PushNotification from 'react-native-push-notification';
+import LoadingModal from '../Components/LoadingModal';
+import InfoModal from '../Components/InfoModal';
 
 function getRandomCardNumber() {
   const cardNum = [];
@@ -48,6 +50,9 @@ export default function LogIn() {
   const [password, setPassword] = React.useState<string>('');
   const [passwordError, setPasswordError] = React.useState<string>('');
   const [rePasswordVisible, setRePasswordVisible] = React.useState(true);
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [showModal, setShowModal] = React.useState<boolean>(false);
+  const [showError, setShowError] = React.useState<string>('');
   const navigation = useNavigation();
   const {handleUserActive} = useContext(UserContext);
 
@@ -67,7 +72,7 @@ export default function LogIn() {
       }
     };
   }, []);
-  
+
   const handleEmailChange = (value: string) => {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (regex.test(value) || value === '') {
@@ -78,17 +83,29 @@ export default function LogIn() {
     }
   };
 
-    // Función para mostrar una notificación local de inicio de sesión exitoso
-    const showLoginSuccessNotification = () => {
-      PushNotification.localNotification({
-        title: 'Inicio de sesión exitoso',
-        message: '¡Has iniciado sesión correctamente!',
-      });
-    };
+  const showLoginSuccessNotification = () => {
+    PushNotification.createChannel(
+      {
+        channelId: 'channel-id', // (required)
+        channelName: 'My channel', // (required)
+        channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
+        playSound: false, // (optional) default: true
+        soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
+        vibrate: true, // (optional) default: true. Creates the default vibration pattern if true.
+      },
+      created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+    );
+    PushNotification.localNotification({
+      title: 'Inicio de sesión exitoso',
+      message: '¡Has iniciado sesión correctamente!',
+      channelId: 'channel-id',
+    });
+  };
 
   const handleLogInWithFirebase = async () => {
     try {
       const credential = await signInWithEmailAndPassword(auth, user, password);
+      setLoading(true);
       const userUID = credential.user.uid;
       AsyncStorage.setItem('userUID', userUID);
       const userDocRef = doc(db, 'users', userUID);
@@ -102,20 +119,22 @@ export default function LogIn() {
           handleUserActive(userData);
         }
       });
+      setLoading(false);
       navigation.navigate('Home');
-      // Mostrar notificación después del inicio de sesión exitoso
       showLoginSuccessNotification();
       // Retornar la función de limpieza para cancelar la suscripción
       return () => unsubscribe();
     } catch (error) {
       const errorCode = error.code;
-      const errorMessage = error.message;
-      if (errorMessage === 'auth/user-not-found') {
-        Alert.alert('Este usuario no esta registrado');
-      } else {
-        console.log('error', errorCode, errorMessage);
+      if (errorCode === 'auth/invalid-email') {
+        //setModalTrue
+        setShowError('Este correo no esta registrado');
+        setShowModal(true);
+      } else if (errorCode === 'auth/invalid-credential') {
+        //setModalTrue
+        setShowError('La constraseña es incorrecta');
+        setShowModal(true);
       }
-      setPasswordError('El correo o la Contraseña son incorrectos');
     }
   };
 
@@ -123,6 +142,8 @@ export default function LogIn() {
     try {
       await GoogleSignin.hasPlayServices();
       const {idToken} = await GoogleSignin.signIn();
+      //loading
+      setLoading(true);
       const googleCredential = GoogleAuthProvider.credential(idToken);
       const result = await signInWithCredential(auth, googleCredential);
       const uid = result.user.uid;
@@ -131,6 +152,7 @@ export default function LogIn() {
       const docSnap = await getDoc(userDocRef);
 
       if (!docSnap.exists()) {
+        //edit credit card part
         const userData = {
           name: result.user.displayName,
           email: result.user.email,
@@ -150,14 +172,15 @@ export default function LogIn() {
           },
           tarjetaCredito: {
             number: getRandomCardNumber(),
-            saldo: 10000,
+            turnOn: false,
+            saldo: 5000,
             cvv: getRandomCvv(),
             movimientos: [
               {
                 fecha: getCurrentDate(),
-                monto: 10000,
-                descripcion: 'Apertura de cuenta',
-                tipo: 'Transferencia bancaria',
+                monto: 5000,
+                descripcion: 'Apertura cuenta virtual',
+                tipo: 'Transferencia tarjeta virtual',
               },
             ],
           },
@@ -176,14 +199,20 @@ export default function LogIn() {
           handleUserActive(userData);
         }
       });
+      setLoading(false);
       navigation.navigate('Home');
-      // Mostrar notificación después del inicio de sesión exitoso
-      showLoginSuccessNotification()
+      showLoginSuccessNotification();
       // Retornar la función de limpieza para cancelar la suscripción
       return () => unsubscribe();
     } catch (error) {
-      console.error(error);
-      Alert.alert('Ocurrio un error al registrarse');
+      if (error.message === 'Sign in action cancelled') {
+        console.log(
+          'El usuario canceló la acción de inicio de sesión con Google.',
+        );
+      } else {
+        setShowError('Ha occurrido un error al iniciar sesion');
+        setShowModal(true);
+      }
     }
   };
 
@@ -244,6 +273,12 @@ export default function LogIn() {
           }}
         />
       </View>
+      <LoadingModal visible={loading} />
+      <InfoModal
+        visible={showModal}
+        message={showError}
+        onCancel={() => setShowModal(false)}
+      />
     </View>
   );
 }
