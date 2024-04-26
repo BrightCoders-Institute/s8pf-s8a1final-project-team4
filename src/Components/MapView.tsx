@@ -49,7 +49,7 @@ export default function Mapsview() {
                 style={style.map}
                 initialRegion={region}
                 customMapStyle={mapStyle}
-                
+                showsUserLocation={true}
                 >
                   
                   {bankLocations.map((bank) => (
