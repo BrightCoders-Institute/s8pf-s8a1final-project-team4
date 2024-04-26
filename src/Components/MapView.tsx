@@ -33,6 +33,12 @@ export default function Mapsview() {
         { id: 9, name: 'Banco 9', latitude: 19.282902317032228, longitude: -103.73194859265031 },
         { id: 10, name: 'Banco 10', latitude: 19.264043326302332, longitude: -103.73524848715478 },
       ];
+      const region = {
+        latitude:19.248810292202965, 
+        longitude: -103.72425844809113,
+        latitudeDelta: 0.09 ,
+        longitudeDelta: 0.09
+      }
       
 
     return (
@@ -41,9 +47,11 @@ export default function Mapsview() {
             <MapView
                 provider={PROVIDER_GOOGLE}
                 style={style.map}
-                initialRegion={location}
+                initialRegion={region}
                 customMapStyle={mapStyle}
+                
                 >
+                  
                   {bankLocations.map((bank) => (
                     <Marker
                     key={bank.id}
