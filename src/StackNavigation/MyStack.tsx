@@ -15,6 +15,7 @@ import Config from '../Screens/Config';
 import Retirar from '../Screens/Retirar';
 import RetiroDetalles from '../Screens/RetiroDetalles';
 import History from '../Screens/History';
+import { SecurityScreen } from '../Screens/SecurityScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -122,6 +123,15 @@ export default function MyStack() {
         options={{
           title: 'Historial',
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Security"
+        component={SecurityScreen}
+        options={{
+          title: 'Seguridad',
+          headerTitleStyle: styles.title,
+          headerStyle: styles.background,
         }}
       />
     </Stack.Navigator>
