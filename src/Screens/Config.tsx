@@ -48,22 +48,30 @@ export default function Config() {
       <View style={style.ViewsContainer}>
         <TouchableOpacity style={style.buttonTouchable}>
           <Icon name="user" size={45} color="blue" />
-          <Text style={style.TextView}onPress={() => {
-            navigation.navigate('DatosPersonales');
-          }}> Datos personales</Text>
+          <Text
+            style={style.TextView}
+            onPress={() => {
+              navigation.navigate('DatosPersonales');
+            }}>
+            {' '}
+            Datos personales
+          </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={style.buttonTouchable}          
-         onPress={() => {
+        <TouchableOpacity
+          style={style.buttonTouchable}
+          onPress={() => {
             navigation.navigate('Security');
           }}>
           <IconS name="shield-checkmark-outline" size={45} color="blue" />
           <Text style={style.TextView}> Seguridad</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={style.buttonTouchable} onPress={() =>{
-          navigation.navigate("Mapas")
-        }}>
+        <TouchableOpacity
+          style={style.buttonTouchable}
+          onPress={() => {
+            navigation.navigate('Mapas');
+          }}>
           <IconS name="map" size={45} color="blue" />
           <Text style={style.TextView}> Sucursales</Text>
         </TouchableOpacity>
@@ -75,7 +83,8 @@ export default function Config() {
               //CERRAR SESION
               await signOut(auth);
               AsyncStorage.removeItem('userUID');
-              navigation.navigate('LogIn');
+              // navigation.navigate('LogIn');
+              navigation.popToTop();
               handleUserActive(null);
             } catch (error) {
               console.log(error);
