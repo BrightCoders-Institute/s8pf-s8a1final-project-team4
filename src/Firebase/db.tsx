@@ -86,7 +86,6 @@ async function minusTransfer(amount: number, concepto: string) {
     const doc = getDoc(ref);
     const data: DocumentData = (await doc).data();
     data.tarjetaDebito.saldo -= amount;
-    //generar movimiento de transferencia
     data.tarjetaDebito.movimientos.unshift({
       fecha: getCurrentDate(),
       monto: -amount,
@@ -98,11 +97,29 @@ async function minusTransfer(amount: number, concepto: string) {
     console.log(err);
   }
 }
+async function virtualMinusTransfer(amount: number, concepto: string) {
+  try {
+    const ref = await getDocRef();
+    const doc = getDoc(ref);
+    const data: DocumentData = (await doc).data();
+    data.tarjetaCredito.saldo -= amount;
+    data.tarjetaCredito.movimientos.unshift({
+      fecha: getCurrentDate(),
+      monto: -amount,
+      descripcion: concepto,
+      tipo: 'Transferencia tarjeta virtual',
+    });
+    setDoc(ref, data);
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 export async function transferToCard(
   amount: number,
   destination: string,
   concept: string,
+  virtual: boolean,
 ) {
   try {
     const q = query(
@@ -125,7 +142,11 @@ export async function transferToCard(
             tipo: 'Transferencia bancaria',
           });
           transaction.set(destinyRef, destinyData);
-          await minusTransfer(amount, concept);
+          if (!virtual) {
+            await minusTransfer(amount, concept);
+          } else {
+            await virtualMinusTransfer(amount, concept);
+          }
         });
       });
     } else {

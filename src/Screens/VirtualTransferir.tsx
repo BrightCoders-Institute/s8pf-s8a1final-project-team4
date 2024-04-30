@@ -8,7 +8,7 @@ import {transferToCard} from '../Firebase/db';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ConfirmationModal from '../Components/ConfirmationModal';
 
-export default function Transferir({route}: any) {
+export default function VirtualTransferir({route}: any) {
   const {userInfo} = useContext(UserContext);
   const navigation = useNavigation();
   const transferTo = route.params.name;
@@ -16,13 +16,13 @@ export default function Transferir({route}: any) {
   const formatedCardNumber = route.params.card_number
     .toString()
     .replace(/\d{4}(?=.)/g, '$& ');
-  const myBalance = parseInt(userInfo.tarjetaDebito.saldo);
+  const myBalance = parseInt(userInfo.tarjetaCredito.saldo);
   const [amount, setAmount] = useState<number>(0);
   const [concept, setConcept] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
 
   const handleTransfer = async () => {
-    await transferToCard(amount, card_number, concept, false).then(() => {
+    await transferToCard(amount, card_number, concept, true).then(() => {
       navigation.navigate('TransferDetalles', {
         importe: amount,
         concepto: concept,
@@ -65,9 +65,9 @@ export default function Transferir({route}: any) {
               flexDirection: 'column',
               gap: 10,
             }}>
-            <Text style={styles.nombre}>Debito</Text>
+            <Text style={styles.nombre}>Debito Virtual</Text>
             <Text style={styles.myNum}>
-              ● {userInfo.tarjetaDebito.number.toString().slice(-4)}
+              ● {userInfo.tarjetaCredito.number.toString().slice(-4)}
             </Text>
           </View>
           <Icon name="cc-visa" size={35} color="white" />
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     height: 70,
     width: 70,
     borderRadius: 100,
-    backgroundColor: '#4A52FF',
+    backgroundColor: '#00079A',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
   },
   header: {
-    backgroundColor: '#00079A',
+    backgroundColor: '#0054C6',
     padding: 30,
     gap: 25,
     borderBottomRightRadius: 120,

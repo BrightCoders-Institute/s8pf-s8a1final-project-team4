@@ -1,14 +1,11 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import Contacto from '../Components/Contacto';
 import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
-// import ConfirmationModal from '../Components/ConfirmationModal';
-// import {getContact} from '../Firebase/db';
 
-export default function SelectContact() {
-  // const [showModal, setShowModal] = useState(false);
+export default function VirtualSelectContact() {
   const {userInfo} = useContext(UserContext);
   const navigation = useNavigation();
 
@@ -18,7 +15,7 @@ export default function SelectContact() {
     <View style={styles.container}>
       <View style={styles.headerScreen}>
         <Text style={styles.headerTitle}>Seleccionar contacto</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="close-outline" size={45} color={'white'} />
         </TouchableOpacity>
       </View>
@@ -31,7 +28,7 @@ export default function SelectContact() {
 
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('AddContact');
+            navigation.navigate('VirtualAddContact');
           }}>
           <View style={styles.ContainerBottn}>
             <Icon name="add-circle" size={70} color="#ffffff" />
@@ -59,7 +56,7 @@ export default function SelectContact() {
               nombre={item.item.nombre}
               numero={item.item.numero}
               icono="cc-visa"
-              virtual={false}
+              virtual={true}
             />
           )}
         />
@@ -79,7 +76,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   headerScreen: {
-    backgroundColor: '#021B9E',
+    backgroundColor: '#004FBB',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -95,7 +92,7 @@ const styles = StyleSheet.create({
     padding: 26,
   },
   header: {
-    backgroundColor: '#00079A',
+    backgroundColor: '#0054C6',
     paddingVertical: 40,
     paddingHorizontal: 35,
     gap: 20,

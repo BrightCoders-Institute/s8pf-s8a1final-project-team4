@@ -19,14 +19,14 @@ export default function History() {
   const handlePress = (name: string) => {
     setHover(name);
     filter(name);
-    // console.log(date, date2);
   };
 
   async function filter(type: string) {
     try {
       const data = await getHistory();
-      if (type == 'btn2') {
-        const grupedByArrivals = data.debito.reduce(
+      const combinedData = [...data.debito, ...data.credito];
+      if (type === 'btn2') {
+        const grupedByArrivals = combinedData.reduce(
           (acc: any, movement: object) => {
             const date = movement.fecha;
             if (!acc[date] && movement.monto > 0) {
@@ -40,8 +40,8 @@ export default function History() {
           {},
         );
         setData(grupedByArrivals);
-      } else if (type == 'btn3') {
-        const grupedBySent = data.debito.reduce(
+      } else if (type === 'btn3') {
+        const grupedBySent = combinedData.reduce(
           (acc: any, movement: object) => {
             const date = movement.fecha;
             if (!acc[date] && Number(movement.monto) < 0) {
@@ -55,7 +55,7 @@ export default function History() {
           {},
         );
         setData(grupedBySent);
-      } else if (type == 'btn1') {
+      } else if (type === 'btn1') {
         getData();
       }
     } catch (err) {
@@ -65,8 +65,8 @@ export default function History() {
 
   const getData = async () => {
     const data = await getHistory();
-    console.log(data);
-    const grupedByDate = data.debito.reduce((acc: any, movement: object) => {
+    const combinedData = [...data.debito, ...data.credito];
+    const grupedByDate = combinedData.reduce((acc: any, movement: object) => {
       const date = movement.fecha;
       if (!acc[date]) {
         acc[date] = [];
@@ -74,7 +74,6 @@ export default function History() {
       acc[date].push(movement);
       return acc;
     }, {});
-    // console.log(grupedByDate);
     setData(grupedByDate);
   };
 
@@ -82,13 +81,14 @@ export default function History() {
     try {
       if (date != null && date2 != null) {
         const data = await getHistory();
+        const combinedData = [...data?.debito, ...data.credito];
         const startDate = new Date(date);
         startDate.setUTCHours(0, 0, 0, 0);
         const endDate = new Date(date2);
         endDate.setUTCHours(0, 0, 0, 0);
         console.log('end', startDate);
 
-        const grupedByDate = data.debito.reduce(
+        const grupedByDate = combinedData.reduce(
           (acc: any, movement: object) => {
             const Localdate = movement.fecha;
             let fecha = new Date(movement.fecha);

@@ -9,9 +9,12 @@ import DebitCardDetails from '../Screens/DebitCardDetails';
 import VirtualCardDetails from '../Screens/VirtualCardDetails';
 import MisTarjetas from '../Screens/MisTarjetas';
 import SelectContact from '../Screens/SelectContact';
+import VirtualSelectContact from '../Screens/VirtualSelectContact';
 import Transferir from '../Screens/Transferir';
+import VirtualTransferir from '../Screens/VirtualTransferir';
 import TransferDetalles from '../Screens/TransferDetalles';
 import AddContact from '../Screens/AddContact';
+import VirtualAddContact from '../Screens/VirtualAddContact';
 import Config from '../Screens/Config';
 import Retirar from '../Screens/Retirar';
 import RetiroDetalles from '../Screens/RetiroDetalles';
@@ -20,7 +23,6 @@ import SecurityScreen from '../Screens/SecurityScreen';
 import Mapsview from '../Components/MapView';
 import DatosPersonales from '../Screens/DatosPersonales';
 import PasswordRe from '../Screens/PasswordRe';
-
 
 const Stack = createNativeStackNavigator();
 
@@ -96,6 +98,14 @@ export default function MyStack() {
         }}
       />
       <Stack.Screen
+        name="VirtualTransferirA"
+        component={VirtualSelectContact}
+        options={{
+          title: 'Transferir a:',
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name="AddContact"
         component={AddContact}
         options={{
@@ -106,8 +116,28 @@ export default function MyStack() {
         }}
       />
       <Stack.Screen
+        name="VirtualAddContact"
+        component={VirtualAddContact}
+        options={{
+          title: 'Agregar contacto',
+          headerTitleStyle: styles.title,
+          headerStyle: styles.background,
+          headerTintColor: 'white',
+        }}
+      />
+      <Stack.Screen
         name="Transferir"
         component={Transferir}
+        options={{
+          title: 'Transferir',
+          headerTitleStyle: styles.title,
+          headerStyle: styles.background,
+          headerTintColor: 'white',
+        }}
+      />
+      <Stack.Screen
+        name="VirtualTransferir"
+        component={VirtualTransferir}
         options={{
           title: 'Transferir',
           headerTitleStyle: styles.title,
