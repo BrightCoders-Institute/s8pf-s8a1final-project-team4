@@ -161,7 +161,7 @@ export default function VirtualCardDetails() {
                 <TouchableOpacity
                   style={styles.optionTouchable}
                   onPress={() => {
-                    navigation.navigate('TransferirA');
+                    navigation.navigate('VirtualTransferirA');
                   }}>
                   <Icon
                     name="swap-horizontal-outline"

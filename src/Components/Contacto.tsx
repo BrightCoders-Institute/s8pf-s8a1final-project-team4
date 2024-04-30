@@ -1,8 +1,7 @@
-import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useNavigation} from '@react-navigation/native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 import ConfirmationModal from '../Components/ConfirmationModal';
 import {DeleteContact} from '../Firebase/db';
 
@@ -10,10 +9,9 @@ type Props = {
   nombre: string;
   numero: number;
   icono: string;
-  onDelete: () => {};
 };
 
-export default function Contacto({nombre, numero, icono, onDelete}: Props) {
+export default function Contacto({nombre, numero, icono}: Props) {
   const [showModal, setShowModal] = useState(false);
 
   const navigation = useNavigation();
