@@ -59,6 +59,7 @@ export default function SelectContact() {
               nombre={item.item.nombre}
               numero={item.item.numero}
               icono="cc-visa"
+              virtual={false}
             />
           )}
         />

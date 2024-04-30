@@ -22,7 +22,7 @@ export default function Transferir({route}: any) {
   const [showModal, setShowModal] = useState(false);
 
   const handleTransfer = async () => {
-    await transferToCard(amount, card_number, concept).then(() => {
+    await transferToCard(amount, card_number, concept, false).then(() => {
       navigation.navigate('TransferDetalles', {
         importe: amount,
         concepto: concept,

@@ -28,7 +28,7 @@ export default function VirtualSelectContact() {
 
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('AddContact');
+            navigation.navigate('VirtualAddContact');
           }}>
           <View style={styles.ContainerBottn}>
             <Icon name="add-circle" size={70} color="#ffffff" />

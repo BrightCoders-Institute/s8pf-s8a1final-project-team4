@@ -14,6 +14,7 @@ import Transferir from '../Screens/Transferir';
 import VirtualTransferir from '../Screens/VirtualTransferir';
 import TransferDetalles from '../Screens/TransferDetalles';
 import AddContact from '../Screens/AddContact';
+import VirtualAddContact from '../Screens/VirtualAddContact';
 import Config from '../Screens/Config';
 import Retirar from '../Screens/Retirar';
 import RetiroDetalles from '../Screens/RetiroDetalles';
@@ -107,6 +108,16 @@ export default function MyStack() {
       <Stack.Screen
         name="AddContact"
         component={AddContact}
+        options={{
+          title: 'Agregar contacto',
+          headerTitleStyle: styles.title,
+          headerStyle: styles.background,
+          headerTintColor: 'white',
+        }}
+      />
+      <Stack.Screen
+        name="VirtualAddContact"
+        component={VirtualAddContact}
         options={{
           title: 'Agregar contacto',
           headerTitleStyle: styles.title,
