@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import Contacto from '../Components/Contacto';

@@ -11,6 +11,7 @@ import MisTarjetas from '../Screens/MisTarjetas';
 import SelectContact from '../Screens/SelectContact';
 import VirtualSelectContact from '../Screens/VirtualSelectContact';
 import Transferir from '../Screens/Transferir';
+import VirtualTransferir from '../Screens/VirtualTransferir';
 import TransferDetalles from '../Screens/TransferDetalles';
 import AddContact from '../Screens/AddContact';
 import Config from '../Screens/Config';
@@ -116,6 +117,16 @@ export default function MyStack() {
       <Stack.Screen
         name="Transferir"
         component={Transferir}
+        options={{
+          title: 'Transferir',
+          headerTitleStyle: styles.title,
+          headerStyle: styles.background,
+          headerTintColor: 'white',
+        }}
+      />
+      <Stack.Screen
+        name="VirtualTransferir"
+        component={VirtualTransferir}
         options={{
           title: 'Transferir',
           headerTitleStyle: styles.title,

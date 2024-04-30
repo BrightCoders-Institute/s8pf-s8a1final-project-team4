@@ -22,12 +22,12 @@ export default function Contacto({nombre, numero, icono, virtual}: Props) {
         style={styles.touchableContainer}
         onPress={() => {
           if (virtual) {
-            navigation.navigate('Transferir', {
+            navigation.navigate('VirtualTransferir', {
               name: nombre,
               card_number: numero,
             });
           } else {
-            navigation.navigate('VirtualTransferir', {
+            navigation.navigate('Transferir', {
               name: nombre,
               card_number: numero,
             });
