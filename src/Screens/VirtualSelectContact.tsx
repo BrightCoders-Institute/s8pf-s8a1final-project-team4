@@ -56,6 +56,7 @@ export default function VirtualSelectContact() {
               nombre={item.item.nombre}
               numero={item.item.numero}
               icono="cc-visa"
+              virtual={true}
             />
           )}
         />

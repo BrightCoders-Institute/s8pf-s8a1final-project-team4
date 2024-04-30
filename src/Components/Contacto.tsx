@@ -9,24 +9,34 @@ type Props = {
   nombre: string;
   numero: number;
   icono: string;
+  virtual: boolean;
 };
 
-export default function Contacto({nombre, numero, icono}: Props) {
+export default function Contacto({nombre, numero, icono, virtual}: Props) {
   const [showModal, setShowModal] = useState(false);
 
   const navigation = useNavigation();
-  console.log('nombre', nombre);
   return (
-    <View style={styles.card}>
+    <View style={virtual ? styles.virtualCard : styles.card}>
       <TouchableOpacity
         style={styles.touchableContainer}
         onPress={() => {
-          navigation.navigate('Transferir', {
-            name: nombre,
-            card_number: numero,
-          });
+          if (virtual) {
+            navigation.navigate('Transferir', {
+              name: nombre,
+              card_number: numero,
+            });
+          } else {
+            navigation.navigate('VirtualTransferir', {
+              name: nombre,
+              card_number: numero,
+            });
+          }
         }}>
-        <View style={styles.headerImgTextCont}>
+        <View
+          style={
+            virtual ? styles.virtualHeaderImgTextCont : styles.headerImgTextCont
+          }>
           <Text style={styles.headerImgText}>{nombre[0].toUpperCase()}</Text>
         </View>
 
@@ -69,6 +79,17 @@ const styles = StyleSheet.create({
     borderColor: 'blue',
     borderWidth: 1,
   },
+  virtualCard: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    backgroundColor: '#004FBB',
+    marginTop: 20,
+    borderRadius: 10,
+    borderColor: 'blue',
+    borderWidth: 1,
+  },
   touchableContainer: {
     backgroundColor: 'white',
     flexDirection: 'row',
@@ -92,19 +113,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  virtualHeaderImgTextCont: {
+    height: 70,
+    width: 70,
+    borderRadius: 100,
+    backgroundColor: '#004FBB',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   headerImgText: {
     color: 'white',
     fontSize: 28,
   },
-  // containertres: {
-  //   backgroundColor: 'red',
-  // },
   Text: {
     fontSize: 20,
     fontWeight: '900',
     color: 'blue',
     alignSelf: 'flex-start',
-    // paddingBottom: 5,
   },
   Textnumber: {
     fontSize: 18,
@@ -122,7 +147,5 @@ const styles = StyleSheet.create({
   },
   containertrash: {
     padding: 10,
-    // flex: 1,
-    // backgroundColor: 'blue',
   },
 });
