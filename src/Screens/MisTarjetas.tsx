@@ -21,7 +21,7 @@ export default function MisTarjetas() {
     <View style={styles.container}>
       <View style={styles.headerScreen}>
         <Text style={styles.headerTitle}>Mis Tarjetas</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="close-outline" size={45} color={'white'} />
         </TouchableOpacity>
       </View>

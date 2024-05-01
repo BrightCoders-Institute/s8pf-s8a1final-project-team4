@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, FlatList} from 'react-native';
-
+import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {getHistory} from '../Firebase/db';
 import {Movement} from '../Components/Movement';
 import {formatDate} from '../Components/MoveCard';
 import DatePicker from 'react-native-date-picker';
-// import Mapsview from '../Components/MapView';
 
 export default function History() {
   const [hover, setHover] = useState<string>('btn1');
@@ -15,6 +14,7 @@ export default function History() {
   const [date2, setDate2] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
+  const navigation = useNavigation();
 
   const handlePress = (name: string) => {
     setHover(name);
@@ -122,6 +122,12 @@ export default function History() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+        <View style={styles.headerScreen}>
+          <Text style={styles.headerTitle}>Historial</Text>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon name="close-outline" size={45} color={'white'} />
+          </TouchableOpacity>
+        </View>
         <View style={styles.filters}>
           <TouchableOpacity
             style={hover === 'btn1' ? styles.selectedFilter : styles.filterView}
@@ -310,13 +316,23 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 40,
   },
+  headerScreen: {
+    backgroundColor: '#021B9E',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 25,
+    paddingVertical: 5,
+  },
+  headerTitle: {
+    color: 'white',
+    fontSize: 22,
+  },
   header: {
     backgroundColor: '#00079A',
     flexDirection: 'column',
     justifyContent: 'space-between',
 
-    paddingHorizontal: 20,
-    paddingVertical: 40,
     borderBottomRightRadius: 40,
   },
   mainHistory: {
@@ -332,6 +348,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 40,
   },
   textFilter: {
     color: 'white',

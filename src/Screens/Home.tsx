@@ -28,7 +28,7 @@ export default function Home() {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerIcons}>
-          <Icon name="help-circle-outline" size={32} color={'white'} />
+          {/* <Icon name="help-circle-outline" size={32} color={'white'} /> */}
           <TouchableOpacity
             style={styles.congifIconContainer}
             onPress={() => {

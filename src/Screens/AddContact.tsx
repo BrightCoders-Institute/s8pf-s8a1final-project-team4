@@ -1,5 +1,6 @@
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
+import Icon from 'react-native-vector-icons/Ionicons';
 import InputDestinatario from '../Components/InputDestinatario';
 import FormButton from '../Components/Button';
 import {useNavigation} from '@react-navigation/native';
@@ -25,6 +26,7 @@ export default function AddContact() {
 
       // Agregar el contacto si el número de cuenta existe
       await AddContactDoc(name, number);
+      navigation.pop();
       navigation.navigate('Transferir', {name, card_number: number});
     } catch (err) {
       console.error('Error adding contact:', err);
@@ -40,6 +42,12 @@ export default function AddContact() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.headerScreen}>
+        <Text style={styles.headerTitle}>Agregar nuevo contacto</Text>
+        <TouchableOpacity onPress={() => navigation.pop()}>
+          <Icon name="close-outline" size={45} color={'white'} />
+        </TouchableOpacity>
+      </View>
       <View style={styles.header}>
         <View style={styles.campos}>
           <View style={styles.containerTitle}>
@@ -86,6 +94,18 @@ const styles = StyleSheet.create({
   containerTitle: {
     flexDirection: 'row',
     width: '100%',
+  },
+  headerScreen: {
+    backgroundColor: '#021B9E',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 25,
+    paddingVertical: 5,
+  },
+  headerTitle: {
+    color: 'white',
+    fontSize: 22,
   },
   header: {
     backgroundColor: '#00079A',

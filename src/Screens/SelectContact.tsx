@@ -1,14 +1,11 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import Contacto from '../Components/Contacto';
 import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
-// import ConfirmationModal from '../Components/ConfirmationModal';
-// import {getContact} from '../Firebase/db';
 
 export default function SelectContact() {
-  // const [showModal, setShowModal] = useState(false);
   const {userInfo} = useContext(UserContext);
   const navigation = useNavigation();
 
@@ -18,7 +15,7 @@ export default function SelectContact() {
     <View style={styles.container}>
       <View style={styles.headerScreen}>
         <Text style={styles.headerTitle}>Seleccionar contacto</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="close-outline" size={45} color={'white'} />
         </TouchableOpacity>
       </View>
