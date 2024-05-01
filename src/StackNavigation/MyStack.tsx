@@ -23,6 +23,7 @@ import SecurityScreen from '../Screens/SecurityScreen';
 import Mapsview from '../Components/MapView';
 import DatosPersonales from '../Screens/DatosPersonales';
 import PasswordRe from '../Screens/PasswordRe';
+import VirtualCreditRetiro from '../Screens/VirtualCreditRetiro';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,13 @@ export default function MyStack() {
       <Stack.Screen
         name="LogIn"
         component={LogIn}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="VirtualCreditRetiro"
+        component={VirtualCreditRetiro}
         options={{
           headerShown: false,
         }}

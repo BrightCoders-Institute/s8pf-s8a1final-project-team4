@@ -173,7 +173,7 @@ export default function VirtualCardDetails() {
                 <TouchableOpacity
                   style={styles.optionTouchable}
                   onPress={() => {
-                    navigation.navigate('Retirar');
+                    navigation.navigate('VirtualCreditRetiro');
                   }}>
                   <View style={styles.optionView}>
                     <Icon name="cash-outline" size={35} color={'white'} />

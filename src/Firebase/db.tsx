@@ -177,6 +177,25 @@ export async function userWithdraw(quantity: any, concepto: any) {
   }
 }
 
+export async function  virtualWithdraw(quantity: any, concepto: any) {
+  //use
+  try {
+    const ref = await getDocRef();
+    const doc = getDoc(ref);
+    const data: DocumentData = (await doc).data();
+    data.tarjetaCredito.saldo -= quantity;
+    //generar movimiento del retiro
+    data.tarjetaCredito.movimientos.unshift({
+      fecha: getCurrentDate(),
+      monto: -quantity,
+      descripcion: concepto,
+      tipo: 'Retiro de efectivo',
+    });
+    await setDoc(ref, data);
+  } catch (err) {
+    console.log('2', err);
+  }
+  }
 export async function getHistory() {
   try {
     const ref = await getDocRef();
