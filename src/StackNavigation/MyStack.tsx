@@ -118,9 +118,7 @@ export default function MyStack() {
         component={AddContact}
         options={{
           title: 'Agregar contacto',
-          headerTitleStyle: styles.title,
-          headerStyle: styles.background,
-          headerTintColor: 'white',
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -138,9 +136,7 @@ export default function MyStack() {
         component={Transferir}
         options={{
           title: 'Transferir',
-          headerTitleStyle: styles.title,
-          headerStyle: styles.background,
-          headerTintColor: 'white',
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -174,9 +170,7 @@ export default function MyStack() {
         component={Retirar}
         options={{
           title: 'Retiro sin tarjeta',
-          headerTitleStyle: styles.title,
-          headerStyle: styles.background,
-          headerTintColor: 'white',
+          headerShown: false,
         }}
       />
       <Stack.Screen

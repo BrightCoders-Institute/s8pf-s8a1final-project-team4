@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React, {useContext, useState} from 'react';
 import InputDestinatario from '../Components/InputDestinatario';
 import FormButton from '../Components/Button';
@@ -6,6 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
 import {transferToCard} from '../Firebase/db';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon2 from 'react-native-vector-icons/Ionicons';
 import ConfirmationModal from '../Components/ConfirmationModal';
 
 export default function Transferir({route}: any) {
@@ -23,6 +24,7 @@ export default function Transferir({route}: any) {
 
   const handleTransfer = async () => {
     await transferToCard(amount, card_number, concept, false).then(() => {
+      navigation.pop();
       navigation.navigate('TransferDetalles', {
         importe: amount,
         concepto: concept,
@@ -40,6 +42,12 @@ export default function Transferir({route}: any) {
 
   return (
     <View style={styles.container}>
+      <View style={styles.headerScreen}>
+        <Text style={styles.headerTitle}>Seleccionar contacto</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon2 name="close-outline" size={45} color={'white'} />
+        </TouchableOpacity>
+      </View>
       <View style={styles.header}>
         <Text style={styles.Text}>Estas Transfiriendo a: </Text>
         <View style={styles.containerInfo}>
@@ -138,6 +146,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 15,
     paddingBottom: 15,
+  },
+  headerScreen: {
+    backgroundColor: '#021B9E',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 25,
+    paddingVertical: 5,
+  },
+  headerTitle: {
+    color: 'white',
+    fontSize: 22,
   },
   header: {
     backgroundColor: '#00079A',

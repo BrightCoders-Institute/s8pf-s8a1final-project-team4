@@ -8,7 +8,6 @@ import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
 import {useContext, useState} from 'react';
 import {userWithdraw} from '../Firebase/db';
-import Mapsview from '../Components/MapView';
 
 export default function Retirar() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -26,13 +25,13 @@ export default function Retirar() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        {/* <View style={styles.headerScreen}>
+        <View style={styles.headerScreen}>
           <Text style={styles.headerTitle}>Seleccionar contacto</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Home')}>
             <Icon name="close-outline" size={45} color={'white'} />
           </TouchableOpacity>
-        </View> */}
-        <View>
+        </View>
+        <View style={{paddingHorizontal: 30, paddingVertical: 20}}>
           <Text style={styles.accountTitle}>CUENTA DE RETIRO</Text>
           <View style={styles.accountView}>
             <Text style={styles.accountNum}>● {cardNum.split(' ')[3]}</Text>
@@ -92,6 +91,7 @@ export default function Retirar() {
           }
           //actualizar contexto
           setModalVisible(false);
+          navigation.pop();
           navigation.navigate('RetiroDetalles', {
             importe: importe,
             concepto: concepto !== '' ? concepto : 'Retiro sin tarjeta',
@@ -109,8 +109,8 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#00079A',
-    paddingHorizontal: 30,
-    paddingVertical: 50,
+    // paddingHorizontal: 30,
+    // paddingVertical: 50,
     gap: 50,
     borderBottomRightRadius: 120,
     // paddingBottom: 20,

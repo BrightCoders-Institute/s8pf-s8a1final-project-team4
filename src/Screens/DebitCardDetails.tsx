@@ -5,7 +5,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  FlatList,
 } from 'react-native';
 import NewIcon from 'react-native-vector-icons/FontAwesome5';
 import {UserContext} from '../../App';
@@ -45,7 +44,7 @@ export default function DebitCardDetails() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Debito Fisica</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="close-outline" size={45} color={'white'} />
         </TouchableOpacity>
       </View>
