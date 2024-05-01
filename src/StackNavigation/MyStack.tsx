@@ -126,9 +126,7 @@ export default function MyStack() {
         component={VirtualAddContact}
         options={{
           title: 'Agregar contacto',
-          headerTitleStyle: styles.title,
-          headerStyle: styles.background,
-          headerTintColor: 'white',
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -144,9 +142,7 @@ export default function MyStack() {
         component={VirtualTransferir}
         options={{
           title: 'Transferir',
-          headerTitleStyle: styles.title,
-          headerStyle: styles.background,
-          headerTintColor: 'white',
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -186,9 +182,7 @@ export default function MyStack() {
         component={History}
         options={{
           title: 'Historial',
-          headerTitleStyle: styles.title,
-          headerStyle: styles.background,
-          headerTintColor: 'white',
+          headerShown: false,
         }}
       />
       <Stack.Screen

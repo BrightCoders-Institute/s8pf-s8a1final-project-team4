@@ -43,7 +43,7 @@ export default function Transferir({route}: any) {
   return (
     <View style={styles.container}>
       <View style={styles.headerScreen}>
-        <Text style={styles.headerTitle}>Seleccionar contacto</Text>
+        <Text style={styles.headerTitle}>Transferir</Text>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon2 name="close-outline" size={45} color={'white'} />
         </TouchableOpacity>

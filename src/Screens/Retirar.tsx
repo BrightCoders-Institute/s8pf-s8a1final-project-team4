@@ -26,8 +26,8 @@ export default function Retirar() {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerScreen}>
-          <Text style={styles.headerTitle}>Seleccionar contacto</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <Text style={styles.headerTitle}>Retirar</Text>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon name="close-outline" size={45} color={'white'} />
           </TouchableOpacity>
         </View>
@@ -104,16 +104,12 @@ export default function Retirar() {
 
 const styles = StyleSheet.create({
   container: {
-    gap: 30,
-    // alignContent: 'center',
+    gap: 35,
   },
   header: {
     backgroundColor: '#00079A',
-    // paddingHorizontal: 30,
-    // paddingVertical: 50,
-    gap: 50,
+    gap: 30,
     borderBottomRightRadius: 120,
-    // paddingBottom: 20,
   },
   headerScreen: {
     backgroundColor: '#021B9E',

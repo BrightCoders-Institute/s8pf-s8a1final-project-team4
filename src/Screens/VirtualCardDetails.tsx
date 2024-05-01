@@ -74,7 +74,7 @@ export default function VirtualCardDetails() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Debito Virtual</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="close-outline" size={45} color={'white'} />
         </TouchableOpacity>
       </View>

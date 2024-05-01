@@ -43,7 +43,7 @@ export default function AddContact() {
   return (
     <View style={styles.container}>
       <View style={styles.headerScreen}>
-        <Text style={styles.headerTitle}>Seleccionar contacto</Text>
+        <Text style={styles.headerTitle}>Agregar nuevo contacto</Text>
         <TouchableOpacity onPress={() => navigation.pop()}>
           <Icon name="close-outline" size={45} color={'white'} />
         </TouchableOpacity>
