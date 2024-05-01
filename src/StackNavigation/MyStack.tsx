@@ -197,9 +197,7 @@ export default function MyStack() {
         name="Security"
         component={SecurityScreen}
         options={{
-          title: 'Seguridad',
-          headerTitleStyle: styles.title,
-          headerStyle: styles.background,
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

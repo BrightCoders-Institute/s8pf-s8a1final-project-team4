@@ -6,9 +6,6 @@ import IconS from 'react-native-vector-icons/Ionicons';
 import {UserContext} from '../../App';
 import {useContext} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {signOut} from 'firebase/auth';
-import {auth} from '../Firebase/firebaseconfig';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DatosPersonales() {
   const {userInfo, handleUserActive} = useContext(UserContext);
@@ -17,10 +14,10 @@ export default function DatosPersonales() {
   return (
     <View style={style.mainContainer}>
       <View style={style.header}>
-        <Text style={style.headerTitle}>Configuración</Text>
+        <Text style={style.headerTitle}>Mi información</Text>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('Home');
+            navigation.goBack();
           }}>
           <IconC name="close-outline" size={45} color={'white'} />
         </TouchableOpacity>
@@ -47,16 +44,25 @@ export default function DatosPersonales() {
       <View style={style.ViewsContainer}>
         <TouchableOpacity style={style.buttonTouchable}>
           <Icon name="user" size={45} color="blue" />
-          <Text style={style.TextView}onPress={() => {
-            navigation.navigate('DatosPersonales');
-          }}> {userInfo.name}</Text>
+          <Text
+            style={style.TextView}
+            onPress={() => {
+              // navigation.navigate('DatosPersonales');
+            }}>
+            {userInfo.name}
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={style.buttonTouchable}>
           <IconS name="lock-closed-outline" size={45} color="blue" />
-          <Text style={style.TextView}onPress={() => {
-            navigation.navigate('PasswordRe');
-          }}>Cambiar Contraseña</Text>
+          <Text
+            style={style.TextView}
+            onPress={() => {
+              navigation.pop();
+              navigation.navigate('PasswordRe');
+            }}>
+            Cambiar Contraseña
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -72,7 +78,7 @@ const style = StyleSheet.create({
     backgroundColor: '#343DFF',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 15,
+    paddingVertical: 5,
     paddingHorizontal: 20,
     elevation: 20,
     alignItems: 'center',

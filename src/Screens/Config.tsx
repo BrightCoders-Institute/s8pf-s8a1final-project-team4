@@ -8,7 +8,6 @@ import {useContext} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {signOut} from 'firebase/auth';
 import {auth} from '../Firebase/firebaseconfig';
-import DatosPersonales from '../Screens/DatosPersonales';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Config() {
@@ -21,7 +20,7 @@ export default function Config() {
         <Text style={style.headerTitle}>Configuración</Text>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('Home');
+            navigation.goBack();
           }}>
           <IconC name="close-outline" size={45} color={'white'} />
         </TouchableOpacity>
@@ -46,16 +45,22 @@ export default function Config() {
       </View>
 
       <View style={style.ViewsContainer}>
-        <TouchableOpacity style={style.buttonTouchable}>
+        <TouchableOpacity
+          style={style.buttonTouchable}
+          onPress={() => {
+            navigation.navigate('DatosPersonales');
+          }}>
           <Icon name="user" size={45} color="blue" />
-          <Text
-            style={style.TextView}
-            onPress={() => {
-              navigation.navigate('DatosPersonales');
-            }}>
-            {' '}
-            Datos personales
-          </Text>
+          <Text style={style.TextView}>Datos personales</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={style.buttonTouchable}
+          onPress={() => {
+            navigation.navigate('Mapas');
+          }}>
+          <IconS name="map" size={45} color="blue" />
+          <Text style={style.TextView}>Nuestras Sucursales</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -65,15 +70,6 @@ export default function Config() {
           }}>
           <IconS name="shield-checkmark-outline" size={45} color="blue" />
           <Text style={style.TextView}> Seguridad</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={style.buttonTouchable}
-          onPress={() => {
-            navigation.navigate('Mapas');
-          }}>
-          <IconS name="map" size={45} color="blue" />
-          <Text style={style.TextView}> Sucursales</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
