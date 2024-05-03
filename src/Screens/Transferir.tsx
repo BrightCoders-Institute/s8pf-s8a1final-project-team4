@@ -8,6 +8,7 @@ import {transferToCard} from '../Firebase/db';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/Ionicons';
 import ConfirmationModal from '../Components/ConfirmationModal';
+import PushNotification from 'react-native-push-notification';
 
 export default function Transferir({route}: any) {
   const {userInfo} = useContext(UserContext);
@@ -24,6 +25,8 @@ export default function Transferir({route}: any) {
 
   const handleTransfer = async () => {
     await transferToCard(amount, card_number, concept, false).then(() => {
+      // Mostrar notificación después de la transferencia exitosa
+      showTransferSuccessNotification();
       navigation.pop();
       navigation.navigate('TransferDetalles', {
         importe: amount,
@@ -33,6 +36,15 @@ export default function Transferir({route}: any) {
       });
     });
   };
+
+    // Función para mostrar una notificación local de transferencia exitosa
+    const showTransferSuccessNotification = () => {
+      PushNotification.localNotification({
+        title: 'Transferencia exitosa',
+        message: `Se ha enviado $${amount} a la cuenta de ${transferTo}`,
+        channelId: 'channel-id',
+      });
+    };
 
   const areFieldsEmpty =
     !amount ||
