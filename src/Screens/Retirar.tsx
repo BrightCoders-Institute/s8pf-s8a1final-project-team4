@@ -8,6 +8,7 @@ import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
 import {useContext, useState} from 'react';
 import {userWithdraw} from '../Firebase/db';
+import PushNotification from 'react-native-push-notification';
 
 export default function Retirar() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -21,6 +22,15 @@ export default function Retirar() {
     /\d{4}(?=.)/g,
     '$& ',
   );
+
+    // Función para mostrar una notificación local de transferencia exitosa
+    const showTransferSuccessNotification = () => {
+      PushNotification.localNotification({
+        title: 'Transferencia exitosa',
+        message: `Se ha realizado un retiro de $${importe}`,
+        channelId: 'channel-id',
+      });
+    };
 
   return (
     <View style={styles.container}>
@@ -89,6 +99,8 @@ export default function Retirar() {
           } else {
             userWithdraw(importe, concepto);
           }
+           // Mostrar notificación después de la transferencia exitosa
+           showTransferSuccessNotification();
           //actualizar contexto
           setModalVisible(false);
           navigation.pop();
