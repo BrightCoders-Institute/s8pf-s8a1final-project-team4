@@ -86,7 +86,7 @@ export default function LogIn() {
   const showLoginSuccessNotification = () => {
     PushNotification.createChannel(
       {
-        channelId: 'channel-id', // (required)
+        channelId: 'channel-id', // Utiliza el mismo channelId aquí
         channelName: 'My channel', // (required)
         channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
         playSound: false, // (optional) default: true
@@ -98,7 +98,7 @@ export default function LogIn() {
     PushNotification.localNotification({
       title: 'Inicio de sesión exitoso',
       message: '¡Has iniciado sesión correctamente!',
-      channelId: 'channel-id',
+      channelId: 'channel-id', // Utiliza el mismo channelId aquí
     });
   };
 
