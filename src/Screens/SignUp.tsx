@@ -113,7 +113,10 @@ export default function SignUp() {
     PushNotification.localNotification({
       title: `¡Bienvenido ${name}!`,
       message: '¡Has iniciado sesión correctamente!',
-      channelId: 'channel-id', // Utiliza el mismo channelId aquí
+      channelId: 'channel-id',
+      smallIcon: 'ic_launcher_round',
+      largeIcon: 'ic_launcher_round',
+      priority: 'max',
     });
   };
 

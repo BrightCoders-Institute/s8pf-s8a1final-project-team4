@@ -29,6 +29,9 @@ export default function Retirar() {
       title: '¡Retiro exitoso!',
       message: `Se ha realizado un retiro de $${importe}`,
       channelId: 'channel-id',
+      smallIcon: 'ic_launcher_round',
+      largeIcon: 'ic_launcher_round',
+      priority: 'max',
     });
   };
 

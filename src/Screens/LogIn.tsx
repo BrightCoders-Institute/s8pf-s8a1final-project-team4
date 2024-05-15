@@ -99,6 +99,9 @@ export default function LogIn() {
       title: `¡Bienvenido ${name}!`,
       message: '¡Has iniciado sesión correctamente!',
       channelId: 'channel-id', // Utiliza el mismo channelId aquí
+      smallIcon: 'ic_launcher_round',
+      largeIcon: 'ic_launcher_round',
+      priority: 'max',
     });
   };
 

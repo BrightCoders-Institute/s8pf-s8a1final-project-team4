@@ -41,6 +41,9 @@ export default function VirtualTransferir({route}: any) {
       title: '¡Transferencia exitosa!',
       message: `Se ha enviado $${amount} a la cuenta de ${transferTo}`,
       channelId: 'channel-id',
+      smallIcon: 'ic_launcher_round',
+      largeIcon: 'ic_launcher_round',
+      priority: 'max',
     });
   };
 
