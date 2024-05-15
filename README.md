@@ -96,7 +96,21 @@ App database uses the next non-relational design:
 
 ## How to Use the Project.
 
-- If you want to use SnapPay bank app, you can find the **app-debug.apk** file wich you can download and install on your own Android device on the next path:
+If you want to use SnapPay bank app, you can create an apk file.
+
+- Execute this command on the project root directory:
+
+**react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res**
+
+- Go to Android drectory using the next command:
+
+**cd android**
+
+- On Android directory, execute this command:
+
+**./gradlew assembleDebug**
+
+- -After these steps you can find the **app-debug.apk** file wich you can download and install on your own Android device on the next path:
 
 **/android/app/build/outputs/apk/debug/app-debug.apk**
 
