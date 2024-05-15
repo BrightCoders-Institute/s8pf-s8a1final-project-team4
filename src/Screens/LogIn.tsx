@@ -83,7 +83,7 @@ export default function LogIn() {
     }
   };
 
-  const showLoginSuccessNotification = () => {
+  const showLoginSuccessNotification = name => {
     PushNotification.createChannel(
       {
         channelId: 'channel-id', // Utiliza el mismo channelId aquí
@@ -96,7 +96,7 @@ export default function LogIn() {
       created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
     );
     PushNotification.localNotification({
-      title: 'Inicio de sesión exitoso',
+      title: `¡Bienvenido ${name}!`,
       message: '¡Has iniciado sesión correctamente!',
       channelId: 'channel-id', // Utiliza el mismo channelId aquí
     });
@@ -121,7 +121,7 @@ export default function LogIn() {
       });
       setLoading(false);
       navigation.navigate('Home');
-      showLoginSuccessNotification();
+      showLoginSuccessNotification(userData.name);
       // Retornar la función de limpieza para cancelar la suscripción
       return () => unsubscribe();
     } catch (error) {
@@ -201,7 +201,8 @@ export default function LogIn() {
       });
       setLoading(false);
       navigation.navigate('Home');
-      showLoginSuccessNotification();
+      const userData = docSnap.data();
+      showLoginSuccessNotification(userData.name);
       // Retornar la función de limpieza para cancelar la suscripción
       return () => unsubscribe();
     } catch (error) {
