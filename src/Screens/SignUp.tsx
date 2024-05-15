@@ -12,6 +12,7 @@ import {doc, setDoc, onSnapshot} from 'firebase/firestore';
 import {UserContext} from '../../App';
 import LoadingModal from '../Components/LoadingModal';
 import InfoModal from '../Components/InfoModal';
+import PushNotification from 'react-native-push-notification';
 
 function getRandomCardNumber() {
   const cardNum = [];
@@ -97,6 +98,28 @@ export default function SignUp() {
     });
   }, []);
 
+  const showLoginSuccessNotification = name => {
+    PushNotification.createChannel(
+      {
+        channelId: 'channel-id', // Utiliza el mismo channelId aquí
+        channelName: 'My channel', // (required)
+        channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
+        playSound: false, // (optional) default: true
+        soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
+        vibrate: true, // (optional) default: true. Creates the default vibration pattern if true.
+      },
+      created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+    );
+    PushNotification.localNotification({
+      title: `¡Bienvenido ${name}!`,
+      message: '¡Has iniciado sesión correctamente!',
+      channelId: 'channel-id',
+      smallIcon: 'ic_launcher_round',
+      largeIcon: 'ic_launcher_round',
+      priority: 'max',
+    });
+  };
+
   const handleSignUpFirebase = async () => {
     if (name.length === 0 && email.length === 0 && password.length === 0) {
       setNameError('El nombre solo puede contener letras y espacios');
@@ -165,6 +188,7 @@ export default function SignUp() {
           });
           setLoading(false);
           navigation.navigate('Home');
+          showLoginSuccessNotification(userData.name);
           // Retornar la función de limpieza para cancelar la suscripción
           return () => unsubscribe();
         } catch (error) {

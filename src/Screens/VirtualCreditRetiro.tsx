@@ -8,7 +8,7 @@ import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../App';
 import {useContext, useState} from 'react';
 import {virtualWithdraw} from '../Firebase/db';
-import Mapsview from '../Components/MapView';
+import PushNotification from 'react-native-push-notification';
 
 export default function VirtualCreditRetiro() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -23,14 +23,25 @@ export default function VirtualCreditRetiro() {
     '$& ',
   );
 
+  const showTransferSuccessNotification = () => {
+    PushNotification.localNotification({
+      title: '¡Retiro exitoso!',
+      message: `Se ha realizado un retiro de $${importe}`,
+      channelId: 'channel-id',
+      smallIcon: 'ic_launcher_round',
+      largeIcon: 'ic_launcher_round',
+      priority: 'max',
+    });
+  };
+
   return (
     <View style={styles.container}>
-         <View style={styles.headerScreen}>
-            <Text style={styles.headerTitle}>Retiro Sin Tarjeta</Text>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon name="close-outline" size={45} color={'white'} />
-            </TouchableOpacity>
-        </View>
+      <View style={styles.headerScreen}>
+        <Text style={styles.headerTitle}>Retiro Sin Tarjeta</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name="close-outline" size={45} color={'white'} />
+        </TouchableOpacity>
+      </View>
       <View style={styles.header}>
         <View>
           <Text style={styles.accountTitle}>CUENTA DE RETIRO/VIRTUAL</Text>
@@ -90,6 +101,7 @@ export default function VirtualCreditRetiro() {
           } else {
             virtualWithdraw(importe, concepto);
           }
+          showTransferSuccessNotification();
           //actualizar contexto
           setModalVisible(false);
           navigation.navigate('RetiroDetalles', {
@@ -113,15 +125,15 @@ const styles = StyleSheet.create({
     gap: 25,
     borderBottomRightRadius: 120,
     marginBottom: 25,
-    },
-    headerScreen: {
-        backgroundColor: '#004FBB',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 25,
-        paddingVertical: 5,
-      },
+  },
+  headerScreen: {
+    backgroundColor: '#004FBB',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 25,
+    paddingVertical: 5,
+  },
   headerTitle: {
     color: 'white',
     fontSize: 22,

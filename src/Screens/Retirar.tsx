@@ -23,14 +23,17 @@ export default function Retirar() {
     '$& ',
   );
 
-    // Función para mostrar una notificación local de transferencia exitosa
-    const showTransferSuccessNotification = () => {
-      PushNotification.localNotification({
-        title: 'Transferencia exitosa',
-        message: `Se ha realizado un retiro de $${importe}`,
-        channelId: 'channel-id',
-      });
-    };
+  // Función para mostrar una notificación local de transferencia exitosa
+  const showTransferSuccessNotification = () => {
+    PushNotification.localNotification({
+      title: '¡Retiro exitoso!',
+      message: `Se ha realizado un retiro de $${importe}`,
+      channelId: 'channel-id',
+      smallIcon: 'ic_launcher_round',
+      largeIcon: 'ic_launcher_round',
+      priority: 'max',
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -99,8 +102,8 @@ export default function Retirar() {
           } else {
             userWithdraw(importe, concepto);
           }
-           // Mostrar notificación después de la transferencia exitosa
-           showTransferSuccessNotification();
+          // Mostrar notificación después de la transferencia exitosa
+          showTransferSuccessNotification();
           //actualizar contexto
           setModalVisible(false);
           navigation.pop();
