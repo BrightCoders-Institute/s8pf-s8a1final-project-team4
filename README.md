@@ -86,7 +86,8 @@ App has the following UI:
 
 ## Database design
 
-App database uses the next non-relational design:
+App database uses the next design:
+![alt text](image.png)
 
 ## How to Install and Run the Project
 
