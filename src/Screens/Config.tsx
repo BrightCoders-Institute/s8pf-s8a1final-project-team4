@@ -1,6 +1,5 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
 import IconC from 'react-native-vector-icons/Ionicons';
 import IconS from 'react-native-vector-icons/Ionicons';
 import {UserContext} from '../../App';
