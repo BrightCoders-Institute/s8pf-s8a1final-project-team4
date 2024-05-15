@@ -48,15 +48,6 @@ export default function Config() {
         <TouchableOpacity
           style={style.buttonTouchable}
           onPress={() => {
-            navigation.navigate('DatosPersonales');
-          }}>
-          <Icon name="user" size={45} color="blue" />
-          <Text style={style.TextView}>Datos personales</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={style.buttonTouchable}
-          onPress={() => {
             navigation.navigate('Mapas');
           }}>
           <IconS name="map" size={45} color="blue" />
