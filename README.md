@@ -1,20 +1,30 @@
 ![BrightCoders Logo](img/logo.png)
 
-# SnapPay Bank
+# <div align="center">SnapPay Bank</div>
 
-- [SnapPay Bank](#snappay-bank)
-  - [Description](#description)
-    - [Objective](#objective)
-    - [MVP scope](#mvp-scope)
-  - [Project requirements](#project-requirements)
-    - [Functional requirements](#functional-requirements)
-    - [No functional requirements](#no-functional-requirements)
-  - [User Interface Design](#user-interface-design)
-  - [Database Design](#database-design)
-  - [How to Install and Run the Project](#how-to-install-and-run-the-project)
-  - [How to Use the Project.](#how-to-use-the-project)
-  - [Credits](#credits)
-  - [Badges](#badges)
+<div align="center">
+<img src="img/money_logo.png" alt="App Logo" width="40">
+<img src="img/money_logo.png" alt="App Logo" width="40">
+<img src="img/money_logo.png" alt="App Logo" width="40">
+<img src="img/money_logo.png" alt="App Logo" width="40">
+<img src="img/money_logo.png" alt="App Logo" width="40">
+<img src="img/money_logo.png" alt="App Logo" width="40">
+</div>
+
+## Index
+
+- <a href="#description" style="color: lightgreen;">Description</a>
+  - <a href="#objective" style="color: lightgreen;">Objective</a>
+  - <a href="#mvp-scope" style="color: lightgreen;">MVP scope</a>
+- <a href="#project-requirements" style="color: lightgreen;">Project requirements</a>
+  - <a href="#functional-requirements" style="color: lightgreen;">Functional requirements</a>
+  - <a href="#no-functional-requirements" style="color: lightgreen;">No functional requirements</a>
+- <a href="#user-interface-design" style="color: lightgreen;">User Interface Design</a>
+- <a href="#database-design" style="color: lightgreen;">Database Design</a>
+- <a href="#how-to-install-and-run-the-project" style="color: lightgreen;">How to Install and Run the Project</a>
+- <a href="#how-to-use-the-project" style="color: lightgreen;">How to Use the Project</a>
+- <a href="#credits" style="color: lightgreen;">Credits</a>
+- <a href="#badges" style="color: lightgreen;">Badges</a>
 
 ## Description
 
@@ -34,79 +44,55 @@ SnapPay Bank app must have the next features on MVP version:
 
 - **Withdrawals:** Initiate withdrawals hassle-free directly from your account using the app.
 
+- **Contact checking:** Check all contact information to verify if a user exist when a adding a new contact.
+
 - **Transfers:** Transfer funds swiftly between your accounts or to other recipients, ensuring your money moves when you need it to.
 
 - **ATM Locator:** Locate nearby ATMs for quick cash access whenever you need it, ensuring convenience on the go.
+
+- **Live user info:** When a user is logged, app needs to keep user info up to date. if something change, this must be visible at the moment on the app.
 
 ## Project Requirements
 
 ### Functional requirements
 
-- User Registration: Allows customers to register in the application by providing necessary information.
+- **User Registration:** Allows customers to register in the application by providing necessary information.
 
-- User Validation: Verifies the identity of users upon login to ensure security.
+- **User Validation:** Verifies the identity of users upon login to ensure security.
 
-- Database Implementation: Sets up a database to store user information and transactions.
-  Non-functional Requirements:
+- **Database Implementation:** Sets up a database to store user information and transactions.
 
-Requerimientos:
-· Registro de usuarios
-· Validación de usuarios
-· Validación biométrica (API)
-· Generación de número de tarjeta
-· Implementación de base de datos
-Funcionalidades:
-· Generación de alertas (pagos enviados, pagos recibidos, pagos domiciliados, pagos futuros)
-· Consulta de saldo de usuario
-· Transferencias entre usuarios
-· Historial de movimientos (hasta 10 movimientos)
-· Estado de cuenta (movimientos del mes)
-· Solicitud de préstamos
-· Múltiples tarjetas (crédito y débito)
-· Estadísticas de ingresos y egresos
+- **Transfers Between Users:** Enables users to transfer funds between each other quickly and securely, without the need for using other payment methods.
+
+- **Cardless Withdrawals:** Facilitates users in making cash withdrawals at ATMs without needing a physical card, providing a more convenient experience.
+
+- **Transaction History:** Allows users to view a detailed record of all transactions made in their accounts, providing transparency and control over their finances.
 
 ### No functional requirements
 
-- Security: Ensures the security of user information and transactions through encryption and robust security measures.
+- **Security:** Ensures the security of user information and transactions through encryption and robust security measures.
 
-- Performance: The application must be able to handle a high volume of simultaneous transactions efficiently.
+- **Performance:** The application must be able to handle a high volume of simultaneous transactions efficiently.
 - Usability: Intuitive and user-friendly interface to enhance user experience.
 
-- Availability: The application should be available 24/7 for users to access at any time.
-- Scalability: Ability of the application to grow and adapt as the number of users and transactions increases.
+- **Availability:** The application should be available 24/7 for users to access at any time.
+- **Scalability:** Ability of the application to grow and adapt as the number of users and transactions increases.
 
 ## User interface design
 
-Requerimientos funcionales
-· Registro de usuario
-· Inicio de sesión
-· Notificaciones
-· Conexión con base de datos
-· Transferencias entre usuarios
-· Historial
+App has the following UI:
 
-No.Screens: 10
-Login
-Register
-Home
-Transferencias
-Historial
-Tarjeta de crédito _
-Tarjeta de débito _
-Estadísticas
-préstamo
-Estado de cuenta \*
-Requisitos funcionales:
+![grid screenshots](img/grid.jpg)
 
 ## Database design
 
-Image.img
+App database uses the next non-relational design:
 
 ## How to Install and Run the Project
 
 - You have to clone the repository from github
 - You have to install all dependencies using **npm install**
-- Once everything is properly installed you can do **npm start** to inicialize the project on your PC using an Android emulator.
+- Once everything is properly installed you can do **npm start** to inicialize the project on your PC using an Android emulator (this projects uses **React Native CLI**).
 
 ## How to Use the Project.
 
@@ -118,12 +104,12 @@ Image.img
 
 ## Credits
 
-- RicardoRam781
-- YahirCL
-- roobbs
-- ToshioRonin
+- **<span style="font-weight: bold; color: orange;">RicardoRam781</span>**
+- **<span style="font-weight: bold; color: orange;">YahirCL</span>**
+- **<span style="font-weight: bold; color: orange;">roobbs</span>**
+- **<span style="font-weight: bold; color: orange;">ToshioRonin</span>**
 
-- Arriba BrightCoders :p
+- <span style="font-weight: bold; color: lightgreen;">Arriba BrightCoders :p</span>
 
 ## Badges
 
