@@ -1,6 +1,5 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
 import IconC from 'react-native-vector-icons/Ionicons';
 import IconS from 'react-native-vector-icons/Ionicons';
 import {UserContext} from '../../App';
@@ -45,15 +44,6 @@ export default function Config() {
       </View>
 
       <View style={style.ViewsContainer}>
-        <TouchableOpacity
-          style={style.buttonTouchable}
-          onPress={() => {
-            navigation.navigate('DatosPersonales');
-          }}>
-          <Icon name="user" size={45} color="blue" />
-          <Text style={style.TextView}>Datos personales</Text>
-        </TouchableOpacity>
-
         <TouchableOpacity
           style={style.buttonTouchable}
           onPress={() => {
